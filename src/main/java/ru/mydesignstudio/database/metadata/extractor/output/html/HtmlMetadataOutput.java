@@ -16,14 +16,21 @@ import ru.mydesignstudio.database.metadata.extractor.output.Output;
 
 @Component
 public class HtmlMetadataOutput implements MetadataOutput {
+
   @Autowired
   private DatabaseMetadataHtmlOutput databaseOutput;
 
   @Autowired
   private TableMetadataHtmlOutput tableOutput;
 
+  @Autowired
+  private SinglePageHtmlOutput singleOutput;
+
   @Value("${output.html.folder}")
   private String outputFolderName;
+
+  @Value("${output.html.mode}")
+  private String outputMode;
 
   private Path outputFolder;
 
@@ -37,7 +44,30 @@ public class HtmlMetadataOutput implements MetadataOutput {
 
   @Override
   public List<Output> output(List<DatabaseMetadata> databaseMetadata, List<TableMetadata> tableMetadata) {
+    if (outputMode.equals("single")) {
+      return singleFileOutput(databaseMetadata, tableMetadata);
+    } else {
+      return outputMultipleFiles(databaseMetadata, tableMetadata);
+    }
+  }
+
+  private List<Output> singleFileOutput(List<DatabaseMetadata> databaseMetadata, List<TableMetadata> tableMetadata) {
     final List<Output> results = new ArrayList<>();
+
+    for (DatabaseMetadata databaseItem : databaseMetadata) {
+      for (TableMetadata tableItem : tableMetadata) {
+        if (databaseItem.getSchemaName().equals(tableItem.getSchemaName())) {
+          results.add(singleOutput.output(databaseItem, tableItem, outputFolder));
+        }
+      }
+    }
+
+    return results;
+  }
+
+  private List<Output> outputMultipleFiles(List<DatabaseMetadata> databaseMetadata, List<TableMetadata> tableMetadata) {
+    final List<Output> results = new ArrayList<>();
+
     for (DatabaseMetadata metadata : databaseMetadata) {
       results.add(databaseOutput.output(metadata, outputFolder));
     }
@@ -45,6 +75,7 @@ public class HtmlMetadataOutput implements MetadataOutput {
     for (TableMetadata metadata : tableMetadata) {
       results.add(tableOutput.output(metadata, outputFolder));
     }
+
     return results;
   }
 }
