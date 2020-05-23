@@ -1,5 +1,7 @@
 # Database Metadata Extract
 
+![](https://github.com/aabarmin/database-metadata-extractor/workflows/gradle/badge.svg)
+
 A simple tool that allows extraction of metadata from the Database Metadata Tables. 
 
 ## How to build the tool
