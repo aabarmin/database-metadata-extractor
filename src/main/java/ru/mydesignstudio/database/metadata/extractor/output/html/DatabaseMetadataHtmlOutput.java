@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.DatabaseMetadata;
+import ru.mydesignstudio.database.metadata.extractor.output.Output;
 
 @Component
 public class DatabaseMetadataHtmlOutput {
@@ -18,7 +19,7 @@ public class DatabaseMetadataHtmlOutput {
   private TemplateEngine templateEngine;
 
   @SneakyThrows
-  public void output(@NonNull DatabaseMetadata metadata, @NonNull Path outputFolder) {
+  public Output output(@NonNull DatabaseMetadata metadata, @NonNull Path outputFolder) {
     final Path outputFile = outputFolder.resolve(metadata.getSchemaName() + ".html");
     Files.deleteIfExists(outputFile);
     Files.createFile(outputFile);
@@ -28,5 +29,7 @@ public class DatabaseMetadataHtmlOutput {
     final String content = templateEngine.process("database-template", context);
 
     Files.write(outputFile, content.getBytes(Charset.forName("UTF-8")), StandardOpenOption.WRITE);
+
+    return new Output(metadata.getSchemaName(), outputFile);
   }
 }
