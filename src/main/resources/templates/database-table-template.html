@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Table</title>
+</head>
+<body>
+  <table border="1">
+    <tr>
+      <th>Schema</th>
+      <td th:text="${tableMetadata.schemaName}"/>
+    </tr>
+    <tr>
+      <th>Table</th>
+      <td th:text="${tableMetadata.tableName}"/>
+    </tr>
+  </table>
+
+  <h2 th:if="${not #lists.isEmpty(tableMetadata.columns)}">Columns</h2>
+
+  <table border="1" th:if="${not #lists.isEmpty(tableMetadata.columns)}">
+    <tr>
+      <th>Column ID</th>
+      <th>Schema name</th>
+      <th>Table Name</th>
+      <th>Data Type</th>
+      <th>Data Length</th>
+      <th>Data Precision</th>
+      <th>Data Scale</th>
+      <th>Nullable</th>
+      <th>Default Definition</th>
+      <th>Comments</th>
+    </tr>
+
+    <tr th:each="column : ${tableMetadata.columns}">
+      <td th:text="${column.columnId}" />
+      <td th:text="${column.schemaName}" />
+      <td th:text="${column.tableName}" />
+      <td th:text="${column.dataType}" />
+      <td th:text="${column.dataLength}" />
+      <td th:text="${column.dataPrecision}" />
+      <td th:text="${column.dataScale}" />
+      <td th:text="${column.nullable}" />
+      <td th:text="${column.defaultDefinition}" />
+      <td th:text="${column.comments}" />
+    </tr>
+  </table>
+
+  <h2 th:if="${not #lists.isEmpty(tableMetadata.primaryKeys)}">Primary Keys</h2>
+
+  <table border="1" th:if="${not #lists.isEmpty(tableMetadata.primaryKeys)}">
+    <tr>
+      <th>Primary Key</th>
+      <th>Schema Name</th>
+      <th>Constraint Name</th>
+      <th>Table Name</th>
+      <th>Columns</th>
+    </tr>
+
+    <tr th:each="key : ${tableMetadata.primaryKeys}">
+      <td th:text="${key.primaryKey}" />
+      <td th:text="${key.schemaName}" />
+      <td th:text="${key.constraintName}" />
+      <td th:text="${key.tableName}" />
+      <td th:text="${key.columns}" />
+    </tr>
+  </table>
+
+  <h2 th:if="${not #lists.isEmpty(tableMetadata.foreignKeys)}">Foreign Keys</h2>
+
+  <table border="1" th:if="${not #lists.isEmpty(tableMetadata.foreignKeys)}">
+    <tr>
+      <th>Foreign Key</th>
+      <th>Constraint Type</th>
+      <th>Schema Name</th>
+      <th>Constraint Name</th>
+      <th>Table Name</th>
+      <th>Columns</th>
+      <th>R Owner</th>
+      <th>R Constraint Name</th>
+    </tr>
+
+    <tr th:each="key : ${tableMetadata.foreignKeys}">
+      <td th:text="${key.foreignKey}" />
+      <td th:text="${key.constraintType}" />
+      <td th:text="${key.schemaName}" />
+      <td th:text="${key.constraintName}" />
+      <td th:text="${key.tableName}" />
+      <td th:text="${key.columns}" />
+      <td th:text="${key.rOwner}" />
+      <td th:text="${key.rConstraintName}" />
+    </tr>
+  </table>
+
+  <h2 th:if="${not #lists.isEmpty(tableMetadata.constraints)}">Constraints</h2>
+
+  <table border="1" th:if="${not #lists.isEmpty(tableMetadata.constraints)}">
+    <tr>
+      <th>Constraint Type</th>
+      <th>Schema Name</th>
+      <th>Constraint Name</th>
+      <th>Table Name</th>
+      <th>Columns</th>
+      <th>R Owner</th>
+      <th>R Constraint Name</th>
+    </tr>
+
+    <tr th:each="constraint : ${tableMetadata.constraints}">
+      <td th:text="${constraint.constraintType}" />
+      <td th:text="${constraint.schemaName}" />
+      <td th:text="${constraint.constraintName}" />
+      <td th:text="${constraint.tableName}" />
+      <td th:text="${constraint.columns}" />
+      <td th:text="${constraint.rOwner}" />
+      <td th:text="${constraint.rConstraintName}" />
+    </tr>
+  </table>
+
+  <h2 th:if="${not #lists.isEmpty(tableMetadata.references)}">References</h2>
+
+  <table border="1" th:if="${not #lists.isEmpty(tableMetadata.references)}">
+    <tr>
+      <th>Child Table</th>
+      <th>Child Column</th>
+      <th>Constraint Name</th>
+      <th>Parent Table</th>
+      <th>Parent Columns</th>
+    </tr>
+
+    <tr th:each="reference : ${tableMetadata.references}">
+      <td th:text="${reference.childTable}" />
+      <td th:text="${reference.childColumn}" />
+      <td th:text="${reference.constraintName}" />
+      <td th:text="${reference.parentTable}" />
+      <td th:text="${reference.parentColumn}" />
+    </tr>
+  </table>
+
+  <h2 th:if="${not #lists.isEmpty(tableMetadata.checks)}">Check constraints</h2>
+
+  <table border="1" th:if="${not #lists.isEmpty(tableMetadata.checks)}">
+    <tr>
+      <th>Schema Name</th>
+      <th>Constraint Name</th>
+      <th>Table Name</th>
+      <th>Column Name</th>
+      <th>Constraint</th>
+      <th>Status</th>
+    </tr>
+
+    <tr th:each="check : ${tableMetadata.checks}">
+      <td th:text="${check.schemaName}" />
+      <td th:text="${check.constraintName}" />
+      <td th:text="${check.tableName}" />
+      <td th:text="${check.columnName}" />
+      <td th:text="${check.constraint}" />
+      <td th:text="${check.status}" />
+    </tr>
+  </table>
+
+  <h2 th:if="${not #lists.isEmpty(tableMetadata.triggers)}">Triggers</h2>
+
+  <table border="1" th:if="${not #lists.isEmpty(tableMetadata.triggers)}">
+    <tr>
+      <th>Trigger Schema Name</th>
+      <th>Trigger Name</th>
+      <th>Trigger Type</th>
+      <th>Triggering Event</th>
+      <th>Schema Name</th>
+      <th>Object Name</th>
+      <th>Object Type</th>
+      <th>Status</th>
+      <th>Script</th>
+    </tr>
+
+    <tr th:each="trigger : ${tableMetadata.triggers}">
+      <td th:text="${trigger.triggerSchemaName}" />
+      <td th:text="${trigger.triggerName}" />
+      <td th:text="${trigger.triggerType}" />
+      <td th:text="${trigger.triggeringEvent}" />
+      <td th:text="${trigger.schemaName}" />
+      <td th:text="${trigger.objectName}" />
+      <td th:text="${trigger.objectType}" />
+      <td th:text="${trigger.status}" />
+      <td th:text="${trigger.script}" />
+    </tr>
+  </table>
+
+  <h2 th:if="${not #lists.isEmpty(tableMetadata.udfs)}">UDFs</h2>
+
+  <table border="1" th:if="${not #lists.isEmpty(tableMetadata.udfs)}">
+    <tr>
+      <th>Schema Name</th>
+      <th>Function Name</th>
+      <th>Return Type</th>
+      <th>Arguments</th>
+    </tr>
+
+    <tr th:each="udf : ${tableMetadata.udfs}">
+      <td th:text="${udf.schemaName}" />
+      <td th:text="${udf.functionName}" />
+      <td th:text="${udf.returnType}" />
+      <td th:text="${udf.arguments}" />
+    </tr>
+  </table>
+
+  <h2 th:if="${not #lists.isEmpty(databaseMetadata.procedures)}">Stored Procedures</h2>
+
+  <table border="1" th:if="${not #lists.isEmpty(databaseMetadata.procedures)}">
+    <tr>
+      <th>Schema Name</th>
+      <th>Procedure Name</th>
+      <th>Arguments</th>
+    </tr>
+
+    <tr th:each="procedure : ${databaseMetadata.procedures}">
+      <th th:text="${procedure.schemaName}" />
+      <th th:text="${procedure.procedureName}" />
+      <th th:text="${procedure.arguments}" />
+    </tr>
+  </table>
+
+  <h2 th:if="${not #lists.isEmpty(databaseMetadata.arguments)}">Stored Procedure Arguments</h2>
+
+  <table border="1" th:if="${not #lists.isEmpty(databaseMetadata.arguments)}">
+    <tr>
+      <th>Schema Name</th>
+      <th>Procedure Name</th>
+      <th>Argument Name</th>
+      <th>In/Out</th>
+      <th>Data Type</th>
+      <th>Data Length</th>
+      <th>Data Precision</th>
+      <th>Data Scale</th>
+      <th>Defaulted</th>
+      <th>Default Value</th>
+    </tr>
+
+    <tr th:each="argument : ${databaseMetadata.arguments}">
+      <th th:text="${argument.schemaName}" />
+      <th th:text="${argument.procedureName}" />
+      <th th:text="${argument.argumentName}" />
+      <th th:text="${argument.inOut}" />
+      <th th:text="${argument.dataType}" />
+      <th th:text="${argument.dataLength}" />
+      <th th:text="${argument.dataPrecision}" />
+      <th th:text="${argument.dataScale}" />
+      <th th:text="${argument.defaulted}" />
+      <th th:text="${argument.defaultValue}" />
+    </tr>
+  </table>
+
+  <h2 th:if="${not #lists.isEmpty(databaseMetadata.jobs)}">Scheduled Jobs</h2>
+
+  <table border="1" th:if="${not #lists.isEmpty(databaseMetadata.jobs)}">
+    <tr>
+      <th>Schema Name</th>
+      <th>Job Name</th>
+      <th>Job Style</th>
+      <th>Job Type</th>
+      <th>Job Action</th>
+      <th>Start Date</th>
+      <th>Schedule</th>
+      <th>Last Start Date</th>
+      <th>Next Run Date</th>
+      <th>State</th>
+    </tr>
+
+    <tr th:each="job : ${databaseMetadata.jobs}">
+      <th th:text="${job.schemaName}" />
+      <th th:text="${job.jobName}" />
+      <th th:text="${job.jobStyle}" />
+      <th th:text="${job.jobType}" />
+      <th th:text="${job.jobAction}" />
+      <th th:text="${job.startDate}" />
+      <th th:text="${job.schedule}" />
+      <th th:text="${job.lastStartDate}" />
+      <th th:text="${job.nextRunDate}" />
+      <th th:text="${job.state}" />
+    </tr>
+  </table>
+
+  <h2 th:if="${not #lists.isEmpty(tableMetadata.viewsUsed)}">Uses</h2>
+
+  <table border="1" th:if="${not #lists.isEmpty(tableMetadata.viewsUsed)}">
+    <tr>
+      <th>Table Name</th>
+      <th>Type</th>
+      <th>Referencing Object</th>
+      <th>Referencing Type</th>
+    </tr>
+
+    <tr th:each="view : ${tableMetadata.viewsUsed}">
+      <td th:text="${view.tableName}" />
+      <td th:text="${view.type}" />
+      <td th:text="${view.referencingObject}" />
+      <td th:text="${view.referencingType}" />
+    </tr>
+  </table>
+
+  <h2 th:if="${not #lists.isEmpty(tableMetadata.viewsReferenced)}">Used by</h2>
+
+  <table border="1" th:if="${not #lists.isEmpty(tableMetadata.viewsReferenced)}">
+    <tr>
+      <th>Schema</th>
+      <th>Name</th>
+      <th>Referenced Schema</th>
+      <th>Referenced Name</th>
+      <th>Referenced Type</th>
+    </tr>
+
+    <tr th:each="view : ${tableMetadata.viewsReferenced}">
+      <td th:text="${view.viewSchema}" />
+      <td th:text="${view.viewName}" />
+      <td th:text="${view.referencedSchema}" />
+      <td th:text="${view.referencedName}" />
+      <td th:text="${view.referencedType}" />
+    </tr>
+  </table>
+</body>
+</html>

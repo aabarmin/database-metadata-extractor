@@ -22,8 +22,14 @@ public class HtmlMetadataOutput implements MetadataOutput {
   @Autowired
   private TableMetadataHtmlOutput tableOutput;
 
+  @Autowired
+  private SinglePageHtmlOutput singleOutput;
+
   @Value("${output.html.folder}")
   private String outputFolderName;
+
+  @Value("${output.html.mode}")
+  private String outputMode;
 
   private Path outputFolder;
 
@@ -37,12 +43,23 @@ public class HtmlMetadataOutput implements MetadataOutput {
 
   @Override
   public void output(List<DatabaseMetadata> databaseMetadata, List<TableMetadata> tableMetadata) {
-    for (DatabaseMetadata metadata : databaseMetadata) {
-      databaseOutput.output(metadata, outputFolder);
-    }
+    if (outputMode.equals("single")) {
+      for (DatabaseMetadata databaseItem : databaseMetadata) {
+        for (TableMetadata tableItem : tableMetadata) {
+            if (databaseItem.getSchemaName().equals(tableItem.getSchemaName())) {
+              singleOutput.output(databaseItem,tableItem, outputFolder);
+            }
+        }
+      }
 
-    for (TableMetadata metadata : tableMetadata) {
-      tableOutput.output(metadata, outputFolder);
+    } else {
+      for (DatabaseMetadata metadata : databaseMetadata) {
+        databaseOutput.output(metadata, outputFolder);
+      }
+
+      for (TableMetadata metadata : tableMetadata) {
+        tableOutput.output(metadata, outputFolder);
+      }
     }
   }
 }
