@@ -17,9 +17,9 @@
     </tr>
 
     <tr th:each="procedure : ${metadata.procedures}">
-      <th th:text="${procedure.schemaName}" />
-      <th th:text="${procedure.procedureName}" />
-      <th th:text="${procedure.arguments}" />
+      <td th:text="${procedure.schemaName}" />
+      <td th:text="${procedure.procedureName}" />
+      <td th:text="${procedure.arguments}" />
     </tr>
   </table>
 
@@ -40,16 +40,16 @@
     </tr>
 
     <tr th:each="argument : ${metadata.arguments}">
-      <th th:text="${argument.schemaName}" />
-      <th th:text="${argument.procedureName}" />
-      <th th:text="${argument.argumentName}" />
-      <th th:text="${argument.inOut}" />
-      <th th:text="${argument.dataType}" />
-      <th th:text="${argument.dataLength}" />
-      <th th:text="${argument.dataPrecision}" />
-      <th th:text="${argument.dataScale}" />
-      <th th:text="${argument.defaulted}" />
-      <th th:text="${argument.defaultValue}" />
+      <td th:text="${argument.schemaName}" />
+      <td th:text="${argument.procedureName}" />
+      <td th:text="${argument.argumentName}" />
+      <td th:text="${argument.inOut}" />
+      <td th:text="${argument.dataType}" />
+      <td th:text="${argument.dataLength}" />
+      <td th:text="${argument.dataPrecision}" />
+      <td th:text="${argument.dataScale}" />
+      <td th:text="${argument.defaulted}" />
+      <td th:text="${argument.defaultValue}" />
     </tr>
   </table>
 
@@ -70,16 +70,16 @@
     </tr>
 
     <tr th:each="job : ${metadata.jobs}">
-      <th th:text="${job.schemaName}" />
-      <th th:text="${job.jobName}" />
-      <th th:text="${job.jobStyle}" />
-      <th th:text="${job.jobType}" />
-      <th th:text="${job.jobAction}" />
-      <th th:text="${job.startDate}" />
-      <th th:text="${job.schedule}" />
-      <th th:text="${job.lastStartDate}" />
-      <th th:text="${job.nextRunDate}" />
-      <th th:text="${job.state}" />
+      <td th:text="${job.schemaName}" />
+      <td th:text="${job.jobName}" />
+      <td th:text="${job.jobStyle}" />
+      <td th:text="${job.jobType}" />
+      <td th:text="${job.jobAction}" />
+      <td th:text="${job.startDate}" />
+      <td th:text="${job.schedule}" />
+      <td th:text="${job.lastStartDate}" />
+      <td th:text="${job.nextRunDate}" />
+      <td th:text="${job.state}" />
     </tr>
   </table>
 </body>
