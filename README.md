@@ -18,7 +18,7 @@ If the system says that `gradlew` is not executable, do the following:
 $ chmod +x ./gradlew
 ```
 
-As a result you'll have a file `metadata-extractor.js` in the `build/libs` folder:
+As a result you'll have a file `metadata-extractor.jar` in the `build/libs` folder:
 
 ```shell script
 $ tree build/libs
