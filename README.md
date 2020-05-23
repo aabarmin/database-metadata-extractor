@@ -66,6 +66,21 @@ $ java -jar metadata-extractor.jar \
 
 Connection string example for the Oracle database: `jdbc:oracle:thin:@localhost:51521:xe`
 
+## Publication of metadata to Confluence Cloud
+
+To publish metadata to Confluence Cloud add the following parameters to the command line:
+
+```shell script
+$ java -jar metadata-extractor.jar \
+    ... rest parameters ... \
+    --output.target=confluence \
+    --confluence.space=<confluence space name> \
+    --confluence.host=<cloud confluence host like example.attlassian.net> \
+    --confluence.username=<confluence username> \
+    --confluence.password=<confluence API Token> \
+    --confluence.parent.page.id=<ID of parent page or skip to create top-level pages>
+```
+
 ## Running database in Docker for testing purposes
 
 In order to run Oracle 11g XE for testing purposese use the following command:
