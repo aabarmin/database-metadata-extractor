@@ -3,6 +3,7 @@ package ru.mydesignstudio.database.metadata.extractor.output.html;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -26,6 +27,6 @@ public class DatabaseMetadataHtmlOutput {
     context.setVariable("metadata", metadata);
     final String content = templateEngine.process("database-template", context);
 
-    Files.writeString(outputFile, content, Charset.forName("UTF-8"));
+    Files.write(outputFile, content.getBytes(Charset.forName("UTF-8")), StandardOpenOption.WRITE);
   }
 }
