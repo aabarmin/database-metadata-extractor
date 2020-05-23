@@ -1,0 +1,19 @@
+{
+  "schemas": [
+    "HR",
+    "FLOW_FILES"
+  ],
+  "tables": {
+    "HR": [
+      "DEPARTMENTS",
+      "EMPLOYEES",
+      "JOBS",
+      "JOB_HISTORY",
+      "LOCATIONS",
+      "REGIONS"
+    ],
+    "FLOW_FILES": [
+      "WWV_FLOW_FILE_OBJECTS$"
+    ]
+  }
+}

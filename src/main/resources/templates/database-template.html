@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Database</title>
+</head>
+<body>
+  <h1 th:text="'Schema ' + ${metadata.schemaName}" />
+
+  <h2>Stored Procedures</h2>
+
+  <table border="1">
+    <tr>
+      <th>Schema Name</th>
+      <th>Procedure Name</th>
+      <th>Arguments</th>
+    </tr>
+
+    <tr th:each="procedure : ${metadata.procedures}">
+      <th th:text="${procedure.schemaName}" />
+      <th th:text="${procedure.procedureName}" />
+      <th th:text="${procedure.arguments}" />
+    </tr>
+  </table>
+
+  <h2>Stored Procedure Arguments</h2>
+
+  <table border="1">
+    <tr>
+      <th>Schema Name</th>
+      <th>Procedure Name</th>
+      <th>Argument Name</th>
+      <th>In/Out</th>
+      <th>Data Type</th>
+      <th>Data Length</th>
+      <th>Data Precision</th>
+      <th>Data Scale</th>
+      <th>Defaulted</th>
+      <th>Default Value</th>
+    </tr>
+
+    <tr th:each="argument : ${metadata.arguments}">
+      <th th:text="${argument.schemaName}" />
+      <th th:text="${argument.procedureName}" />
+      <th th:text="${argument.argumentName}" />
+      <th th:text="${argument.inOut}" />
+      <th th:text="${argument.dataType}" />
+      <th th:text="${argument.dataLength}" />
+      <th th:text="${argument.dataPrecision}" />
+      <th th:text="${argument.dataScale}" />
+      <th th:text="${argument.defaulted}" />
+      <th th:text="${argument.defaultValue}" />
+    </tr>
+  </table>
+
+  <h2>Scheduled Jobs</h2>
+
+  <table border="1">
+    <tr>
+      <th>Schema Name</th>
+      <th>Job Name</th>
+      <th>Job Style</th>
+      <th>Job Type</th>
+      <th>Job Action</th>
+      <th>Start Date</th>
+      <th>Schedule</th>
+      <th>Last Start Date</th>
+      <th>Next Run Date</th>
+      <th>State</th>
+    </tr>
+
+    <tr th:each="job : ${metadata.jobs}">
+      <th th:text="${job.schemaName}" />
+      <th th:text="${job.jobName}" />
+      <th th:text="${job.jobStyle}" />
+      <th th:text="${job.jobType}" />
+      <th th:text="${job.jobAction}" />
+      <th th:text="${job.startDate}" />
+      <th th:text="${job.schedule}" />
+      <th th:text="${job.lastStartDate}" />
+      <th th:text="${job.nextRunDate}" />
+      <th th:text="${job.state}" />
+    </tr>
+  </table>
+</body>
+</html>
