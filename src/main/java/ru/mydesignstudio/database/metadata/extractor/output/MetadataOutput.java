@@ -5,5 +5,5 @@ import ru.mydesignstudio.database.metadata.extractor.extractors.model.DatabaseMe
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
 
 public interface MetadataOutput {
-  void output(List<DatabaseMetadata> databaseMetadata, List<TableMetadata> tableMetadata);
+  List<Output> output(List<DatabaseMetadata> databaseMetadata, List<TableMetadata> tableMetadata);
 }
