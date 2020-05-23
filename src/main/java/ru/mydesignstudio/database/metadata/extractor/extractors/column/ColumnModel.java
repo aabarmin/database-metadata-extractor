@@ -7,6 +7,7 @@ public class ColumnModel {
   private int columnId;
   private String schemaName;
   private String tableName;
+  private String columnName;
   private String dataType;
   private int dataLength;
   private Integer dataPrecision;
