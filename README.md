@@ -60,6 +60,7 @@ $ java -jar metadata-extractor.jar \
     --spring.datasource.username=<database username> \ 
     --spring.datasource.password=<database password> \
     --output.html.folder=<folder name to output results> \
+    --output.html.mode=<use "single" for genration one file for database and table>
     --parameters.file=<params filepath>
 ```
 
