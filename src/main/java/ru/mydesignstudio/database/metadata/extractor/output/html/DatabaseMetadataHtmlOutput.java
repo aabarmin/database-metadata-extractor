@@ -30,6 +30,6 @@ public class DatabaseMetadataHtmlOutput {
 
     Files.write(outputFile, content.getBytes(Charset.forName("UTF-8")), StandardOpenOption.WRITE);
 
-    return new Output(metadata.getSchemaName(), outputFile);
+    return new Output("Database" + " " + metadata.getSchemaName(), outputFile);
   }
 }

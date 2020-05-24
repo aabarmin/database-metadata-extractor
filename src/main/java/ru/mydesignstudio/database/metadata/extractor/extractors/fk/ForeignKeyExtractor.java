@@ -7,6 +7,8 @@ import ru.mydesignstudio.database.metadata.extractor.extractors.TableMetadataApp
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
 import ru.mydesignstudio.database.metadata.extractor.resource.StringResource;
 
+import java.util.List;
+
 @Component
 public class ForeignKeyExtractor implements TableMetadataAppender {
   @StringResource("classpath:sql/extract_foreign_keys.sql")
@@ -17,6 +19,7 @@ public class ForeignKeyExtractor implements TableMetadataAppender {
 
   @Override
   public void append(TableMetadata metadata, String schemaName, String tableName) {
-    metadata.setForeignKeys(helper.extract(extractQuery, new Object[] { tableName, schemaName }, ForeignKeyModel.class));
+    List<ForeignKeyModel> foreignKeys = helper.extract(extractQuery, new Object[]{tableName, schemaName}, ForeignKeyModel.class);
+    metadata.setForeignKeys(foreignKeys);
   }
 }
