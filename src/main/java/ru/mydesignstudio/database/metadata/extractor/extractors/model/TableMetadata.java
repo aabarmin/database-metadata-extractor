@@ -10,6 +10,7 @@ import ru.mydesignstudio.database.metadata.extractor.extractors.fk.ForeignKeyMod
 import ru.mydesignstudio.database.metadata.extractor.extractors.pk.PrimaryKeyModel;
 import ru.mydesignstudio.database.metadata.extractor.extractors.reference.ReferenceModel;
 import ru.mydesignstudio.database.metadata.extractor.extractors.trigger.TriggerModel;
+import ru.mydesignstudio.database.metadata.extractor.extractors.type.TypeModel;
 import ru.mydesignstudio.database.metadata.extractor.extractors.udf.UdfModel;
 import ru.mydesignstudio.database.metadata.extractor.extractors.view.referenced.ViewReferencedModel;
 import ru.mydesignstudio.database.metadata.extractor.extractors.view.used.ViewUsedModel;
@@ -29,4 +30,5 @@ public class TableMetadata {
   private List<UdfModel> udfs;
   private List<ViewUsedModel> viewsUsed;
   private List<ViewReferencedModel> viewsReferenced;
+  private List<TypeModel> types;
 }

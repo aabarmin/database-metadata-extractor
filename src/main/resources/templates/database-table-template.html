@@ -6,13 +6,17 @@
 </head>
 <body>
   <table border="1">
-    <tr>
-      <th>Schema</th>
-      <td th:text="${tableMetadata.schemaName}"/>
+    <tr th:each="type : ${tableMetadata.types}">
+      <th>Type</th>
+      <td th:text="${type.objectType}"/>
     </tr>
-    <tr>
-      <th>Table</th>
-      <td th:text="${tableMetadata.tableName}"/>
+    <tr th:each="type : ${tableMetadata.types}">
+      <th>Owner</th>
+      <td th:text="${type.owner}"/>
+    </tr>
+    <tr th:each="type : ${tableMetadata.types}">
+      <th>Name</th>
+      <td th:text="${type.objectName}"/>
     </tr>
   </table>
 

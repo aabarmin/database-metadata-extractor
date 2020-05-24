@@ -31,7 +31,7 @@ public class SinglePageHtmlOutput {
         final String content = templateEngine.process("database-table-template", context);
         Files.write(outputFile, content.getBytes(Charset.forName("UTF-8")), StandardOpenOption.WRITE);
 
-        return new Output(databaseMetadata.getSchemaName() + "." + tableMetadata.getTableName(), outputFile);
+        return new Output(tableMetadata.getTypes() + " " + databaseMetadata.getSchemaName() + "." + tableMetadata.getTableName(), outputFile);
     }
 
 }
