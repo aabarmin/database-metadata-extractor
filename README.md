@@ -1,6 +1,6 @@
 # Database Metadata Extract
 
-![](https://github.com/aabarmin/database-metadata-extractor/workflows/gradle/badge.svg)
+![](https://github.com/aabarmin/database-metadata-extractor/workflows/Java%20CI%20with%20Gradle/badge.svg)
 
 A simple tool that allows extraction of metadata from the Database Metadata Tables. 
 
