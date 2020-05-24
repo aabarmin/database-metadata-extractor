@@ -7,7 +7,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.ConfluenceOutput;
 import ru.mydesignstudio.database.metadata.extractor.output.html.HtmlMetadataOutput;
@@ -20,6 +22,9 @@ import ru.mydesignstudio.database.metadata.extractor.output.html.HtmlMetadataOut
 class ApplicationRunnerHtmlTargetTest {
   @Autowired
   private ApplicationContext context;
+
+  @MockBean
+  private JdbcTemplate jdbcTemplate;
 
   @Test
   void context_shouldBeHtmlOutput() {
