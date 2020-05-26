@@ -11,9 +11,6 @@
       "JOB_HISTORY",
       "LOCATIONS",
       "REGIONS"
-    ],
-    "FLOW_FILES": [
-      "WWV_FLOW_FILE_OBJECTS$"
     ]
   }
 }
