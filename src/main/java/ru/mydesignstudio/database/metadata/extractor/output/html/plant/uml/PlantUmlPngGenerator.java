@@ -1,28 +1,25 @@
 package ru.mydesignstudio.database.metadata.extractor.output.html.plant.uml;
 
-import lombok.SneakyThrows;
-import lombok.Value;
-import net.sourceforge.plantuml.SourceStringReader;
-import org.springframework.stereotype.Component;
-
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import lombok.NonNull;
+import lombok.SneakyThrows;
+import net.sourceforge.plantuml.SourceStringReader;
+import org.springframework.stereotype.Component;
 
 @Component
 public class PlantUmlPngGenerator {
 
     @SneakyThrows
-    public void generatePng (String markup, Path path) {
-        final Path outputFile = path.resolve("erd.png");
+    public void generatePng (@NonNull String plantUmlContent, @NonNull Path directoryPath) {
+        final Path outputFile = directoryPath.resolve("erd.png");
         Files.deleteIfExists(outputFile);
         Files.createFile(outputFile);
 
-        OutputStream png = Files.newOutputStream(outputFile);
-        String source = markup;
-
-        SourceStringReader reader = new SourceStringReader(source);
-        String desc = reader.generateImage(png);
+        final OutputStream png = Files.newOutputStream(outputFile);
+        SourceStringReader reader = new SourceStringReader(plantUmlContent);
+        reader.generateImage(png);
     }
 
 }

@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,12 +25,14 @@ public class PlantUmlOutput {
 
   @Autowired
   private PlantUmlMarkupGenerator markupGenerator;
+
   @Autowired
   private PlantUmlPngGenerator pngGenerator;
 
   @SneakyThrows
-  public Output output(List<DatabaseMetadata> databaseMetadata, List<TableMetadata> tableMetadata,
-      Path outputFolder) {
+  public Output output(@NonNull List<DatabaseMetadata> databaseMetadata,
+      @NonNull List<TableMetadata> tableMetadata,
+      @NonNull Path outputFolder) {
 
     final Path outputFile = outputFolder.resolve("plan_uml.html");
     Files.deleteIfExists(outputFile);
@@ -39,7 +42,8 @@ public class PlantUmlOutput {
     context.setVariable("markup", markupGenerator.generate(databaseMetadata, tableMetadata));
     final String content = templateEngine.process("plant-uml-template", context);
     Files.write(outputFile, content.getBytes(Charset.forName("UTF-8")), StandardOpenOption.WRITE);
-    pngGenerator.generatePng(markupGenerator.generate(databaseMetadata, tableMetadata), outputFolder);
+    pngGenerator
+        .generatePng(markupGenerator.generate(databaseMetadata, tableMetadata), outputFolder);
 
     return new Output("ERD " + LocalDateTime.now(), outputFile);
   }
