@@ -1,7 +1,7 @@
 package ru.mydesignstudio.database.metadata.extractor.output.html.plant.uml;
 
 import java.util.List;
-
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
@@ -16,8 +16,9 @@ import ru.mydesignstudio.database.metadata.extractor.extractors.reference.Refere
 @Component
 public class PlantUmlMarkupGenerator {
 
-    public String generate(List<DatabaseMetadata> databaseMetadata,
-                           List<TableMetadata> tableMetadata) {
+    public String generate(@NonNull List<DatabaseMetadata> databaseMetadata,
+                           @NonNull List<TableMetadata> tableMetadata) {
+
         final StringBuilder builder = new StringBuilder();
 
         builder.append("@startuml");
@@ -88,6 +89,7 @@ public class PlantUmlMarkupGenerator {
             builder.append("}");
             builder.append(System.lineSeparator());
         }
+
         for (TableMetadata table : tableMetadata) {
             for (ReferenceModel refs : table.getReferences()) {
                 if (getColumnMetadataByName(table.getColumns(), refs.getChildColumn()).getNullable().equals("N")) {
