@@ -4,6 +4,9 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,6 +14,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.DatabaseMetadata;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
+import ru.mydesignstudio.database.metadata.extractor.extractors.type.TypeModel;
 import ru.mydesignstudio.database.metadata.extractor.output.Output;
 
 @Component
@@ -31,7 +35,18 @@ public class SinglePageHtmlOutput {
         final String content = templateEngine.process("database-table-template", context);
         Files.write(outputFile, content.getBytes(Charset.forName("UTF-8")), StandardOpenOption.WRITE);
 
-        return new Output(tableMetadata.getTypes().iterator().next().getObjectType() + " " + databaseMetadata.getSchemaName() + "." + tableMetadata.getTableName(), outputFile);
+
+        return new Output(getObjectType(tableMetadata) + " " + databaseMetadata.getSchemaName() + "." + tableMetadata.getTableName(), outputFile);
+    }
+
+    private String getObjectType(TableMetadata tableMetadata) {
+        return Optional.ofNullable(tableMetadata)
+            .map(TableMetadata::getTypes)
+            .map(List::iterator)
+            .filter(Iterator::hasNext)
+            .map(Iterator::next)
+            .map(TypeModel::getObjectType)
+            .orElse("Unknown");
     }
 
 }

@@ -81,9 +81,13 @@ $ java -jar metadata-extractor.jar \
     --confluence.parent.page.id=<ID of parent page or skip to create top-level pages>
 ```
 
+Two types of Confluence servers are supported: standalone and cloud. Add `--confluence.type=cloud`
+to use Confluence instance hostead at `atlassian.net` and `--confluence-type=server` for on-premise
+instance. 
+
 ## Running database in Docker for testing purposes
 
-In order to run Oracle 11g XE for testing purposese use the following command:
+In order to run Oracle 11g XE for testing purposes use the following command:
 
 ```shell script
 $ ./run_database.sh
@@ -93,4 +97,18 @@ If the system says that the file is not executable do the following:
 
 ```shell script
 $ chmod +x ./run_database.sh
+```
+
+## Running local Confluence server in Docker for testing purposes
+
+In order to run Confluence Server for testing purposes use the following command:
+
+```shell script
+$ ./run_confluence.sh
+```
+
+If the file is not executable do the following:
+
+```shell script
+$ chmod +x ./run_confluence.sh
 ```

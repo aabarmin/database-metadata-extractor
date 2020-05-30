@@ -34,6 +34,6 @@ class ConfluenceUriBuilderServerTest {
     final URI uri = builder.buildWithTailingSlash();
     final String url = uri.toASCIIString();
 
-    assertThat(url).contains("/confluence/");
+    assertThat(url).contains("/rest/");
   }
 }
