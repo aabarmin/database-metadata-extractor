@@ -102,7 +102,7 @@ public class PlantUmlMarkupGenerator {
         builder.append(System.lineSeparator());
         builder.append("@enduml");
 
-        log.info("Generated markup is {}", builder);
+        log.debug("Generated markup is {}", builder);
 
         return builder.toString();
     }
