@@ -30,6 +30,6 @@ public class TableMetadataHtmlOutput {
 
     Files.write(outputFile, content.getBytes(Charset.forName("UTF-8")), StandardOpenOption.WRITE);
 
-    return new Output(metadata.getTypes() + " " + metadata.getSchemaName() + "_" + metadata.getTableName(), outputFile);
+    return new Output(metadata.getTypes().iterator().next().getObjectType() + " " + metadata.getSchemaName() + "_" + metadata.getTableName(), outputFile);
   }
 }

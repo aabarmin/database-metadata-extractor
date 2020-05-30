@@ -1,10 +1,8 @@
 package ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.delete;
 
 import java.net.URI;
-import lombok.SneakyThrows;
-import org.apache.http.client.utils.URIBuilder;
+import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -13,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.ConfluenceUriBuilder;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.ConfluenceCredentialsHelper;
 
 @Component
@@ -24,14 +23,8 @@ public class ConfluenceDeleteDelegate {
   @Autowired
   private RestTemplate restTemplate;
 
-  @Value("${confluence.host}")
-  private String confluenceHost;
-
-  @Value("${confluence.port}")
-  private int confluencePort;
-
-  @Value("${confluence.protocol}")
-  private String confluenceProtocol;
+  @Autowired
+  private ConfluenceUriBuilder uriBuilder;
 
   public boolean delete(@NonNull String contentId) {
     return credentialsHelper.withCredentials(httpHeaders -> {
@@ -43,13 +36,7 @@ public class ConfluenceDeleteDelegate {
     });
   }
 
-  @SneakyThrows
   private URI createDeleteUrl(@NonNull String contentId) {
-    return new URIBuilder()
-        .setScheme(confluenceProtocol)
-        .setHost(confluenceHost)
-        .setPort(confluencePort)
-        .setPathSegments("wiki", "rest", "api", "content", contentId)
-        .build();
+    return uriBuilder.build(Collections.singletonList(contentId));
   }
 }

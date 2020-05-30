@@ -1,12 +1,8 @@
 package ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create;
 
 import java.net.URI;
-import java.util.Arrays;
 import lombok.SneakyThrows;
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -16,6 +12,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.ConfluenceUriBuilder;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.ConfluenceCredentialsHelper;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.CreatePageRequest;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.response.CreateResponse;
@@ -32,14 +29,8 @@ public class ConfluenceCreateDelegate {
   @Autowired
   private RestTemplate restTemplate;
 
-  @Value("${confluence.host}")
-  private String confluenceHost;
-
-  @Value("${confluence.port}")
-  private int confluencePort;
-
-  @Value("${confluence.protocol}")
-  private String confluenceProtocol;
+  @Autowired
+  private ConfluenceUriBuilder uriBuilder;
 
   public CreateResponse create(@NonNull String title, @NonNull String content, @NonNull String space, @Nullable Integer parentId) {
     return credentialsHelper.withCredentials(httpHeaders -> {
@@ -56,11 +47,6 @@ public class ConfluenceCreateDelegate {
 
   @SneakyThrows
   private URI createUrl() {
-    return new URIBuilder()
-        .setScheme(confluenceProtocol)
-        .setHost(confluenceHost)
-        .setPort(confluencePort)
-        .setPath(StringUtils.join(Arrays.asList("wiki", "rest", "api", "content"), "/") + "/")
-        .build();
+    return uriBuilder.buildWithTailingSlash();
   }
 }

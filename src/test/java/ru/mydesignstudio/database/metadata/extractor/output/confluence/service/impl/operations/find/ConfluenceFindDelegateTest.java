@@ -29,6 +29,7 @@ import ru.mydesignstudio.database.metadata.extractor.config.ObjectMapperConfigur
 import ru.mydesignstudio.database.metadata.extractor.config.RestConfiguration;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.ConfluenceCredentials;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.ConfluenceRestFactory;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.ConfluenceUriBuilder;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.BasicAuthenticationHeaderFactory;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.ConfluenceCredentialsHelper;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.ConfluenceCreateDelegate;
@@ -42,6 +43,7 @@ import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.i
     ConfluenceFindDelegate.class,
     ConfluenceDeleteDelegate.class,
     ConfluenceCreateDelegate.class,
+    ConfluenceUriBuilder.class,
     HtmlSanitizer.class,
     TitleSanitizer.class,
     CreatePageRequestFactory.class,
@@ -54,6 +56,7 @@ import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.i
 })
 @TestPropertySource(properties = {
     "output.target=confluence",
+    "confluence.type=cloud",
     "confluence.port=50080",
     "confluence.host=localhost",
     "confluence.protocol=http",
@@ -63,6 +66,9 @@ import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.i
 class ConfluenceFindDelegateTest {
   @Autowired
   private ConfluenceCredentials credentials;
+
+  @Autowired
+  private ConfluenceUriBuilder uriBuilder;
 
   @Autowired
   private ObjectMapper objectMapper;
@@ -79,7 +85,7 @@ class ConfluenceFindDelegateTest {
 
     configureFor(mockServer.port());
 
-    ReflectionTestUtils.setField(unitUnderTest, "confluencePort", mockServer.port());
+    ReflectionTestUtils.setField(uriBuilder, "confluencePort", mockServer.port());
   }
 
   @AfterEach
@@ -112,6 +118,6 @@ class ConfluenceFindDelegateTest {
     unitUnderTest.find("title", "space");
 
     verify(exactly(1), getRequestedFor(urlPathEqualTo("/wiki/rest/api/content")));
-    verify(exactly(1), getRequestedFor(urlEqualTo("/wiki/rest/api/content?title=title&spaceKey=space&expand=history")));
+    verify(exactly(1), getRequestedFor(urlEqualTo("/wiki/rest/api/content?spaceKey=space&expand=history&title=title")));
   }
 }
