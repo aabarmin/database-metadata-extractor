@@ -32,6 +32,7 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.0'
 	testImplementation 'org.assertj:assertj-core:3.16.1'
 	testImplementation 'com.github.tomakehurst:wiremock:2.26.3'
+	implementation 'net.sourceforge.plantuml:plantuml:8059'
 
 	compileOnly 'org.projectlombok:lombok'
 	testCompileOnly 'org.projectlombok:lombok'
@@ -54,9 +55,4 @@ dependencyManagement {
 
 test {
 	useJUnitPlatform()
-	finalizedBy jacocoTestReport
-}
-
-jacocoTestReport {
-	dependsOn test
 }

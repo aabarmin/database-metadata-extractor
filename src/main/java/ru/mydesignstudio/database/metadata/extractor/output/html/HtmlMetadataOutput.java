@@ -26,6 +26,9 @@ public class HtmlMetadataOutput implements MetadataOutput {
   @Autowired
   private SinglePageHtmlOutput singleOutput;
 
+  @Autowired
+  private PlantUmlOutput plantUmlOutput;
+
   @Value("${output.html.folder}")
   private String outputFolderName;
 
@@ -44,11 +47,15 @@ public class HtmlMetadataOutput implements MetadataOutput {
 
   @Override
   public List<Output> output(List<DatabaseMetadata> databaseMetadata, List<TableMetadata> tableMetadata) {
+    final List<Output> outputs = new ArrayList<>();
+    outputs.add(plantUmlOutput.output(databaseMetadata, tableMetadata, outputFolder));
+
     if (outputMode.equals("single")) {
-      return singleFileOutput(databaseMetadata, tableMetadata);
+      outputs.addAll(singleFileOutput(databaseMetadata, tableMetadata));
     } else {
-      return outputMultipleFiles(databaseMetadata, tableMetadata);
+      outputs.addAll(outputMultipleFiles(databaseMetadata, tableMetadata));
     }
+    return outputs;
   }
 
   private List<Output> singleFileOutput(List<DatabaseMetadata> databaseMetadata, List<TableMetadata> tableMetadata) {
