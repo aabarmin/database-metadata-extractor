@@ -1,6 +1,7 @@
 #!/bin/bash
 
-docker run --name test-database \
+docker run \
+  -d \
   -p 51521:1521 \
   -p 9080:8080 \
   -p 55500:5500 \
