@@ -129,6 +129,7 @@
       <th>Child Table</th>
       <th>Child Column</th>
       <th>Constraint Name</th>
+      <th>Join rule</th>
       <th>Parent Table</th>
       <th>Parent Columns</th>
     </tr>
@@ -137,6 +138,9 @@
       <td th:text="${reference.childTable}" />
       <td th:text="${reference.childColumn}" />
       <td th:text="${reference.constraintName}" />
+      <td>
+        <span th:text="${reference.childTable}"/>.<span th:text="${reference.childColumn}"/> = <span th:text="${reference.parentTable}"/>.<span th:text="${reference.parentColumn}"/>
+      </td>
       <td th:text="${reference.parentTable}" />
       <td th:text="${reference.parentColumn}" />
     </tr>
