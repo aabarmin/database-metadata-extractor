@@ -1,5 +1,6 @@
 package ru.mydesignstudio.database.metadata.extractor.output.html.plant.uml;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import lombok.NonNull;
@@ -8,7 +9,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 import ru.mydesignstudio.database.metadata.extractor.extractors.column.ColumnModel;
 import ru.mydesignstudio.database.metadata.extractor.extractors.fk.ForeignKeyModel;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.DatabaseMetadata;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
 import ru.mydesignstudio.database.metadata.extractor.extractors.pk.PrimaryKeyModel;
 import ru.mydesignstudio.database.metadata.extractor.extractors.reference.ReferenceModel;
@@ -17,21 +17,36 @@ import ru.mydesignstudio.database.metadata.extractor.extractors.reference.Refere
 @Component
 public class PlantUmlMarkupGenerator {
 
-    public String generate(@NonNull List<DatabaseMetadata> databaseMetadata,
-                           @NonNull List<TableMetadata> tableMetadata) {
-
+    public String generate(@NonNull List<TableMetadata> tableMetadata) {
         final StringBuilder builder = new StringBuilder();
 
-        builder.append("@startuml");
-        builder.append(System.lineSeparator());
-        builder.append("hide circle");
-        builder.append(System.lineSeparator());
-        builder.append("skinparam linetype ortho");
-        builder.append(System.lineSeparator());
+        generateHeading(builder);
+        generateEntities(tableMetadata, builder);
+        generateReferences(tableMetadata, builder);
+        generateTail(builder);
 
+        log.debug("Generated markup is {}", builder);
+
+        return builder.toString();
+    }
+
+    private void generateReferences(@NonNull List<TableMetadata> tableMetadata, @NonNull StringBuilder builder) {
+        for (TableMetadata table : tableMetadata) {
+            for (ReferenceModel refs : table.getReferences()) {
+                if (getColumnMetadataByName(table.getColumns(), refs.getChildColumn()).getNullable().equals("N")) {
+                    builder.append(refs.getChildTable()).append("}|--||");
+                } else builder.append(refs.getChildTable()).append("}o--||");
+                builder.append(refs.getParentTable());
+                builder.append(System.lineSeparator());
+            }
+        }
+    }
+
+    private void generateEntities(@NonNull List<TableMetadata> tableMetadata, @NonNull StringBuilder builder) {
         for (TableMetadata table : tableMetadata) {
             builder.append("entity ").append(table.getTableName()).append(" {");
             builder.append(System.lineSeparator());
+
             for (PrimaryKeyModel pk : table.getPrimaryKeys()) {
                 for (String pkValue : StringUtils.split(pk.getColumns(), ",")) {
                     pkValue = StringUtils.trim(pkValue);
@@ -66,46 +81,51 @@ public class PlantUmlMarkupGenerator {
             }
 
             for (ColumnModel column : table.getColumns()) {
-                for (PrimaryKeyModel pk : table.getPrimaryKeys()) {
-                    for (String pkValue : StringUtils.split(pk.getColumns(), ",")) {
-                        pkValue = StringUtils.trim(pkValue);
-                        for (ForeignKeyModel fk : table.getForeignKeys()) {
-                            for (String fkValue : StringUtils.split(fk.getColumns(), ",")) {
-                                fkValue = StringUtils.trim(fkValue);
-                                if (!column.getColumnName().equals(pkValue) && !column.getColumnName().equals(fkValue)) {
-                                    if (column.getNullable().equals("N")) {
-                                        builder.append("* ");
-                                    }
-                                    builder.append(column.getColumnName()).append(" : ")
-                                            .append(column.getDataType()).append("(")
-                                            .append(column.getDataLength()).append(")");
-                                    builder.append(System.lineSeparator());
-                                }
-                            }
-                        }
-
+                if (!isPrimaryKey(column, table.getPrimaryKeys()) && !isForeignKey(column, table.getForeignKeys())) {
+                    if (!column.isNullable()) {
+                        builder.append("* ");
                     }
+                    builder.append(column.getColumnName()).append(" : ")
+                        .append(column.getDataType()).append("(")
+                        .append(column.getDataLength()).append(")");
+                    builder.append(System.lineSeparator());
                 }
             }
             builder.append("}");
             builder.append(System.lineSeparator());
         }
+    }
 
-        for (TableMetadata table : tableMetadata) {
-            for (ReferenceModel refs : table.getReferences()) {
-                if (getColumnMetadataByName(table.getColumns(), refs.getChildColumn()).getNullable().equals("N")) {
-                    builder.append(refs.getChildTable()).append("}|--||");
-                } else builder.append(refs.getChildTable()).append("}o--||");
-                builder.append(refs.getParentTable());
-                builder.append(System.lineSeparator());
-            }
-        }
+    private boolean isForeignKey(@NonNull ColumnModel column, @NonNull Collection<ForeignKeyModel> foreignKeys) {
+        return foreignKeys.stream()
+            .map(ForeignKeyModel::getColumns)
+            .map(columns -> StringUtils.split(columns, ","))
+            .flatMap(columnsArrays -> Arrays.stream(columnsArrays))
+            .map(StringUtils::trim)
+            .anyMatch(foreignKey -> StringUtils.equals(column.getColumnName(), foreignKey));
+    }
+
+    private boolean isPrimaryKey(@NonNull ColumnModel column, @NonNull Collection<PrimaryKeyModel> primaryKeys) {
+        return primaryKeys.stream()
+            .map(PrimaryKeyModel::getColumns)
+            .map(columns -> StringUtils.split(columns, ","))
+            .flatMap(columnsArrays -> Arrays.stream(columnsArrays))
+            .map(StringUtils::trim)
+            .anyMatch(primaryKey -> StringUtils.equals(column.getColumnName(), primaryKey));
+    }
+
+    private void generateTail(StringBuilder builder) {
         builder.append(System.lineSeparator());
         builder.append("@enduml");
+    }
 
-        log.debug("Generated markup is {}", builder);
-
-        return builder.toString();
+    private void generateHeading(StringBuilder builder) {
+        builder.append("@startuml");
+        builder.append(System.lineSeparator());
+        builder.append("hide circle");
+        builder.append(System.lineSeparator());
+        builder.append("skinparam linetype ortho");
+        builder.append(System.lineSeparator());
     }
 
     private ColumnModel getColumnMetadataByName(Collection<ColumnModel> columns, String columnName) {
