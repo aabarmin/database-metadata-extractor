@@ -1,5 +1,6 @@
 package ru.mydesignstudio.database.metadata.extractor.extractors.fk;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.mydesignstudio.database.metadata.extractor.extractors.ExtractHelper;
@@ -7,8 +8,7 @@ import ru.mydesignstudio.database.metadata.extractor.extractors.TableMetadataApp
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
 import ru.mydesignstudio.database.metadata.extractor.resource.StringResource;
 
-import java.util.List;
-
+@Slf4j
 @Component
 public class ForeignKeyExtractor implements TableMetadataAppender {
   @StringResource("classpath:sql/extract_foreign_keys.sql")
@@ -19,7 +19,10 @@ public class ForeignKeyExtractor implements TableMetadataAppender {
 
   @Override
   public void append(TableMetadata metadata, String schemaName, String tableName) {
-    List<ForeignKeyModel> foreignKeys = helper.extract(extractQuery, new Object[]{tableName, schemaName}, ForeignKeyModel.class);
-    metadata.setForeignKeys(foreignKeys);
+    log.info("Extracting foreign keys for table {} in schema {}", tableName, schemaName);
+
+    metadata.setForeignKeys(helper.extract(extractQuery, new Object[]{tableName, schemaName}, ForeignKeyModel.class));
+
+    log.debug("Extracted {} foreign keys", metadata.getForeignKeys().size());
   }
 }
