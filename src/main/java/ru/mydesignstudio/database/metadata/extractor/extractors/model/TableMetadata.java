@@ -1,6 +1,6 @@
 package ru.mydesignstudio.database.metadata.extractor.extractors.model;
 
-import java.util.List;
+import java.util.Collection;
 import lombok.Data;
 import lombok.ToString;
 import ru.mydesignstudio.database.metadata.extractor.extractors.checks.CheckModel;
@@ -20,15 +20,15 @@ import ru.mydesignstudio.database.metadata.extractor.extractors.view.used.ViewUs
 public class TableMetadata {
   private String tableName;
   private String schemaName;
-  private List<ColumnModel> columns;
-  private List<PrimaryKeyModel> primaryKeys;
-  private List<ForeignKeyModel> foreignKeys;
-  private List<ConstraintModel> constraints;
-  private List<ReferenceModel> references;
-  private List<CheckModel> checks;
-  private List<TriggerModel> triggers;
-  private List<UdfModel> udfs;
-  private List<ViewUsedModel> viewsUsed;
-  private List<ViewReferencedModel> viewsReferenced;
-  private List<TypeModel> types;
+  private Collection<ColumnModel> columns;
+  private Collection<PrimaryKeyModel> primaryKeys;
+  private Collection<ForeignKeyModel> foreignKeys;
+  private Collection<ConstraintModel> constraints;
+  private Collection<ReferenceModel> references;
+  private Collection<CheckModel> checks;
+  private Collection<TriggerModel> triggers;
+  private Collection<UdfModel> udfs;
+  private Collection<ViewUsedModel> viewsUsed;
+  private Collection<ViewReferencedModel> viewsReferenced;
+  private Collection<TypeModel> types;
 }

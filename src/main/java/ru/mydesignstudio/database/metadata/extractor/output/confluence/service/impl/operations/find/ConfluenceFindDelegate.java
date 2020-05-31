@@ -1,6 +1,7 @@
 package ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.find;
 
 import java.net.URI;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpEntity;
@@ -12,6 +13,7 @@ import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.i
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.ConfluenceCredentialsHelper;
 import ru.mydesignstudio.database.metadata.extractor.utils.Maps;
 
+@Slf4j
 @Component
 @ConditionalOnProperty(name = "output.target", havingValue = "confluence", matchIfMissing = false)
 public class ConfluenceFindDelegate {
@@ -25,6 +27,8 @@ public class ConfluenceFindDelegate {
   private ConfluenceUriBuilder uriBuilder;
 
   public FindResponse find(String title, String space) {
+    log.info("Searching for the page with title {} in space {}", title, space);
+
     return credentialsHelper.withCredentials(httpHeaders -> {
       final ResponseEntity<FindResponse> response = restTemplate
           .exchange(createFindUrl(title, space), HttpMethod.GET, new HttpEntity<>(httpHeaders),

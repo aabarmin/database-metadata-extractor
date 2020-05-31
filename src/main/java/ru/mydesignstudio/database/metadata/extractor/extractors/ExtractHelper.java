@@ -1,5 +1,7 @@
 package ru.mydesignstudio.database.metadata.extractor.extractors;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -12,7 +14,8 @@ public class ExtractHelper {
   @Autowired
   private JdbcTemplate jdbcTemplate;
 
-  public <T> List<T> extract(@NonNull String query, @NonNull Object[] params, Class<T> targetClass) {
-    return jdbcTemplate.query(query, params, new BeanPropertyRowMapper<>(targetClass));
+  public <T> Collection<T> extract(@NonNull String query, @NonNull Object[] params, Class<T> targetClass) {
+    final List<T> extractedItems = jdbcTemplate.query(query, params, new BeanPropertyRowMapper<>(targetClass));
+    return new HashSet<>(extractedItems);
   }
 }

@@ -1,6 +1,6 @@
 package ru.mydesignstudio.database.metadata.extractor.extractors.model;
 
-import java.util.List;
+import java.util.Collection;
 import lombok.Data;
 import ru.mydesignstudio.database.metadata.extractor.extractors.job.JobModel;
 import ru.mydesignstudio.database.metadata.extractor.extractors.procedure.ProcedureModel;
@@ -9,7 +9,7 @@ import ru.mydesignstudio.database.metadata.extractor.extractors.procedure.argume
 @Data
 public class DatabaseMetadata {
   private String schemaName;
-  private List<ProcedureModel> procedures;
-  private List<ArgumentModel> arguments;
-  private List<JobModel> jobs;
+  private Collection<ProcedureModel> procedures;
+  private Collection<ArgumentModel> arguments;
+  private Collection<JobModel> jobs;
 }

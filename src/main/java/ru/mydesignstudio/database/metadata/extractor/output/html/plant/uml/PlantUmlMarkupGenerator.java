@@ -1,5 +1,6 @@
 package ru.mydesignstudio.database.metadata.extractor.output.html.plant.uml;
 
+import java.util.Collection;
 import java.util.List;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -107,7 +108,7 @@ public class PlantUmlMarkupGenerator {
         return builder.toString();
     }
 
-    private ColumnModel getColumnMetadataByName(List<ColumnModel> columns, String columnName) {
+    private ColumnModel getColumnMetadataByName(Collection<ColumnModel> columns, String columnName) {
         for (ColumnModel column : columns) {
             if (column.getColumnName().equals(columnName)) {
                 return column;
