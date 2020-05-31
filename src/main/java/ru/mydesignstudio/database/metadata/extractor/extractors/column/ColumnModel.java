@@ -2,6 +2,7 @@ package ru.mydesignstudio.database.metadata.extractor.extractors.column;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.thymeleaf.util.StringUtils;
 
 @Data
 @EqualsAndHashCode(of = "columnId")
@@ -17,4 +18,8 @@ public class ColumnModel {
   private String nullable;
   private String defaultDefinition;
   private String comments;
+
+  public boolean isNullable() {
+    return StringUtils.equals("Y", getNullable());
+  }
 }
