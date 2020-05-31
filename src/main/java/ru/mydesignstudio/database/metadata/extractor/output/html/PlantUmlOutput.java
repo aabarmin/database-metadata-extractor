@@ -43,11 +43,11 @@ public class PlantUmlOutput {
     Files.createFile(outputFile);
 
     final Context context = new Context();
-    context.setVariable("markup", markupGenerator.generate(databaseMetadata, tableMetadata));
+    context.setVariable("markup", markupGenerator.generate(tableMetadata));
     final String content = templateEngine.process("plant-uml-template", context);
     Files.write(outputFile, content.getBytes(Charset.forName("UTF-8")), StandardOpenOption.WRITE);
     pngGenerator
-        .generatePng(markupGenerator.generate(databaseMetadata, tableMetadata), outputFolder);
+        .generatePng(markupGenerator.generate(tableMetadata), outputFolder);
 
     return new Output("ERD " + LocalDateTime.now(), outputFile);
   }
