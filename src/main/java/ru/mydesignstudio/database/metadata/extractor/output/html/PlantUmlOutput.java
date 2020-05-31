@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.NonNull;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
@@ -18,6 +19,7 @@ import ru.mydesignstudio.database.metadata.extractor.output.Output;
 import ru.mydesignstudio.database.metadata.extractor.output.html.plant.uml.PlantUmlMarkupGenerator;
 import ru.mydesignstudio.database.metadata.extractor.output.html.plant.uml.PlantUmlPngGenerator;
 
+@Slf4j
 @Component
 public class PlantUmlOutput {
   @Autowired
@@ -33,6 +35,8 @@ public class PlantUmlOutput {
   public Output output(@NonNull List<DatabaseMetadata> databaseMetadata,
       @NonNull List<TableMetadata> tableMetadata,
       @NonNull Path outputFolder) {
+
+    log.info("Generating PlantUML output for tables {}", tableMetadata);
 
     final Path outputFile = outputFolder.resolve("plan_uml.html");
     Files.deleteIfExists(outputFile);
