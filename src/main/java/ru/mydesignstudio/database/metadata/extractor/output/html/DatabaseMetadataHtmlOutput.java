@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import org.thymeleaf.context.Context;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.DatabaseMetadata;
 import ru.mydesignstudio.database.metadata.extractor.output.Output;
 
+@Slf4j
 @Component
 public class DatabaseMetadataHtmlOutput {
   @Autowired
@@ -20,9 +22,13 @@ public class DatabaseMetadataHtmlOutput {
 
   @SneakyThrows
   public Output output(@NonNull DatabaseMetadata metadata, @NonNull Path outputFolder) {
+    log.info("Generating HTML output for schema {}", metadata.getSchemaName());
+
     final Path outputFile = outputFolder.resolve(metadata.getSchemaName() + ".html");
     Files.deleteIfExists(outputFile);
     Files.createFile(outputFile);
+
+    log.debug("Output to file {}", outputFile);
 
     final Context context = new Context();
     context.setVariable("metadata", metadata);

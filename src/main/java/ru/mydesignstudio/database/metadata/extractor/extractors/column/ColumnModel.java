@@ -1,8 +1,10 @@
 package ru.mydesignstudio.database.metadata.extractor.extractors.column;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(of = "columnId")
 public class ColumnModel {
   private int columnId;
   private String schemaName;

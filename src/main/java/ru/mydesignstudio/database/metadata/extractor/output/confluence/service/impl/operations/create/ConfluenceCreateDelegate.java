@@ -2,6 +2,7 @@ package ru.mydesignstudio.database.metadata.extractor.output.confluence.service.
 
 import java.net.URI;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpEntity;
@@ -17,6 +18,7 @@ import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.i
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.CreatePageRequest;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.response.CreateResponse;
 
+@Slf4j
 @Component
 @ConditionalOnProperty(name = "output.target", havingValue = "confluence", matchIfMissing = false)
 public class ConfluenceCreateDelegate {
@@ -33,6 +35,10 @@ public class ConfluenceCreateDelegate {
   private ConfluenceUriBuilder uriBuilder;
 
   public CreateResponse create(@NonNull String title, @NonNull String content, @NonNull String space, @Nullable Integer parentId) {
+    log.info("Creating content with title {} in space {}", title, space);
+    log.debug("Content: {}", content);
+    log.debug("Parent id: {}", parentId);
+
     return credentialsHelper.withCredentials(httpHeaders -> {
       httpHeaders.setContentType(MediaType.APPLICATION_JSON);
       final CreatePageRequest request = requestFactory.createRequest(title, content, space, parentId);
