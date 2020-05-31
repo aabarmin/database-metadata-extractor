@@ -1,6 +1,5 @@
 package ru.mydesignstudio.database.metadata.extractor.output.html.plant.uml;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
@@ -22,28 +21,28 @@ class PlantUmlMarkupGeneratorTest {
 
   @Test
   void generate_shouldStartWithStartUml() {
-    final String output = unitUnderTest.generate(Collections.emptyList(), Collections.emptyList());
+    final String output = unitUnderTest.generate(Collections.emptyList());
 
     assertThat(output).startsWith("@startuml");
   }
 
   @Test
   void generate_shouldContainHideCircle() {
-    final String output = unitUnderTest.generate(Collections.emptyList(), Collections.emptyList());
+    final String output = unitUnderTest.generate(Collections.emptyList());
 
     assertThat(output).contains("hide circle");
   }
 
   @Test
   void generate_shouldContainlinetype() {
-    final String output = unitUnderTest.generate(Collections.emptyList(), Collections.emptyList());
+    final String output = unitUnderTest.generate(Collections.emptyList());
 
     assertThat(output).contains("skinparam linetype ortho");
   }
 
   @Test
   void generate_shouldEndWithEndUml() {
-    final String output = unitUnderTest.generate(Collections.emptyList(), Collections.emptyList());
+    final String output = unitUnderTest.generate(Collections.emptyList());
 
     assertThat(output).endsWith("@enduml");
   }
@@ -67,7 +66,7 @@ class PlantUmlMarkupGeneratorTest {
     metadata.setReferences(Collections.emptyList());
     metadata.setColumns(Arrays.asList(primaryKeyColumn));
 
-    final String output = unitUnderTest.generate(Collections.emptyList(), Collections.singletonList(metadata));
+    final String output = unitUnderTest.generate(Collections.singletonList(metadata));
 
     assertThat(output).contains("entity TableName {");
     assertThat(output).contains("* id_field : number(10) PK");
@@ -99,7 +98,7 @@ class PlantUmlMarkupGeneratorTest {
     metadata.setReferences(Collections.emptyList());
     metadata.setColumns(Arrays.asList(primaryKeyColumn1, primaryKeyColumn2));
 
-    final String output = unitUnderTest.generate(Collections.emptyList(), Collections.singletonList(metadata));
+    final String output = unitUnderTest.generate(Collections.singletonList(metadata));
 
     assertThat(output).contains("entity TableName {");
     assertThat(output).contains("* id_field1 : number(10) PK");
@@ -132,7 +131,7 @@ class PlantUmlMarkupGeneratorTest {
     metadata.setReferences(Collections.emptyList());
     metadata.setColumns(Arrays.asList(foreigKeyColumn1, foreigKeyColumn2));
 
-    final String output = unitUnderTest.generate(Collections.emptyList(), Collections.singletonList(metadata));
+    final String output = unitUnderTest.generate(Collections.singletonList(metadata));
 
     assertThat(output).contains("entity TableName {" + System.lineSeparator());
     assertThat(output).contains("--"+ System.lineSeparator());
@@ -224,7 +223,7 @@ class PlantUmlMarkupGeneratorTest {
     metadata2.setReferences(Collections.emptyList());
     metadata2.setColumns(Arrays.asList(column1, column2, column3, column4,column5));
 
-    final String output = unitUnderTest.generate(Collections.emptyList(), Arrays.asList(metadata1, metadata2));
+    final String output = unitUnderTest.generate(Arrays.asList(metadata1, metadata2));
 
     assertThat(output).contains("entity TableName1 {" + System.lineSeparator());
     assertThat(output).contains("id_field1 : number(10) PK");
@@ -328,7 +327,7 @@ class PlantUmlMarkupGeneratorTest {
     metadata2.setReferences(Collections.emptyList());
     metadata2.setColumns(Arrays.asList(column1, column2, column3, column4,column5));
 
-    final String output = unitUnderTest.generate(Collections.emptyList(), Arrays.asList(metadata1, metadata2));
+    final String output = unitUnderTest.generate(Arrays.asList(metadata1, metadata2));
 
     assertThat(output).contains("entity TableName1 {" + System.lineSeparator());
     assertThat(output).contains("* id_field1 : number(10) PK");
