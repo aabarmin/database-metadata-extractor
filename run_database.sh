@@ -6,4 +6,6 @@ docker run \
   -p 9080:8080 \
   -p 55500:5500 \
   -e ORACLE_ALLOW_REMOTE=true \
+  --cpus=0.5 \
+  --memory=1G \
   oracleinanutshell/oracle-xe-11g
