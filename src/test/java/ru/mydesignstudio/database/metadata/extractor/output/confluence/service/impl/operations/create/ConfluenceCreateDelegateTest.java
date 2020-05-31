@@ -28,6 +28,7 @@ import ru.mydesignstudio.database.metadata.extractor.config.ObjectMapperConfigur
 import ru.mydesignstudio.database.metadata.extractor.config.RestConfiguration;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.ConfluenceCredentials;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.ConfluenceRestFactory;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.ConfluenceUriBuilder;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.BasicAuthenticationHeaderFactory;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.ConfluenceCredentialsHelper;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.response.CreateResponse;
@@ -39,6 +40,7 @@ import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.i
     ConfluenceFindDelegate.class,
     ConfluenceDeleteDelegate.class,
     ConfluenceCreateDelegate.class,
+    ConfluenceUriBuilder.class,
     HtmlSanitizer.class,
     TitleSanitizer.class,
     CreatePageRequestFactory.class,
@@ -51,6 +53,7 @@ import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.i
 })
 @TestPropertySource(properties = {
     "output.target=confluence",
+    "confluence.type=cloud",
     "confluence.port=50080",
     "confluence.host=localhost",
     "confluence.protocol=http",
@@ -60,6 +63,9 @@ import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.i
 class ConfluenceCreateDelegateTest {
   @Autowired
   private ConfluenceCreateDelegate unitUnderTest;
+
+  @Autowired
+  private ConfluenceUriBuilder uriBuilder;
 
   @Autowired
   private ConfluenceCredentials credentials;
@@ -76,7 +82,7 @@ class ConfluenceCreateDelegateTest {
 
     configureFor(mockServer.port());
 
-    ReflectionTestUtils.setField(unitUnderTest, "confluencePort", mockServer.port());
+    ReflectionTestUtils.setField(uriBuilder, "confluencePort", mockServer.port());
   }
 
   @AfterEach
