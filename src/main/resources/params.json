@@ -1,7 +1,6 @@
 {
   "schemas": [
-    "HR",
-    "FLOW_FILES"
+    "HR"
   ],
   "tables": {
     "HR": [
@@ -10,7 +9,9 @@
       "JOBS",
       "JOB_HISTORY",
       "LOCATIONS",
-      "REGIONS"
+      "REGIONS",
+      "COUNTRIES",
+      "EMP_DETAILS_VIEW"
     ]
   }
 }

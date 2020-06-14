@@ -7,4 +7,5 @@ public class TypeModel {
     private String owner;
     private String objectName;
     private String objectType;
+    private String comments;
 }

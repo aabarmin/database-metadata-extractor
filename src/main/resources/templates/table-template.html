@@ -5,234 +5,219 @@
   <title>Table</title>
 </head>
 <body>
-  <h1 th:text="'Table ' + ${metadata.tableName}"/>
 
-  <h2>Columns</h2>
+<table border="1">
+  <tr th:each="type : ${metadata.types}">
+    <th>Type</th>
+    <td th:text="${type.objectType}"/>
+  </tr>
+  <tr th:each="type : ${metadata.types}">
+    <th>Owner</th>
+    <td th:text="${type.owner}"/>
+  </tr>
+  <tr th:each="type : ${metadata.types}">
+    <th>Name</th>
+    <td th:text="${type.objectName}"/>
+  </tr>
+  <tr th:each="type : ${metadata.types}">
+    <th>Comment</th>
+    <td th:text="${type.comments}"/>
+  </tr>
+</table>
 
-  <table border="1">
-    <tr>
-      <th>Column ID</th>
-      <th>Schema Name</th>
-      <th>Table Name</th>
-      <th>Column Name</th>
-      <th>Data Type</th>
-      <th>Data Length</th>
-      <th>Data Precision</th>
-      <th>Data Scale</th>
-      <th>Nullable</th>
-      <th>Default Definition</th>
-      <th>Comments</th>
-    </tr>
+<h2 th:if="${not #lists.isEmpty(metadata.columns)}">Columns</h2>
 
-    <tr th:each="column : ${metadata.columns}">
-      <td th:text="${column.columnId}" />
-      <td th:text="${column.schemaName}" />
-      <td th:text="${column.tableName}" />
-      <td th:text="${column.columnName}" />
-      <td th:text="${column.dataType}" />
-      <td th:text="${column.dataLength}" />
-      <td th:text="${column.dataPrecision}" />
-      <td th:text="${column.dataScale}" />
-      <td th:text="${column.nullable}" />
-      <td th:text="${column.defaultDefinition}" />
-      <td th:text="${column.comments}" />
-    </tr>
-  </table>
+<table border="1" th:if="${not #lists.isEmpty(metadata.columns)}">
+  <tr>
+    <th>Column ID</th>
+    <th>Column Name</th>
+    <th>Data Type</th>
+    <th>Data Length</th>
+    <th>Data Precision</th>
+    <th>Data Scale</th>
+    <th>Primary Key</th>
+    <th>Foreign Key</th>
+    <th>Unique Key</th>
+    <th>Constraint</th>
+    <th>Nullable</th>
+    <th>Default Value</th>
+    <th>Comments</th>
+  </tr>
 
-  <h2>Primary Keys</h2>
+  <tr th:each="column : ${metadata.columns}">
+    <td th:text="${column.columnId}" />
+    <td th:text="${column.columnName}" />
+    <td th:text="${column.dataTypeExt}" />
+    <td th:text="${column.dataLength}" />
+    <td th:text="${column.dataPrecision}" />
+    <td th:text="${column.dataScale}" />
+    <td th:text="${column.primaryKey}" />
+    <td th:text="${column.foreign_key}" />
+    <td th:text="${column.uniqueKey}" />
+    <td th:text="${column.checkConstraint}" />
+    <td th:text="${column.nullable}" />
+    <td th:text="${column.defaultDefinition}" />
+    <td th:text="${column.comments}" />
+  </tr>
+</table>
 
-  <table border="1">
-    <tr>
-      <th>Primary Key</th>
-      <th>Schema Name</th>
-      <th>Constraint Name</th>
-      <th>Table Name</th>
-      <th>Columns</th>
-    </tr>
+<h2 th:if="${not #lists.isEmpty(metadata.primaryKeys)}">Primary Keys</h2>
 
-    <tr th:each="key : ${metadata.primaryKeys}">
-      <td th:text="${key.primaryKey}" />
-      <td th:text="${key.schemaName}" />
-      <td th:text="${key.constraintName}" />
-      <td th:text="${key.tableName}" />
-      <td th:text="${key.columns}" />
-    </tr>
-  </table>
+<table border="1" th:if="${not #lists.isEmpty(metadata.primaryKeys)}">
+  <tr>
+    <th>Primary Key</th>
+    <th>Constraint Name</th>
+    <th>Table Name</th>
+    <th>Columns</th>
+  </tr>
 
-  <h2>Foreign Keys</h2>
+  <tr th:each="key : ${metadata.primaryKeys}">
+    <td th:text="${key.primaryKey}" />
+    <td th:text="${key.constraintName}" />
+    <td th:text="${key.tableName}" />
+    <td th:text="${key.columns}" />
+  </tr>
+</table>
 
-  <table border="1">
-    <tr>
-      <th>Foreign Key</th>
-      <th>Constraint Type</th>
-      <th>Schema Name</th>
-      <th>Constraint Name</th>
-      <th>Table Name</th>
-      <th>Columns</th>
-      <th>R Owner</th>
-      <th>R Constraint Name</th>
-    </tr>
+<h2 th:if="${not #lists.isEmpty(metadata.uniqueKeys)}">Unique Keys</h2>
 
-    <tr th:each="key : ${metadata.foreignKeys}">
-      <td th:text="${key.foreignKey}" />
-      <td th:text="${key.constraintType}" />
-      <td th:text="${key.schemaName}" />
-      <td th:text="${key.constraintName}" />
-      <td th:text="${key.tableName}" />
-      <td th:text="${key.columns}" />
-      <td th:text="${key.rOwner}" />
-      <td th:text="${key.rConstraintName}" />
-    </tr>
-  </table>
+<table border="1" th:if="${not #lists.isEmpty(metadata.uniqueKeys)}">
+  <tr>
+    <th>Unique Key</th>
+    <th>Constraint Name</th>
+    <th>Table Name</th>
+    <th>Column</th>
+  </tr>
 
-  <h2>Constraints</h2>
+  <tr th:each="key : ${metadata.uniqueKeys}">
+    <td th:text="${key.uniqueKey}" />
+    <td th:text="${key.constraintName}" />
+    <td th:text="${key.tableName}" />
+    <td th:text="${key.columnName}" />
+  </tr>
+</table>
 
-  <table border="1">
-    <tr>
-      <th>Constraint Type</th>
-      <th>Schema Name</th>
-      <th>Constraint Name</th>
-      <th>Table Name</th>
-      <th>Columns</th>
-      <th>R Owner</th>
-      <th>R Constraint Name</th>
-    </tr>
+<h2 th:if="${not #lists.isEmpty(metadata.references)}">Foreign Keys</h2>
 
-    <tr th:each="constraint : ${metadata.constraints}">
-      <td th:text="${constraint.constraintType}" />
-      <td th:text="${constraint.schemaName}" />
-      <td th:text="${constraint.constraintName}" />
-      <td th:text="${constraint.tableName}" />
-      <td th:text="${constraint.columns}" />
-      <td th:text="${constraint.rOwner}" />
-      <td th:text="${constraint.rConstraintName}" />
-    </tr>
-  </table>
+<table border="1" th:if="${not #lists.isEmpty(metadata.references)}">
+  <tr>
+    <th>Child Table</th>
+    <th>Child Column</th>
+    <th>Constraint Name</th>
+    <th>Join rule</th>
+    <th>Parent Table</th>
+    <th>Parent Columns</th>
+  </tr>
 
-  <h2>References</h2>
+  <tr th:each="reference : ${metadata.references}">
+    <td th:text="${reference.childTable}" />
+    <td th:text="${reference.childColumn}" />
+    <td th:text="${reference.constraintName}" />
+    <td>
+      <span th:text="${reference.childTable}"/>.<span th:text="${reference.childColumn}"/> = <span th:text="${reference.parentTable}"/>.<span th:text="${reference.parentColumn}"/>
+    </td>
+    <td th:text="${reference.parentTable}" />
+    <td th:text="${reference.parentColumn}" />
+  </tr>
+</table>
 
-  <table border="1">
-    <tr>
-      <th>Child Table</th>
-      <th>Child Column</th>
-      <th>Constraint Name</th>
-      <th>Parent Table</th>
-      <th>Parent Columns</th>
-    </tr>
+<h2 th:if="${not #lists.isEmpty(metadata.checks)}">Constraints</h2>
 
-    <tr th:each="reference : ${metadata.references}">
-      <td th:text="${reference.childTable}" />
-      <td th:text="${reference.childColumn}" />
-      <td th:text="${reference.constraintName}" />
-      <td th:text="${reference.parentTable}" />
-      <td th:text="${reference.parentColumn}" />
-    </tr>
-  </table>
+<table border="1" th:if="${not #lists.isEmpty(metadata.checks)}">
+  <tr>
+    <th>Constraint Name</th>
+    <th>Table Name</th>
+    <th>Column Name</th>
+    <th>Constraint</th>
+    <th>Status</th>
+  </tr>
 
-  <h2>Checks</h2>
+  <tr th:each="check : ${metadata.checks}">
+    <td th:text="${check.constraintName}" />
+    <td th:text="${check.tableName}" />
+    <td th:text="${check.columnName}" />
+    <td th:text="${check.constraint}" />
+    <td th:text="${check.status}" />
+  </tr>
+</table>
 
-  <table border="1">
-    <tr>
-      <th>Schema Name</th>
-      <th>Constraint Name</th>
-      <th>Table Name</th>
-      <th>Column Name</th>
-      <th>Constraint</th>
-      <th>Status</th>
-    </tr>
+<h2 th:if="${not #lists.isEmpty(metadata.triggers)}">Triggers</h2>
 
-    <tr th:each="check : ${metadata.checks}">
-      <td th:text="${check.schemaName}" />
-      <td th:text="${check.constraintName}" />
-      <td th:text="${check.tableName}" />
-      <td th:text="${check.columnName}" />
-      <td th:text="${check.constraint}" />
-      <td th:text="${check.status}" />
-    </tr>
-  </table>
+<table border="1" th:if="${not #lists.isEmpty(metadata.triggers)}">
+  <tr>
+    <th>Trigger Name</th>
+    <th>Trigger Type</th>
+    <th>Triggering Event</th>
+    <th>Schema Name</th>
+    <th>Object Name</th>
+    <th>Object Type</th>
+    <th>Status</th>
+    <th>Script</th>
+  </tr>
 
-  <h2>Triggers</h2>
+  <tr th:each="trigger : ${metadata.triggers}">
+    <td th:text="${trigger.triggerName}" />
+    <td th:text="${trigger.triggerType}" />
+    <td th:text="${trigger.triggeringEvent}" />
+    <td th:text="${trigger.schemaName}" />
+    <td th:text="${trigger.objectName}" />
+    <td th:text="${trigger.objectType}" />
+    <td th:text="${trigger.status}" />
+    <td th:text="${trigger.script}" />
+  </tr>
+</table>
 
-  <table border="1">
-    <tr>
-      <th>Trigger Schema Name</th>
-      <th>Trigger Name</th>
-      <th>Trigger Type</th>
-      <th>Triggering Event</th>
-      <th>Schema Name</th>
-      <th>Object Name</th>
-      <th>Object Type</th>
-      <th>Status</th>
-      <th>Script</th>
-    </tr>
+<h2 th:if="${not #lists.isEmpty(metadata.udfs)}">UDFs</h2>
 
-    <tr th:each="trigger : ${metadata.triggers}">
-      <td th:text="${trigger.triggerSchemaName}" />
-      <td th:text="${trigger.triggerName}" />
-      <td th:text="${trigger.triggerType}" />
-      <td th:text="${trigger.triggeringEvent}" />
-      <td th:text="${trigger.schemaName}" />
-      <td th:text="${trigger.objectName}" />
-      <td th:text="${trigger.objectType}" />
-      <td th:text="${trigger.status}" />
-      <td th:text="${trigger.script}" />
-    </tr>
-  </table>
+<table border="1" th:if="${not #lists.isEmpty(metadata.udfs)}">
+  <tr>
+    <th>Function Name</th>
+    <th>Return Type</th>
+    <th>Arguments</th>
+  </tr>
 
-  <h2>UDFs</h2>
+  <tr th:each="udf : ${metadata.udfs}">
+    <td th:text="${udf.functionName}" />
+    <td th:text="${udf.returnType}" />
+    <td th:text="${udf.arguments}" />
+  </tr>
+</table>
 
-  <table border="1">
-    <tr>
-      <th>Schema Name</th>
-      <th>Function Name</th>
-      <th>Return Type</th>
-      <th>Arguments</th>
-    </tr>
+<h2 th:if="${not #lists.isEmpty(metadata.scripts)}">Script</h2>
+<table border="1" th:if="${not #lists.isEmpty(metadata.scripts)}">
 
-    <tr th:each="udf : ${metadata.udfs}">
-      <td th:text="${udf.schemaName}" />
-      <td th:text="${udf.functionName}" />
-      <td th:text="${udf.returnType}" />
-      <td th:text="${udf.arguments}" />
-    </tr>
-  </table>
+  <tr th:each="script : ${metadata.scripts}">
+    <td th:text="${script.script}" />
+  </tr>
 
-  <h2>Views Used</h2>
+</table>
 
-  <table border="1">
-    <tr>
-      <th>Table Name</th>
-      <th>Type</th>
-      <th>Referencing Object</th>
-      <th>Referencing Type</th>
-    </tr>
+<h2 th:if="${not #lists.isEmpty(metadata.viewsUsed)}">Uses</h2>
 
-    <tr th:each="view : ${metadata.viewsUsed}">
-      <td th:text="${view.tableName}" />
-      <td th:text="${view.type}" />
-      <td th:text="${view.referencingObject}" />
-      <td th:text="${view.referencingType}" />
-    </tr>
-  </table>
+<table border="1" th:if="${not #lists.isEmpty(metadata.viewsUsed)}">
+  <tr>
+    <th>Referenced Type</th>
+    <th>Referenced Object</th>
+  </tr>
 
-  <h2>Views Referenced</h2>
+  <tr th:each="view : ${metadata.viewsUsed}">
+    <td th:text="${view.referencedType}" />
+    <td th:text="${view.referencedObject}" />
+  </tr>
+</table>
 
-  <table border="1">
-    <tr>
-      <th>View Schema</th>
-      <th>View Name</th>
-      <th>Referenced Schema</th>
-      <th>Referenced Name</th>
-      <th>Referenced Type</th>
-    </tr>
+<h2 th:if="${not #lists.isEmpty(metadata.viewsReferenced)}">Used by</h2>
 
-    <tr th:each="view : ${metadata.viewsReferenced}">
-      <td th:text="${view.viewSchema}" />
-      <td th:text="${view.viewName}" />
-      <td th:text="${view.referencedSchema}" />
-      <td th:text="${view.referencedName}" />
-      <td th:text="${view.referencedType}" />
-    </tr>
-  </table>
+<table border="1" th:if="${not #lists.isEmpty(metadata.viewsReferenced)}">
+  <tr>
+    <th>Referencing Type</th>
+    <th>Referencing Object</th>
+  </tr>
+
+  <tr th:each="view : ${metadata.viewsReferenced}">
+    <td th:text="${view.referencingType}" />
+    <td th:text="${view.referencingObject}" />
+  </tr>
+</table>
 </body>
 </html>
