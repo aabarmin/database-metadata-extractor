@@ -1,12 +1,8 @@
-select owner as view_schema,
-       name as view_name,
-       referenced_owner as referenced_schema,
-       referenced_name as referenced_name,
+select owner || '.' || name as referencing_object,
+       type as referencing_type,
+       referenced_owner || '.' || referenced_name as referenced_object,
        referenced_type
 from sys.all_dependencies
-where type='VIEW'
-      and referenced_type in ('TABLE','VIEW')
-      and name = ?
-      and owner = ?
-order by owner,
-         view_name
+where referenced_name = ?
+      and referenced_owner = ?
+order by referencing_object
