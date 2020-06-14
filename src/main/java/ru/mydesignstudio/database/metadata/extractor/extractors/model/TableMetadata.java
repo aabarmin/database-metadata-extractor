@@ -12,6 +12,7 @@ import ru.mydesignstudio.database.metadata.extractor.extractors.reference.Refere
 import ru.mydesignstudio.database.metadata.extractor.extractors.trigger.TriggerModel;
 import ru.mydesignstudio.database.metadata.extractor.extractors.type.TypeModel;
 import ru.mydesignstudio.database.metadata.extractor.extractors.udf.UdfModel;
+import ru.mydesignstudio.database.metadata.extractor.extractors.uk.UniqueKeyModel;
 import ru.mydesignstudio.database.metadata.extractor.extractors.view.referenced.ViewReferencedModel;
 import ru.mydesignstudio.database.metadata.extractor.extractors.view.used.ViewUsedModel;
 
@@ -31,4 +32,5 @@ public class TableMetadata {
   private Collection<ViewUsedModel> viewsUsed;
   private Collection<ViewReferencedModel> viewsReferenced;
   private Collection<TypeModel> types;
+  private Collection<UniqueKeyModel> uniqueKeys;
 }

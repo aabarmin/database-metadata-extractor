@@ -5,11 +5,16 @@
   <title>Database</title>
 </head>
 <body>
-  <h1 th:text="'Schema ' + ${metadata.schemaName}" />
+<table border="1">
+  <tr>
+    <th>Schema</th>
+    <td th:text="${metadata.schemaName}"/>
+  </tr>
+</table>
 
-  <h2>Stored Procedures</h2>
+  <h2 th:if="${not #lists.isEmpty(metadata.procedures)}">Stored Procedures</h2>
 
-  <table border="1">
+  <table border="1" th:if="${not #lists.isEmpty(metadata.procedures)}">
     <tr>
       <th>Schema Name</th>
       <th>Procedure Name</th>
@@ -23,11 +28,10 @@
     </tr>
   </table>
 
-  <h2>Stored Procedure Arguments</h2>
+  <h2 th:if="${not #lists.isEmpty(metadata.arguments)}">Stored Procedure Arguments</h2>
 
-  <table border="1">
+  <table border="1" th:if="${not #lists.isEmpty(metadata.arguments)}">
     <tr>
-      <th>Schema Name</th>
       <th>Procedure Name</th>
       <th>Argument Name</th>
       <th>In/Out</th>
@@ -40,7 +44,6 @@
     </tr>
 
     <tr th:each="argument : ${metadata.arguments}">
-      <td th:text="${argument.schemaName}" />
       <td th:text="${argument.procedureName}" />
       <td th:text="${argument.argumentName}" />
       <td th:text="${argument.inOut}" />
@@ -53,9 +56,9 @@
     </tr>
   </table>
 
-  <h2>Scheduled Jobs</h2>
+  <h2 th:if="${not #lists.isEmpty(metadata.jobs)}">Scheduled Jobs</h2>
 
-  <table border="1">
+  <table border="1" th:if="${not #lists.isEmpty(metadata.jobs)}">
     <tr>
       <th>Schema Name</th>
       <th>Job Name</th>

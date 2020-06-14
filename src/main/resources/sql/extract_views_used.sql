@@ -1,9 +1,8 @@
-select referenced_owner || '.' || referenced_name as table_name,
-       referenced_type as type,
-       owner || '.' || name as referencing_object,
-       type as referencing_type
+select owner || '.' || name AS referencing_object,
+       type as referencing_type,
+       referenced_owner || '.' || referenced_name as referenced_object,
+       referenced_type
 from sys.all_dependencies
-where referenced_type in('TABLE', 'VIEW')
-      and referenced_name = ?
-      and referenced_owner = ?
+where name = ?
+      and owner = ?
 order by referencing_object

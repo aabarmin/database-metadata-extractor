@@ -38,7 +38,7 @@ public class TableMetadataHtmlOutput {
 
     Files.write(outputFile, content.getBytes(Charset.forName("UTF-8")), StandardOpenOption.WRITE);
 
-    return new Output(getObjectType(metadata) + " " + metadata.getSchemaName() + "_" + metadata.getTableName(), outputFile);
+    return new Output(getObjectType(metadata) + " " + metadata.getSchemaName() + "." + metadata.getTableName(), outputFile);
   }
 
   private String getObjectType(TableMetadata tableMetadata) {

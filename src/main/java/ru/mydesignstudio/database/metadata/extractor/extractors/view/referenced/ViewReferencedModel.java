@@ -4,9 +4,8 @@ import lombok.Data;
 
 @Data
 public class ViewReferencedModel {
-  private String viewSchema;
-  private String viewName;
-  private String referencedSchema;
-  private String referencedName;
+  private String referencingObject;
+  private String referencingType;
+  private String referencedObject;
   private String referencedType;
 }
