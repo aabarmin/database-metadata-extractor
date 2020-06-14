@@ -9,6 +9,7 @@ import ru.mydesignstudio.database.metadata.extractor.extractors.constraint.Const
 import ru.mydesignstudio.database.metadata.extractor.extractors.fk.ForeignKeyModel;
 import ru.mydesignstudio.database.metadata.extractor.extractors.pk.PrimaryKeyModel;
 import ru.mydesignstudio.database.metadata.extractor.extractors.reference.ReferenceModel;
+import ru.mydesignstudio.database.metadata.extractor.extractors.script.ScriptModel;
 import ru.mydesignstudio.database.metadata.extractor.extractors.trigger.TriggerModel;
 import ru.mydesignstudio.database.metadata.extractor.extractors.type.TypeModel;
 import ru.mydesignstudio.database.metadata.extractor.extractors.udf.UdfModel;
@@ -33,4 +34,5 @@ public class TableMetadata {
   private Collection<ViewReferencedModel> viewsReferenced;
   private Collection<TypeModel> types;
   private Collection<UniqueKeyModel> uniqueKeys;
+  private Collection<ScriptModel> scripts;
 }
