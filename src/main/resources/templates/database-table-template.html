@@ -168,125 +168,12 @@
     </tr>
   </table>
 
-  <h2 th:if="${not #lists.isEmpty(tableMetadata.triggers)}">Triggers</h2>
+  <h2 th:if="${not #lists.isEmpty(tableMetadata.scripts)}">Script</h2>
 
-  <table border="1" th:if="${not #lists.isEmpty(tableMetadata.triggers)}">
-    <tr>
-      <th>Trigger Schema Name</th>
-      <th>Trigger Name</th>
-      <th>Trigger Type</th>
-      <th>Triggering Event</th>
-      <th>Schema Name</th>
-      <th>Object Name</th>
-      <th>Object Type</th>
-      <th>Status</th>
-      <th>Script</th>
-    </tr>
+  <table border="1" th:if="${not #lists.isEmpty(tableMetadata.scripts)}">
 
-    <tr th:each="trigger : ${tableMetadata.triggers}">
-      <td th:text="${trigger.triggerSchemaName}" />
-      <td th:text="${trigger.triggerName}" />
-      <td th:text="${trigger.triggerType}" />
-      <td th:text="${trigger.triggeringEvent}" />
-      <td th:text="${trigger.schemaName}" />
-      <td th:text="${trigger.objectName}" />
-      <td th:text="${trigger.objectType}" />
-      <td th:text="${trigger.status}" />
-      <td th:text="${trigger.script}" />
-    </tr>
-  </table>
-
-  <h2 th:if="${not #lists.isEmpty(tableMetadata.udfs)}">UDFs</h2>
-
-  <table border="1" th:if="${not #lists.isEmpty(tableMetadata.udfs)}">
-    <tr>
-      <th>Schema Name</th>
-      <th>Function Name</th>
-      <th>Return Type</th>
-      <th>Arguments</th>
-    </tr>
-
-    <tr th:each="udf : ${tableMetadata.udfs}">
-      <td th:text="${udf.schemaName}" />
-      <td th:text="${udf.functionName}" />
-      <td th:text="${udf.returnType}" />
-      <td th:text="${udf.arguments}" />
-    </tr>
-  </table>
-
-  <h2 th:if="${not #lists.isEmpty(databaseMetadata.procedures)}">Stored Procedures</h2>
-
-  <table border="1" th:if="${not #lists.isEmpty(databaseMetadata.procedures)}">
-    <tr>
-      <th>Schema Name</th>
-      <th>Procedure Name</th>
-      <th>Arguments</th>
-    </tr>
-
-    <tr th:each="procedure : ${databaseMetadata.procedures}">
-      <td th:text="${procedure.schemaName}" />
-      <td th:text="${procedure.procedureName}" />
-      <td th:text="${procedure.arguments}" />
-    </tr>
-  </table>
-
-  <h2 th:if="${not #lists.isEmpty(databaseMetadata.arguments)}">Stored Procedure Arguments</h2>
-
-  <table border="1" th:if="${not #lists.isEmpty(databaseMetadata.arguments)}">
-    <tr>
-      <th>Schema Name</th>
-      <th>Procedure Name</th>
-      <th>Argument Name</th>
-      <th>In/Out</th>
-      <th>Data Type</th>
-      <th>Data Length</th>
-      <th>Data Precision</th>
-      <th>Data Scale</th>
-      <th>Defaulted</th>
-      <th>Default Value</th>
-    </tr>
-
-    <tr th:each="argument : ${databaseMetadata.arguments}">
-      <td th:text="${argument.schemaName}" />
-      <td th:text="${argument.procedureName}" />
-      <td th:text="${argument.argumentName}" />
-      <td th:text="${argument.inOut}" />
-      <td th:text="${argument.dataType}" />
-      <td th:text="${argument.dataLength}" />
-      <td th:text="${argument.dataPrecision}" />
-      <td th:text="${argument.dataScale}" />
-      <td th:text="${argument.defaulted}" />
-      <td th:text="${argument.defaultValue}" />
-    </tr>
-  </table>
-
-  <h2 th:if="${not #lists.isEmpty(databaseMetadata.jobs)}">Scheduled Jobs</h2>
-
-  <table border="1" th:if="${not #lists.isEmpty(databaseMetadata.jobs)}">
-    <tr>
-      <th>Schema Name</th>
-      <th>Job Name</th>
-      <th>Job Style</th>
-      <th>Job Type</th>
-      <th>Job Action</th>
-      <th>Start Date</th>
-      <th>Schedule</th>
-      <th>Last Start Date</th>
-      <th>Next Run Date</th>
-      <th>State</th>
-    </tr>
-
-    <tr th:each="job : ${databaseMetadata.jobs}">
-      <td th:text="${job.schemaName}" />
-      <td th:text="${job.jobName}" />
-      <td th:text="${job.jobStyle}" />
-      <td th:text="${job.jobType}" />
-      <td th:text="${job.jobAction}" />
-      <td th:text="${job.startDate}" />
-      <td th:text="${job.schedule}" />
-      <td th:text="${job.lastStartDate}" />
-      <td th:text="${job.nextRunDate}" />
-      <td th:text="${job.state}" />
+    <tr th:each="script : ${tableMetadata.scripts}">
+      <td th:text="${script.script}" />
     </tr>
   </table>
 
@@ -326,6 +213,128 @@
       <td th:text="${view.referencedName}" />
       <td th:text="${view.referencedType}" />
     </tr>
-  </table>
+   </table>
+
+    <h2 th:if="${not #lists.isEmpty(tableMetadata.triggers)}">Triggers</h2>
+
+    <table border="1" th:if="${not #lists.isEmpty(tableMetadata.triggers)}">
+      <tr>
+        <th>Trigger Schema Name</th>
+        <th>Trigger Name</th>
+        <th>Trigger Type</th>
+        <th>Triggering Event</th>
+        <th>Schema Name</th>
+        <th>Object Name</th>
+        <th>Object Type</th>
+        <th>Status</th>
+        <th>Script</th>
+      </tr>
+
+      <tr th:each="trigger : ${tableMetadata.triggers}">
+        <td th:text="${trigger.triggerSchemaName}" />
+        <td th:text="${trigger.triggerName}" />
+        <td th:text="${trigger.triggerType}" />
+        <td th:text="${trigger.triggeringEvent}" />
+        <td th:text="${trigger.schemaName}" />
+        <td th:text="${trigger.objectName}" />
+        <td th:text="${trigger.objectType}" />
+        <td th:text="${trigger.status}" />
+        <td th:text="${trigger.script}" />
+      </tr>
+    </table>
+
+    <h2 th:if="${not #lists.isEmpty(tableMetadata.udfs)}">UDFs</h2>
+
+    <table border="1" th:if="${not #lists.isEmpty(tableMetadata.udfs)}">
+      <tr>
+        <th>Schema Name</th>
+        <th>Function Name</th>
+        <th>Return Type</th>
+        <th>Arguments</th>
+      </tr>
+
+      <tr th:each="udf : ${tableMetadata.udfs}">
+        <td th:text="${udf.schemaName}" />
+        <td th:text="${udf.functionName}" />
+        <td th:text="${udf.returnType}" />
+        <td th:text="${udf.arguments}" />
+      </tr>
+    </table>
+
+    <h2 th:if="${not #lists.isEmpty(databaseMetadata.procedures)}">Database Stored Procedures</h2>
+
+    <table border="1" th:if="${not #lists.isEmpty(databaseMetadata.procedures)}">
+      <tr>
+        <th>Schema Name</th>
+        <th>Procedure Name</th>
+        <th>Arguments</th>
+      </tr>
+
+      <tr th:each="procedure : ${databaseMetadata.procedures}">
+        <td th:text="${procedure.schemaName}" />
+        <td th:text="${procedure.procedureName}" />
+        <td th:text="${procedure.arguments}" />
+      </tr>
+    </table>
+
+    <h2 th:if="${not #lists.isEmpty(databaseMetadata.arguments)}">Database Stored Procedure Arguments</h2>
+
+    <table border="1" th:if="${not #lists.isEmpty(databaseMetadata.arguments)}">
+      <tr>
+        <th>Schema Name</th>
+        <th>Procedure Name</th>
+        <th>Argument Name</th>
+        <th>In/Out</th>
+        <th>Data Type</th>
+        <th>Data Length</th>
+        <th>Data Precision</th>
+        <th>Data Scale</th>
+        <th>Defaulted</th>
+        <th>Default Value</th>
+      </tr>
+
+      <tr th:each="argument : ${databaseMetadata.arguments}">
+        <td th:text="${argument.schemaName}" />
+        <td th:text="${argument.procedureName}" />
+        <td th:text="${argument.argumentName}" />
+        <td th:text="${argument.inOut}" />
+        <td th:text="${argument.dataType}" />
+        <td th:text="${argument.dataLength}" />
+        <td th:text="${argument.dataPrecision}" />
+        <td th:text="${argument.dataScale}" />
+        <td th:text="${argument.defaulted}" />
+        <td th:text="${argument.defaultValue}" />
+      </tr>
+    </table>
+
+    <h2 th:if="${not #lists.isEmpty(databaseMetadata.jobs)}">Database Scheduled Jobs</h2>
+
+    <table border="1" th:if="${not #lists.isEmpty(databaseMetadata.jobs)}">
+      <tr>
+        <th>Schema Name</th>
+        <th>Job Name</th>
+        <th>Job Style</th>
+        <th>Job Type</th>
+        <th>Job Action</th>
+        <th>Start Date</th>
+        <th>Schedule</th>
+        <th>Last Start Date</th>
+        <th>Next Run Date</th>
+        <th>State</th>
+      </tr>
+
+      <tr th:each="job : ${databaseMetadata.jobs}">
+        <td th:text="${job.schemaName}" />
+        <td th:text="${job.jobName}" />
+        <td th:text="${job.jobStyle}" />
+        <td th:text="${job.jobType}" />
+        <td th:text="${job.jobAction}" />
+        <td th:text="${job.startDate}" />
+        <td th:text="${job.schedule}" />
+        <td th:text="${job.lastStartDate}" />
+        <td th:text="${job.nextRunDate}" />
+        <td th:text="${job.state}" />
+      </tr>
+    </table>
 </body>
 </html>
