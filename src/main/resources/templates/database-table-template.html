@@ -53,7 +53,7 @@
     <td th:text="${column.primaryKey}" />
     <td th:text="${column.foreign_key}" />
     <td th:text="${column.uniqueKey}" />
-    <td th:text="${column.constraint}" />
+    <td th:text="${column.checkConstraint}" />
     <td th:text="${column.nullable}" />
     <td th:text="${column.defaultDefinition}" />
     <td th:text="${column.comments}" />
@@ -210,8 +210,17 @@
   </tr>
 </table>
 
-    <h2 th:if="${not #lists.isEmpty(databaseMetadata.jobs)}">Database Scheduled Jobs</h2>
 <h2 th:if="${not #lists.isEmpty(tableMetadata.scripts)}">Script</h2>
+<table border="1" th:if="${not #lists.isEmpty(tableMetadata.scripts)}">
+
+  <tr th:each="script : ${tableMetadata.scripts}">
+    <td th:text="${script.script}" />
+  </tr>
+
+</table>
+
+
+    <h2 th:if="${not #lists.isEmpty(databaseMetadata.jobs)}">Database Scheduled Jobs</h2>
 
     <table border="1" th:if="${not #lists.isEmpty(databaseMetadata.jobs)}">
       <tr>
@@ -226,7 +235,6 @@
         <th>Next Run Date</th>
         <th>State</th>
       </tr>
-<table border="1" th:if="${not #lists.isEmpty(tableMetadata.scripts)}">
 
       <tr th:each="job : ${databaseMetadata.jobs}">
         <td th:text="${job.schemaName}" />
@@ -241,10 +249,7 @@
         <td th:text="${job.state}" />
       </tr>
     </table>
-  <tr th:each="script : ${tableMetadata.scripts}">
-    <td th:text="${script.script}" />
-  </tr>
-</table>
+
 <h2 th:if="${not #lists.isEmpty(tableMetadata.viewsUsed)}">Uses</h2>
 
 <table border="1" th:if="${not #lists.isEmpty(tableMetadata.viewsUsed)}">

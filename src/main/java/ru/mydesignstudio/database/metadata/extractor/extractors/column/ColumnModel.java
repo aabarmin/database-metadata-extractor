@@ -21,7 +21,7 @@ public class ColumnModel {
   private String primaryKey;
   private String foreign_key;
   private String uniqueKey;
-  private String constraint;
+  private String checkConstraint;
   private String comments;
 
   public boolean isNullable() {
