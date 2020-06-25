@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.CreatePageRequest;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.CreateRequest;
 
 @ExtendWith(MockitoExtension.class)
 class CreatePageRequestFactoryTest {
@@ -27,7 +28,11 @@ class CreatePageRequestFactoryTest {
 
   @Test
   void create_withoutParentShouldNotAddAncestors() {
-    final CreatePageRequest request = unitUnderTest.createRequest("title", "content", "space");
+    final CreatePageRequest request = unitUnderTest.createRequest(CreateRequest.builder()
+        .space("space")
+        .content("content")
+        .title("title")
+        .build());
 
     assertThat(request).isNotNull();
     assertThat(request.getAncestors()).isNull();
@@ -35,7 +40,12 @@ class CreatePageRequestFactoryTest {
 
   @Test
   void create_withParentShouldAddAncestors() {
-    final CreatePageRequest request = unitUnderTest.createRequest("title", "content", "space", 1234);
+    final CreatePageRequest request = unitUnderTest.createRequest(CreateRequest.builder()
+        .space("space")
+        .content("content")
+        .title("title")
+        .parentId(1234)
+        .build());
 
     assertThat(request).isNotNull();
     assertThat(request.getAncestors()).hasSize(1);
