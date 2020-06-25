@@ -8,11 +8,7 @@ import ru.mydesignstudio.database.metadata.extractor.output.html.label.Label;
 
 @Data
 @Builder
-public class CreateRequest {
-  private String title;
-  private String content;
-  private String space;
-  private Integer parentId;
+public class ConfluenceMetadata {
   @Builder.Default
   private Set<Label> labels = new HashSet<>();
 }

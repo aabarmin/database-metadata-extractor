@@ -1,6 +1,7 @@
 package ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl;
 
 import lombok.Data;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.Confluence;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.ConfluenceCreateDelegate;
@@ -18,17 +19,17 @@ public class ConfluenceRestImpl implements Confluence {
   private final ConfluenceCreateDelegate createDelegate;
 
   @Override
-  public FindResponse find(String title, String space) {
+  public FindResponse find(@NonNull String title, @NonNull String space) {
     return findDelegate.find(title, space);
   }
 
   @Override
-  public CreateResponse create(CreateRequest request) {
+  public CreateResponse create(@NonNull CreateRequest request) {
     return createDelegate.create(request);
   }
 
   @Override
-  public boolean delete(String contentId) {
+  public boolean delete(@NonNull String contentId) {
     return deleteDelegate.delete(contentId);
   }
 

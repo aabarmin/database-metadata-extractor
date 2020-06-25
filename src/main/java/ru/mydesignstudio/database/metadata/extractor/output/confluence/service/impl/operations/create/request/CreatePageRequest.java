@@ -12,4 +12,5 @@ public class CreatePageRequest {
   private List<ConfluenceAncestor> ancestors;
   private ConfluenceSpace space;
   private ConfluenceBody body;
+  private ConfluenceMetadata metadata;
 }
