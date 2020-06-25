@@ -56,6 +56,7 @@ public class ConfluenceOutput implements MetadataOutput {
           .content(getContent(output))
           .space(confluenceSpace)
           .parentId(parentId)
+          .labels(output.getLabels())
           .build();
       confluence.create(request);
     }

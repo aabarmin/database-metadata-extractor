@@ -5,7 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,9 @@ import org.thymeleaf.context.Context;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.DatabaseMetadata;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
 import ru.mydesignstudio.database.metadata.extractor.output.Output;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.CommonLabelProvider;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.DiagramLabelProvider;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.Label;
 import ru.mydesignstudio.database.metadata.extractor.output.html.plant.uml.PlantUmlMarkupGenerator;
 import ru.mydesignstudio.database.metadata.extractor.output.html.plant.uml.PlantUmlPngGenerator;
 
@@ -30,6 +35,12 @@ public class PlantUmlOutput {
 
   @Autowired
   private PlantUmlPngGenerator pngGenerator;
+
+  @Autowired
+  private CommonLabelProvider commonLabelProvider;
+
+  @Autowired
+  private DiagramLabelProvider diagramLabelProvider;
 
   @SneakyThrows
   public Output output(@NonNull List<DatabaseMetadata> databaseMetadata,
@@ -49,6 +60,13 @@ public class PlantUmlOutput {
     pngGenerator
         .generatePng(markupGenerator.generate(tableMetadata), outputFolder);
 
-    return new Output("ERD " + LocalDateTime.now(), outputFile);
+    return new Output("ERD " + LocalDateTime.now(), outputFile, getLabels());
+  }
+
+  private Set<Label> getLabels() {
+    final Set<Label> labels = new HashSet<>();
+    labels.addAll(commonLabelProvider.provide());
+    labels.addAll(diagramLabelProvider.provide());
+    return labels;
   }
 }

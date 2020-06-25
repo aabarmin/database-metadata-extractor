@@ -5,10 +5,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Optional;
+import java.util.Set;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -17,12 +20,25 @@ import org.thymeleaf.context.Context;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
 import ru.mydesignstudio.database.metadata.extractor.extractors.type.TypeModel;
 import ru.mydesignstudio.database.metadata.extractor.output.Output;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.CommonLabelProvider;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.Label;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.TableLabelProvider;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.ViewLabelProvider;
 
 @Slf4j
 @Component
 public class TableMetadataHtmlOutput {
   @Autowired
   private TemplateEngine templateEngine;
+
+  @Autowired
+  private CommonLabelProvider commonLabelProvider;
+
+  @Autowired
+  private ViewLabelProvider viewLabelProvider;
+
+  @Autowired
+  private TableLabelProvider tableLabelProvider;
 
   @SneakyThrows
   public Output output(@NonNull TableMetadata metadata, @NonNull Path outputFolder) {
@@ -38,7 +54,27 @@ public class TableMetadataHtmlOutput {
 
     Files.write(outputFile, content.getBytes(Charset.forName("UTF-8")), StandardOpenOption.WRITE);
 
-    return new Output(getObjectType(metadata) + " " + metadata.getSchemaName() + "." + metadata.getTableName(), outputFile);
+    return new Output(getObjectType(metadata) + " " + metadata.getSchemaName() + "." + metadata.getTableName(), outputFile, getLabels(metadata));
+  }
+
+  private Set<Label> getLabels(TableMetadata tableMetadata) {
+    final Set<Label> labels = new HashSet<>();
+    labels.addAll(commonLabelProvider.provide());
+    if (isView(tableMetadata)) {
+      labels.addAll(viewLabelProvider.provide());
+    }
+    if (isTable(tableMetadata)) {
+      labels.addAll(tableLabelProvider.provide());
+    }
+    return labels;
+  }
+
+  private boolean isView(TableMetadata tableMetadata) {
+    return StringUtils.equalsIgnoreCase("View", getObjectType(tableMetadata));
+  }
+
+  private boolean isTable(TableMetadata tableMetadata) {
+    return StringUtils.equalsIgnoreCase("Table", getObjectType(tableMetadata));
   }
 
   private String getObjectType(TableMetadata tableMetadata) {
