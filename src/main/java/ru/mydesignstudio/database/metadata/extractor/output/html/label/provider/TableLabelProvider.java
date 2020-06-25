@@ -1,4 +1,4 @@
-package ru.mydesignstudio.database.metadata.extractor.output.html.label;
+package ru.mydesignstudio.database.metadata.extractor.output.html.label.provider;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -7,13 +7,14 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.Label;
 
 @Component
-public class DatabaseLabelProvider implements LabelProvider {
-  @Value("${confluence.label.database.values:}")
+public class TableLabelProvider implements LabelProvider {
+  @Value("${confluence.label.table.values:}")
   private String values;
 
-  @Value("${confluence.label.database.prefix:}")
+  @Value("${confluence.label.table.prefix:}")
   private String prefix;
 
   private Set<Label> labels;

@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import ru.mydesignstudio.database.metadata.extractor.output.html.label.CommonLabelProvider;
 import ru.mydesignstudio.database.metadata.extractor.output.html.label.Label;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.provider.CommonLabelProvider;
 
 @SpringJUnitConfig(classes = {
     CommonLabelProvider.class

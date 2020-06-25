@@ -15,9 +15,9 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.DatabaseMetadata;
 import ru.mydesignstudio.database.metadata.extractor.output.Output;
-import ru.mydesignstudio.database.metadata.extractor.output.html.label.CommonLabelProvider;
-import ru.mydesignstudio.database.metadata.extractor.output.html.label.DatabaseLabelProvider;
 import ru.mydesignstudio.database.metadata.extractor.output.html.label.Label;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.provider.CommonLabelProvider;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.provider.DatabaseLabelProvider;
 
 @Slf4j
 @Component

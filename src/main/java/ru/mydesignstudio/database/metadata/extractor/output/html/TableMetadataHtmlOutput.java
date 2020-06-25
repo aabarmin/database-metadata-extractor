@@ -20,10 +20,10 @@ import org.thymeleaf.context.Context;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
 import ru.mydesignstudio.database.metadata.extractor.extractors.type.TypeModel;
 import ru.mydesignstudio.database.metadata.extractor.output.Output;
-import ru.mydesignstudio.database.metadata.extractor.output.html.label.CommonLabelProvider;
 import ru.mydesignstudio.database.metadata.extractor.output.html.label.Label;
-import ru.mydesignstudio.database.metadata.extractor.output.html.label.TableLabelProvider;
-import ru.mydesignstudio.database.metadata.extractor.output.html.label.ViewLabelProvider;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.provider.CommonLabelProvider;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.provider.TableLabelProvider;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.provider.ViewLabelProvider;
 
 @Slf4j
 @Component

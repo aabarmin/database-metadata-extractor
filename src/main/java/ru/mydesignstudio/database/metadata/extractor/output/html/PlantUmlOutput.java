@@ -18,9 +18,9 @@ import org.thymeleaf.context.Context;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.DatabaseMetadata;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
 import ru.mydesignstudio.database.metadata.extractor.output.Output;
-import ru.mydesignstudio.database.metadata.extractor.output.html.label.CommonLabelProvider;
-import ru.mydesignstudio.database.metadata.extractor.output.html.label.DiagramLabelProvider;
 import ru.mydesignstudio.database.metadata.extractor.output.html.label.Label;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.provider.CommonLabelProvider;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.provider.DiagramLabelProvider;
 import ru.mydesignstudio.database.metadata.extractor.output.html.plant.uml.PlantUmlMarkupGenerator;
 import ru.mydesignstudio.database.metadata.extractor.output.html.plant.uml.PlantUmlPngGenerator;
 
