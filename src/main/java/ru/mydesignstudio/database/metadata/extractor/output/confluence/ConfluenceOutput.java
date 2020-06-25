@@ -18,6 +18,7 @@ import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetad
 import ru.mydesignstudio.database.metadata.extractor.output.MetadataOutput;
 import ru.mydesignstudio.database.metadata.extractor.output.Output;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.Confluence;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.CreateRequest;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.find.FindResponse;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.find.FindResult;
 import ru.mydesignstudio.database.metadata.extractor.output.html.HtmlMetadataOutput;
@@ -50,7 +51,13 @@ public class ConfluenceOutput implements MetadataOutput {
       }
 
       // create a new page
-      confluence.create(output.getTitle(), getContent(output), confluenceSpace, parentId);
+      final CreateRequest request = CreateRequest.builder()
+          .title(output.getTitle())
+          .content(getContent(output))
+          .space(confluenceSpace)
+          .parentId(parentId)
+          .build();
+      confluence.create(request);
     }
     return htmlOutput;
   }

@@ -31,6 +31,7 @@ import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.i
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.ConfluenceUriBuilder;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.BasicAuthenticationHeaderFactory;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.ConfluenceCredentialsHelper;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.CreateRequest;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.response.CreateResponse;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.delete.ConfluenceDeleteDelegate;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.find.ConfluenceFindDelegate;
@@ -114,7 +115,11 @@ class ConfluenceCreateDelegateTest {
             )
     );
 
-    final CreateResponse response = unitUnderTest.create("title", "content", "space", null);
+    final CreateResponse response = unitUnderTest.create(CreateRequest.builder()
+        .content("content")
+        .title("title")
+        .space("space")
+        .build());
 
     assertThat(response).isNotNull();
     verify(exactly(1), postRequestedFor(urlEqualTo("/wiki/rest/api/content/")));

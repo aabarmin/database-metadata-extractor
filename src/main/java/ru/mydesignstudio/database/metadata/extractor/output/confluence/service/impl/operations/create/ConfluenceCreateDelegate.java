@@ -10,12 +10,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.ConfluenceUriBuilder;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.ConfluenceCredentialsHelper;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.CreatePageRequest;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.CreateRequest;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.response.CreateResponse;
 
 @Slf4j
@@ -34,14 +34,14 @@ public class ConfluenceCreateDelegate {
   @Autowired
   private ConfluenceUriBuilder uriBuilder;
 
-  public CreateResponse create(@NonNull String title, @NonNull String content, @NonNull String space, @Nullable Integer parentId) {
-    log.info("Creating content with title {} in space {}", title, space);
-    log.debug("Content: {}", content);
-    log.debug("Parent id: {}", parentId);
+  public CreateResponse create(@NonNull CreateRequest createRequest) {
+    log.info("Creating content with title {} in space {}", createRequest.getTitle(), createRequest.getSpace());
+    log.debug("Content: {}", createRequest.getContent());
+    log.debug("Parent id: {}", createRequest.getParentId());
 
     return credentialsHelper.withCredentials(httpHeaders -> {
       httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-      final CreatePageRequest request = requestFactory.createRequest(title, content, space, parentId);
+      final CreatePageRequest request = requestFactory.createRequest(createRequest);
       final HttpEntity<CreatePageRequest> entity = new HttpEntity<>(request, httpHeaders);
 
       final ResponseEntity<CreateResponse> responseEntity = restTemplate
