@@ -15,11 +15,9 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.util.ReflectionTestUtils;
 import ru.mydesignstudio.database.metadata.extractor.config.ConfluenceConfiguration;
 import ru.mydesignstudio.database.metadata.extractor.config.ObjectMapperConfiguration;
@@ -30,16 +28,19 @@ import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.i
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.BasicAuthenticationHeaderFactory;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.ConfluenceCredentialsHelper;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.ConfluenceCreateDelegate;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.ConfluenceUpdateDelegate;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.CreatePageRequestFactory;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.HtmlSanitizer;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.TitleSanitizer;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.UpdatePageRequestFactory;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.find.ConfluenceFindDelegate;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {
+@SpringJUnitConfig(classes = {
     ConfluenceFindDelegate.class,
     ConfluenceDeleteDelegate.class,
     ConfluenceCreateDelegate.class,
+    ConfluenceUpdateDelegate.class,
+    UpdatePageRequestFactory.class,
     ConfluenceUriBuilder.class,
     HtmlSanitizer.class,
     TitleSanitizer.class,

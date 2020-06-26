@@ -21,6 +21,7 @@ import ru.mydesignstudio.database.metadata.extractor.output.MetadataOutput;
 import ru.mydesignstudio.database.metadata.extractor.output.Output;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.Confluence;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.CreateRequest;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.UpdateRequest;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.find.FindResponse;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.find.FindResult;
 import ru.mydesignstudio.database.metadata.extractor.output.html.HtmlMetadataOutput;
@@ -49,23 +50,38 @@ public class ConfluenceOutput implements MetadataOutput {
     final List<Output> htmlOutput = this.htmlOutput.output(databaseMetadata, tableMetadata);
 
     for (Output output : htmlOutput) {
-      // remove old pages
       final FindResponse findResponse = confluence.find(output.getTitle(), confluenceSpace);
-      for (FindResult findResult : findResponse.getResults()) {
-        confluence.delete(findResult.getId());
+      if (nothingFound(findResponse)) {
+        // create a new page
+        final CreateRequest request = CreateRequest.builder()
+            .title(output.getTitle())
+            .content(getContent(output))
+            .space(confluenceSpace)
+            .parentId(parentId)
+            .labels(output.getLabels())
+            .build();
+        confluence.create(request);
+      } else {
+        // update existing page
+        for (final FindResult findResult : findResponse.getResults()) {
+          final UpdateRequest request = UpdateRequest.builder()
+              .id(findResult.getId())
+              .title(output.getTitle())
+              .content(getContent(output))
+              .space(confluenceSpace)
+              .parentId(parentId)
+              .version(findResult.getVersion().getNumber() + 1)
+              .labels(output.getLabels())
+              .build();
+          confluence.update(request);
+        }
       }
-
-      // create a new page
-      final CreateRequest request = CreateRequest.builder()
-          .title(output.getTitle())
-          .content(getContent(output))
-          .space(confluenceSpace)
-          .parentId(parentId)
-          .labels(output.getLabels())
-          .build();
-      confluence.create(request);
     }
     return htmlOutput;
+  }
+
+  private boolean nothingFound(final FindResponse findResponse) {
+    return findResponse.getResults().isEmpty();
   }
 
   @SneakyThrows

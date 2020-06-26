@@ -7,4 +7,6 @@ public class FindResult {
   private String id;
   private String title;
   private String type;
+  private String status;
+  private FindResultVersion version;
 }

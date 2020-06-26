@@ -41,7 +41,7 @@ public class ConfluenceFindDelegate {
     return uriBuilder.build(Maps.of(
         "title", title,
         "spaceKey", space,
-        "expand", "history"
+        "expand", "version"
     ));
   }
 }
