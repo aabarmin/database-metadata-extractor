@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
-import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.ConfluenceAncestor;
-import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.ConfluenceBody;
-import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.ConfluenceMetadata;
-import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.ConfluenceSpace;
-import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.ConfluenceStorage;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.model.ConfluenceAncestor;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.model.ConfluenceBody;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.model.ConfluenceMetadata;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.model.ConfluenceSpace;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.model.ConfluenceStorage;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.CreatePageRequest;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.CreateRequest;
 

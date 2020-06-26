@@ -1,4 +1,4 @@
-package ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request;
+package ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.update.request;
 
 import java.util.HashSet;
 import java.util.Set;

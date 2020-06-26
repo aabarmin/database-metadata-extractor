@@ -29,12 +29,12 @@ import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.i
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.BasicAuthenticationHeaderFactory;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.ConfluenceCredentialsHelper;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.ConfluenceCreateDelegate;
-import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.ConfluenceUpdateDelegate;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.CreatePageRequestFactory;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.HtmlSanitizer;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.TitleSanitizer;
-import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.UpdatePageRequestFactory;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.delete.ConfluenceDeleteDelegate;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.update.ConfluenceUpdateDelegate;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.update.UpdatePageRequestFactory;
 
 @RestClientTest(components = {
     ConfluenceFindDelegate.class,

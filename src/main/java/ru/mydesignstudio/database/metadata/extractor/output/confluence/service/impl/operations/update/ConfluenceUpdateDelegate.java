@@ -1,4 +1,4 @@
-package ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create;
+package ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.update;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -16,9 +16,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.ConfluenceUriBuilder;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.ConfluenceCredentialsHelper;
-import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.UpdatePageRequest;
-import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.UpdateRequest;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.response.CreateResponse;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.update.request.UpdatePageRequest;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.update.request.UpdateRequest;
 
 @Slf4j
 @Component
