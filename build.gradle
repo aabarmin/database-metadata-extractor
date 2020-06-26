@@ -31,6 +31,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.0'
 	implementation 'com.google.code.findbugs:jsr305:3.0.2'
+	implementation 'com.google.guava:guava:29.0-jre'
 	testImplementation 'org.assertj:assertj-core:3.16.1'
 	testImplementation 'com.github.tomakehurst:wiremock:2.26.3'
 	implementation 'net.sourceforge.plantuml:plantuml:8059'
