@@ -1,5 +1,7 @@
 package ru.mydesignstudio.database.metadata.extractor.output.html;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,10 +10,10 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -46,6 +48,10 @@ public class PlantUmlOutput {
   public Output output(@NonNull List<DatabaseMetadata> databaseMetadata,
       @NonNull List<TableMetadata> tableMetadata,
       @NonNull Path outputFolder) {
+
+    checkNotNull(databaseMetadata, "Database metadata should not be null");
+    checkNotNull(tableMetadata, "Table metadata should not be null");
+    checkNotNull(outputFolder, "Output folder should not be null");
 
     log.info("Generating PlantUML output for tables {}", tableMetadata);
 

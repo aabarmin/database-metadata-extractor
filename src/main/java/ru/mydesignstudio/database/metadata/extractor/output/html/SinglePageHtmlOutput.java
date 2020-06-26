@@ -1,5 +1,7 @@
 package ru.mydesignstudio.database.metadata.extractor.output.html;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,6 +12,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -45,7 +48,11 @@ public class SinglePageHtmlOutput {
   private DatabaseLabelProvider databaseLabelProvider;
 
   @SneakyThrows
-  public Output output(DatabaseMetadata databaseMetadata, TableMetadata tableMetadata, Path outputFolder) {
+  public Output output(@NonNull DatabaseMetadata databaseMetadata, @NonNull TableMetadata tableMetadata, @NonNull Path outputFolder) {
+    checkNotNull(databaseMetadata, "Database metadata should not be null");
+    checkNotNull(tableMetadata, "Table metadata should not be null");
+    checkNotNull(outputFolder, "Output folder should not be null");
+
     log.info("Generating HTML output for table {} in schema {}", tableMetadata.getTableName(), tableMetadata.getSchemaName());
 
     final Path outputFile = outputFolder.resolve(databaseMetadata.getSchemaName() + "." + tableMetadata.getTableName() + ".html");
