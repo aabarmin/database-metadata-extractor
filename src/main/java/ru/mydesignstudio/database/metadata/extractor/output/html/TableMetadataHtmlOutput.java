@@ -4,10 +4,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Optional;
 import java.util.Set;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +15,6 @@ import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
-import ru.mydesignstudio.database.metadata.extractor.extractors.type.TypeModel;
 import ru.mydesignstudio.database.metadata.extractor.output.Output;
 import ru.mydesignstudio.database.metadata.extractor.output.html.label.Label;
 import ru.mydesignstudio.database.metadata.extractor.output.html.label.provider.CommonLabelProvider;
@@ -30,6 +26,9 @@ import ru.mydesignstudio.database.metadata.extractor.output.html.label.provider.
 public class TableMetadataHtmlOutput {
   @Autowired
   private TemplateEngine templateEngine;
+
+  @Autowired
+  private ObjectTypeExtractor objectTypeExtractor;
 
   @Autowired
   private CommonLabelProvider commonLabelProvider;
@@ -54,7 +53,12 @@ public class TableMetadataHtmlOutput {
 
     Files.write(outputFile, content.getBytes(Charset.forName("UTF-8")), StandardOpenOption.WRITE);
 
-    return new Output(getObjectType(metadata) + " " + metadata.getSchemaName() + "." + metadata.getTableName(), outputFile, getLabels(metadata));
+    return new Output(getOutputTitle(metadata), outputFile, getLabels(metadata));
+  }
+
+  private String getOutputTitle(@NonNull TableMetadata metadata) {
+    return
+        objectTypeExtractor.extract(metadata) + " " + metadata.getSchemaName() + "." + metadata.getTableName();
   }
 
   private Set<Label> getLabels(TableMetadata tableMetadata) {
@@ -70,20 +74,10 @@ public class TableMetadataHtmlOutput {
   }
 
   private boolean isView(TableMetadata tableMetadata) {
-    return StringUtils.equalsIgnoreCase("View", getObjectType(tableMetadata));
+    return StringUtils.equalsIgnoreCase("View", objectTypeExtractor.extract(tableMetadata));
   }
 
   private boolean isTable(TableMetadata tableMetadata) {
-    return StringUtils.equalsIgnoreCase("Table", getObjectType(tableMetadata));
-  }
-
-  private String getObjectType(TableMetadata tableMetadata) {
-    return Optional.ofNullable(tableMetadata)
-        .map(TableMetadata::getTypes)
-        .map(Collection::iterator)
-        .filter(Iterator::hasNext)
-        .map(Iterator::next)
-        .map(TypeModel::getObjectType)
-        .orElse("Unknown");
+    return StringUtils.equalsIgnoreCase("Table", objectTypeExtractor.extract(tableMetadata));
   }
 }

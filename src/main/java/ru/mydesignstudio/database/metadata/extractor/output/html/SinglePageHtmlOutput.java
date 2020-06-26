@@ -4,10 +4,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Optional;
 import java.util.Set;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +15,10 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.DatabaseMetadata;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
-import ru.mydesignstudio.database.metadata.extractor.extractors.type.TypeModel;
 import ru.mydesignstudio.database.metadata.extractor.output.Output;
 import ru.mydesignstudio.database.metadata.extractor.output.html.label.Label;
 import ru.mydesignstudio.database.metadata.extractor.output.html.label.provider.CommonLabelProvider;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.provider.DatabaseLabelProvider;
 import ru.mydesignstudio.database.metadata.extractor.output.html.label.provider.TableLabelProvider;
 import ru.mydesignstudio.database.metadata.extractor.output.html.label.provider.ViewLabelProvider;
 
@@ -33,6 +30,9 @@ public class SinglePageHtmlOutput {
   private TemplateEngine templateEngine;
 
   @Autowired
+  private ObjectTypeExtractor objectTypeExtractor;
+
+  @Autowired
   private CommonLabelProvider commonLabelProvider;
 
   @Autowired
@@ -40,6 +40,9 @@ public class SinglePageHtmlOutput {
 
   @Autowired
   private TableLabelProvider tableLabelProvider;
+
+  @Autowired
+  private DatabaseLabelProvider databaseLabelProvider;
 
   @SneakyThrows
   public Output output(DatabaseMetadata databaseMetadata, TableMetadata tableMetadata, Path outputFolder) {
@@ -74,30 +77,21 @@ public class SinglePageHtmlOutput {
     if (isTable(tableMetadata)) {
       labels.addAll(tableLabelProvider.provide());
     }
+    labels.addAll(databaseLabelProvider.provide());
     return labels;
   }
 
   private boolean isView(TableMetadata tableMetadata) {
-    return StringUtils.equalsIgnoreCase("View", getObjectType(tableMetadata));
+    return StringUtils.equalsIgnoreCase("View", objectTypeExtractor.extract(tableMetadata));
   }
 
   private boolean isTable(TableMetadata tableMetadata) {
-    return StringUtils.equalsIgnoreCase("Table", getObjectType(tableMetadata));
+    return StringUtils.equalsIgnoreCase("Table", objectTypeExtractor.extract(tableMetadata));
   }
 
   private String getPageTitle(DatabaseMetadata databaseMetadata, TableMetadata tableMetadata) {
-    return getObjectType(tableMetadata) + " " + databaseMetadata.getSchemaName() + "." + tableMetadata
+    return objectTypeExtractor.extract(tableMetadata) + " " + databaseMetadata.getSchemaName() + "." + tableMetadata
         .getTableName();
-  }
-
-  private String getObjectType(TableMetadata tableMetadata) {
-    return Optional.ofNullable(tableMetadata)
-        .map(TableMetadata::getTypes)
-        .map(Collection::iterator)
-        .filter(Iterator::hasNext)
-        .map(Iterator::next)
-        .map(TypeModel::getObjectType)
-        .orElse("Unknown");
   }
 
 }
