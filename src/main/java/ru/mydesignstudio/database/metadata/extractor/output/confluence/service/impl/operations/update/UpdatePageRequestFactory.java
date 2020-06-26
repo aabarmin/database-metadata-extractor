@@ -1,16 +1,18 @@
-package ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create;
+package ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.update;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.ConfluenceBody;
-import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.ConfluenceMetadata;
-import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.ConfluenceStorage;
-import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.ConfluenceVersion;
-import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.UpdatePageRequest;
-import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.UpdateRequest;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.model.ConfluenceBody;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.model.ConfluenceMetadata;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.model.ConfluenceStorage;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.model.ConfluenceVersion;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.HtmlSanitizer;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.TitleSanitizer;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.update.request.UpdatePageRequest;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.update.request.UpdateRequest;
 
 @Component
 public class UpdatePageRequestFactory {

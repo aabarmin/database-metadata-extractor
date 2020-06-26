@@ -7,9 +7,9 @@ import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.C
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.ConfluenceCredentials;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.ConfluenceFactory;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.ConfluenceCreateDelegate;
-import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.ConfluenceUpdateDelegate;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.delete.ConfluenceDeleteDelegate;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.find.ConfluenceFindDelegate;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.update.ConfluenceUpdateDelegate;
 
 @Component
 @ConditionalOnProperty(name = "output.target", havingValue = "confluence", matchIfMissing = false)

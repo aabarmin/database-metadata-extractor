@@ -27,8 +27,10 @@ import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.C
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.ConfluenceUriBuilder;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.BasicAuthenticationHeaderFactory;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.ConfluenceCredentialsHelper;
-import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.UpdateRequest;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.response.CreateResponse;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.update.ConfluenceUpdateDelegate;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.update.UpdatePageRequestFactory;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.update.request.UpdateRequest;
 import ru.mydesignstudio.database.metadata.extractor.output.html.label.Label;
 
 @RestClientTest(components = {
