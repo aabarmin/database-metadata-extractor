@@ -1,5 +1,7 @@
 package ru.mydesignstudio.database.metadata.extractor.output.confluence;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.io.BufferedReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -40,7 +42,10 @@ public class ConfluenceOutput implements MetadataOutput {
   private Confluence confluence;
 
   @Override
-  public List<Output> output(List<DatabaseMetadata> databaseMetadata, List<TableMetadata> tableMetadata) {
+  public List<Output> output(@NonNull List<DatabaseMetadata> databaseMetadata, @NonNull List<TableMetadata> tableMetadata) {
+    checkNotNull(databaseMetadata, "Database metadata should not be null");
+    checkNotNull(tableMetadata, "Table metadata should not be null");
+
     final List<Output> htmlOutput = this.htmlOutput.output(databaseMetadata, tableMetadata);
 
     for (Output output : htmlOutput) {

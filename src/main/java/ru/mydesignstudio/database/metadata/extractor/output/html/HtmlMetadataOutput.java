@@ -1,5 +1,7 @@
 package ru.mydesignstudio.database.metadata.extractor.output.html;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -8,6 +10,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.DatabaseMetadata;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
@@ -46,7 +49,10 @@ public class HtmlMetadataOutput implements MetadataOutput {
   }
 
   @Override
-  public List<Output> output(List<DatabaseMetadata> databaseMetadata, List<TableMetadata> tableMetadata) {
+  public List<Output> output(@NonNull List<DatabaseMetadata> databaseMetadata, @NonNull List<TableMetadata> tableMetadata) {
+    checkNotNull(databaseMetadata, "Database metadata should not be null");
+    checkNotNull(tableMetadata, "Table metadata should not be null");
+
     final List<Output> outputs = new ArrayList<>();
     outputs.add(plantUmlOutput.output(databaseMetadata, tableMetadata, outputFolder));
 
