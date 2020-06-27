@@ -1,7 +1,6 @@
 package ru.mydesignstudio.database.metadata.extractor.output.html;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,7 +42,7 @@ public class PlantUmlOutput {
 
   @Autowired
   private DiagramLabelProvider diagramLabelProvider;
-
+  
   @SneakyThrows
   public Output output(@NonNull List<DatabaseMetadata> databaseMetadata,
       @NonNull List<TableMetadata> tableMetadata,
