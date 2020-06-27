@@ -1,7 +1,6 @@
 package ru.mydesignstudio.database.metadata.extractor.output.html;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -52,7 +51,7 @@ public class HtmlMetadataOutput implements MetadataOutput {
   public List<Output> output(@NonNull List<DatabaseMetadata> databaseMetadata, @NonNull List<TableMetadata> tableMetadata) {
     checkNotNull(databaseMetadata, "Database metadata should not be null");
     checkNotNull(tableMetadata, "Table metadata should not be null");
-
+    
     final List<Output> outputs = new ArrayList<>();
     outputs.add(plantUmlOutput.output(databaseMetadata, tableMetadata, outputFolder));
 

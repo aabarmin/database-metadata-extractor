@@ -32,3 +32,4 @@ out/
 .vscode/
 
 html_output
+fix_names.sh

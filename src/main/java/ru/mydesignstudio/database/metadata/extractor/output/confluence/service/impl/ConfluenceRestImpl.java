@@ -15,6 +15,7 @@ import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.i
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.update.request.UpdateRequest;
 
 @Data
+@RequiredArgsConstructor
 public class ConfluenceRestImpl implements Confluence {
   private final ConfluenceFindDelegate findDelegate;
   private final ConfluenceDeleteDelegate deleteDelegate;
@@ -50,5 +51,4 @@ public class ConfluenceRestImpl implements Confluence {
 
     return deleteDelegate.delete(contentId);
   }
-
 }

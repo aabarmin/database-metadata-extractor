@@ -30,7 +30,7 @@ public class DatabaseMetadataHtmlOutput {
 
   @Autowired
   private DatabaseLabelProvider databaseLabelProvider;
-
+  
   @SneakyThrows
   public Output output(@NonNull DatabaseMetadata metadata, @NonNull Path outputFolder) {
     log.info("Generating HTML output for schema {}", metadata.getSchemaName());
