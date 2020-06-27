@@ -6,7 +6,10 @@ plugins {
 }
 
 group = "ru.mydesignstudio"
-//sourceCompatibility = JavaVersion.VERSION_1_8
+
+configure<JavaPluginConvention> {
+	sourceCompatibility = JavaVersion.VERSION_1_8
+}
 
 configurations {
 	compileOnly {
