@@ -112,3 +112,32 @@ If the file is not executable do the following:
 ```shell script
 $ chmod +x ./run_confluence.sh
 ```
+
+## Working with labels
+
+By default, the system adds Confluence labels to the following artifacts:
+* Tables
+* Views
+* Diagrams
+* Databases
+
+At the same time, it's possible adding labels for every element like a common label.
+
+The following properties are responsible for it:
+
+| Property | Label |
+| --- | --- |
+| `confluence.label.common.values` | Comma-separated list of common labels |
+| `confluence.label.table.values` | Comma-separated list of labels to be added to tables |
+| `confluence.label.view.values` | Comma-separated list of labels to be added to views |
+| `confluence.label.diagram.values` | Comma-separated list of labels to be added to every diagram |
+| `confluence.label.database.values` | Comma-separated list of labels to be added to DB descriptions |
+
+All these parameters could be overwritten using the command-line arguments:
+
+```shell script
+$ java -jar metadata-extractor.jar \
+    ... rest parameters ... \
+    --confluence.label.common.values=common1,common2,common3 \
+    --confluence.label.table.values=table1,table2,table3
+```
