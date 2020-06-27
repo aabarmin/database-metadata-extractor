@@ -9,6 +9,7 @@ import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.C
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.ConfluenceCreateDelegate;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.delete.ConfluenceDeleteDelegate;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.find.ConfluenceFindDelegate;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.update.ConfluenceUpdateDelegate;
 
 @Component
 @ConditionalOnProperty(name = "output.target", havingValue = "confluence", matchIfMissing = false)
@@ -22,12 +23,16 @@ public class ConfluenceRestFactory implements ConfluenceFactory {
   @Autowired
   private ConfluenceCreateDelegate createDelegate;
 
+  @Autowired
+  private ConfluenceUpdateDelegate updateDelegate;
+
   @Override
   public Confluence create(ConfluenceCredentials credentials) {
     return new ConfluenceRestImpl(
         findDelegate,
         deleteDelegate,
-        createDelegate
+        createDelegate,
+        updateDelegate
     );
   }
 }

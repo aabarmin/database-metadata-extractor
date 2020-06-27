@@ -1,21 +1,27 @@
 package ru.mydesignstudio.database.metadata.extractor.output.html;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
-import lombok.NonNull;
+import java.util.Set;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.DatabaseMetadata;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
 import ru.mydesignstudio.database.metadata.extractor.output.Output;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.Label;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.provider.CommonLabelProvider;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.provider.DiagramLabelProvider;
 import ru.mydesignstudio.database.metadata.extractor.output.html.plant.uml.PlantUmlMarkupGenerator;
 import ru.mydesignstudio.database.metadata.extractor.output.html.plant.uml.PlantUmlPngGenerator;
 
@@ -31,10 +37,20 @@ public class PlantUmlOutput {
   @Autowired
   private PlantUmlPngGenerator pngGenerator;
 
+  @Autowired
+  private CommonLabelProvider commonLabelProvider;
+
+  @Autowired
+  private DiagramLabelProvider diagramLabelProvider;
+  
   @SneakyThrows
   public Output output(@NonNull List<DatabaseMetadata> databaseMetadata,
       @NonNull List<TableMetadata> tableMetadata,
       @NonNull Path outputFolder) {
+
+    checkNotNull(databaseMetadata, "Database metadata should not be null");
+    checkNotNull(tableMetadata, "Table metadata should not be null");
+    checkNotNull(outputFolder, "Output folder should not be null");
 
     log.info("Generating PlantUML output for tables {}", tableMetadata);
 
@@ -49,6 +65,13 @@ public class PlantUmlOutput {
     pngGenerator
         .generatePng(markupGenerator.generate(tableMetadata), outputFolder);
 
-    return new Output("ERD " + LocalDateTime.now(), outputFile);
+    return new Output("ERD " + LocalDateTime.now(), outputFile, getLabels());
+  }
+
+  private Set<Label> getLabels() {
+    final Set<Label> labels = new HashSet<>();
+    labels.addAll(commonLabelProvider.provide());
+    labels.addAll(diagramLabelProvider.provide());
+    return labels;
   }
 }

@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
-import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.ConfluenceAncestor;
-import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.ConfluenceBody;
-import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.ConfluenceSpace;
-import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.ConfluenceStorage;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.model.ConfluenceAncestor;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.model.ConfluenceBody;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.model.ConfluenceMetadata;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.model.ConfluenceSpace;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.model.ConfluenceStorage;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.CreatePageRequest;
+import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.CreateRequest;
 
 @Component
 public class CreatePageRequestFactory {
@@ -20,21 +22,24 @@ public class CreatePageRequestFactory {
   @Autowired
   private TitleSanitizer titleSanitizer;
 
-  public CreatePageRequest createRequest(@NonNull String title, @NonNull String content, @NonNull String space) {
-    return createRequest(title, content, space, null);
-  }
-
-  public CreatePageRequest createRequest(@NonNull String title, @NonNull String content, @NonNull String space, @Nullable Integer parentId) {
+  public CreatePageRequest createRequest(@NonNull CreateRequest request) {
     return CreatePageRequest.builder()
-        .title(titleSanitizer.sanitize(title))
+        .title(titleSanitizer.sanitize(request.getTitle()))
         .type("page")
-        .ancestors(createAncestors(parentId))
-        .space(new ConfluenceSpace(space))
-        .body(new ConfluenceBody(new ConfluenceStorage(htmlSanitizer.sanitize(content), "storage")))
+        .ancestors(createAncestors(request.getParentId()))
+        .space(new ConfluenceSpace(request.getSpace()))
+        .body(new ConfluenceBody(new ConfluenceStorage(htmlSanitizer.sanitize(request.getContent()), "storage")))
+        .metadata(createMetadata(request))
         .build();
   }
 
-  private List<ConfluenceAncestor> createAncestors(Integer parentId) {
+  private ConfluenceMetadata createMetadata(@NonNull CreateRequest request) {
+    return ConfluenceMetadata.builder()
+        .labels(request.getLabels())
+        .build();
+  }
+
+  private List<ConfluenceAncestor> createAncestors(@Nullable Integer parentId) {
     if (parentId == null) {
       return null;
     }

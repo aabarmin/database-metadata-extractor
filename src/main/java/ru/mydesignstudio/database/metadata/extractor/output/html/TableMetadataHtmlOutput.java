@@ -4,25 +4,40 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Optional;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
-import ru.mydesignstudio.database.metadata.extractor.extractors.type.TypeModel;
 import ru.mydesignstudio.database.metadata.extractor.output.Output;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.Label;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.provider.CommonLabelProvider;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.provider.TableLabelProvider;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.provider.ViewLabelProvider;
 
 @Slf4j
 @Component
 public class TableMetadataHtmlOutput {
   @Autowired
   private TemplateEngine templateEngine;
+
+  @Autowired
+  private ObjectTypeExtractor objectTypeExtractor;
+
+  @Autowired
+  private CommonLabelProvider commonLabelProvider;
+
+  @Autowired
+  private ViewLabelProvider viewLabelProvider;
+
+  @Autowired
+  private TableLabelProvider tableLabelProvider;
 
   @SneakyThrows
   public Output output(@NonNull TableMetadata metadata, @NonNull Path outputFolder) {
@@ -38,16 +53,31 @@ public class TableMetadataHtmlOutput {
 
     Files.write(outputFile, content.getBytes(Charset.forName("UTF-8")), StandardOpenOption.WRITE);
 
-    return new Output(getObjectType(metadata) + " " + metadata.getSchemaName() + "." + metadata.getTableName(), outputFile);
+    return new Output(getOutputTitle(metadata), outputFile, getLabels(metadata));
   }
 
-  private String getObjectType(TableMetadata tableMetadata) {
-    return Optional.ofNullable(tableMetadata)
-        .map(TableMetadata::getTypes)
-        .map(Collection::iterator)
-        .filter(Iterator::hasNext)
-        .map(Iterator::next)
-        .map(TypeModel::getObjectType)
-        .orElse("Unknown");
+  private String getOutputTitle(@NonNull TableMetadata metadata) {
+    return
+        objectTypeExtractor.extract(metadata) + " " + metadata.getSchemaName() + "." + metadata.getTableName();
+  }
+
+  private Set<Label> getLabels(TableMetadata tableMetadata) {
+    final Set<Label> labels = new HashSet<>();
+    labels.addAll(commonLabelProvider.provide());
+    if (isView(tableMetadata)) {
+      labels.addAll(viewLabelProvider.provide());
+    }
+    if (isTable(tableMetadata)) {
+      labels.addAll(tableLabelProvider.provide());
+    }
+    return labels;
+  }
+
+  private boolean isView(TableMetadata tableMetadata) {
+    return StringUtils.equalsIgnoreCase("View", objectTypeExtractor.extract(tableMetadata));
+  }
+
+  private boolean isTable(TableMetadata tableMetadata) {
+    return StringUtils.equalsIgnoreCase("Table", objectTypeExtractor.extract(tableMetadata));
   }
 }
