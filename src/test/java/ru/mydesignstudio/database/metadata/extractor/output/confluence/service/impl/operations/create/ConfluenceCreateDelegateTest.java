@@ -1,26 +1,17 @@
 package ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.configureFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.exactly;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.google.common.collect.Sets;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient;
+import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.test.web.client.MockRestServiceServer;
 import ru.mydesignstudio.database.metadata.extractor.config.ConfluenceConfiguration;
 import ru.mydesignstudio.database.metadata.extractor.config.ObjectMapperConfiguration;
 import ru.mydesignstudio.database.metadata.extractor.config.RestConfiguration;
@@ -35,8 +26,14 @@ import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.i
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.find.ConfluenceFindDelegate;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.update.ConfluenceUpdateDelegate;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.update.UpdatePageRequestFactory;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.Label;
 
-@SpringJUnitConfig(classes = {
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
+import static org.hamcrest.Matchers.*;
+
+@RestClientTest(components = {
     ConfluenceFindDelegate.class,
     ConfluenceDeleteDelegate.class,
     ConfluenceCreateDelegate.class,
@@ -49,80 +46,92 @@ import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.i
     ConfluenceCredentialsHelper.class,
     BasicAuthenticationHeaderFactory.class,
     ConfluenceConfiguration.class,
-    ConfluenceRestFactory.class,
-    RestConfiguration.class,
-    ObjectMapperConfiguration.class
+    ConfluenceRestFactory.class
 })
 @TestPropertySource(properties = {
     "output.target=confluence",
     "confluence.type=cloud",
     "confluence.port=50080",
-    "confluence.host=localhost",
+    "confluence.host=host",
     "confluence.protocol=http",
     "confluence.username=username",
     "confluence.password=password"
 })
+@AutoConfigureWebClient(registerRestTemplate = true)
 class ConfluenceCreateDelegateTest {
   @Autowired
   private ConfluenceCreateDelegate unitUnderTest;
 
-  @Autowired
-  private ConfluenceUriBuilder uriBuilder;
+  @Value("classpath:create_response.json")
+  private Resource createResponse;
+
+  @Value("classpath:add_label_response.json")
+  private Resource addLabelResponse;
 
   @Autowired
-  private ConfluenceCredentials credentials;
-
-  @Autowired
-  private ObjectMapper objectMapper;
-
-  private WireMockServer mockServer;
-
-  @BeforeEach
-  void setUp() {
-    mockServer = new WireMockServer(options().dynamicPort());
-    mockServer.start();
-
-    configureFor(mockServer.port());
-
-    ReflectionTestUtils.setField(uriBuilder, "confluencePort", mockServer.port());
-  }
-
-  @AfterEach
-  void tearDown() {
-    mockServer.stop();
-  }
+  private MockRestServiceServer mockServer;
 
   @Test
   void check_contextStarts() {
-    assertThat(unitUnderTest).isNotNull();
+    assertAll(
+            () -> assertNotNull(unitUnderTest),
+            () -> assertNotNull(mockServer)
+    );
   }
 
   @Test
-  void create_shouldWorkCorrectly() throws Exception {
-    final CreateResponse createResponse = new CreateResponse();
-    createResponse.setId("1234");
-    createResponse.setTitle("title");
-    createResponse.setType("page");
-
-    stubFor(
-        post(urlEqualTo("/wiki/rest/api/content/"))
-            .withBasicAuth(credentials.getUsername(), credentials.getPassword())
-            .withHeader("Content-Type", equalTo("application/json"))
-            .willReturn(
-                aResponse()
-                    .withStatus(200)
-                    .withHeader("Content-Type", "application/json")
-                    .withBody(objectMapper.writeValueAsString(createResponse))
-            )
-    );
+  void createWithoutLabels_shouldSendSingleRequest() throws Exception {
+    mockServer.expect(requestTo("http://host:50080/wiki/rest/api/content/"))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("title", is("title")))
+            .andExpect(jsonPath("type", is("page")))
+            .andRespond(withSuccess(createResponse, MediaType.APPLICATION_JSON));
 
     final CreateResponse response = unitUnderTest.create(CreateRequest.builder()
-        .content("content")
-        .title("title")
-        .space("space")
-        .build());
+            .content("content")
+            .title("title")
+            .space("space")
+            .build());
 
-    assertThat(response).isNotNull();
-    verify(exactly(1), postRequestedFor(urlEqualTo("/wiki/rest/api/content/")));
+    mockServer.verify();
+
+    assertAll(
+            () -> assertNotNull(response),
+            () -> assertEquals("12345", response.getId())
+    );
+  }
+
+  @Test
+  void createWithLabels_shouldSendTwoRequests() {
+    mockServer.expect(requestTo("http://host:50080/wiki/rest/api/content/"))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("title", is("title")))
+            .andExpect(jsonPath("type", is("page")))
+            .andRespond(withSuccess(createResponse, MediaType.APPLICATION_JSON));
+
+    mockServer.expect(requestTo("http://host:50080/wiki/rest/api/content/12345/label"))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(header("Authorization", is(notNullValue())))
+            .andExpect(jsonPath("$[0].prefix", is("global")))
+            .andExpect(jsonPath("$[0].name", is(oneOf("label1", "label2"))))
+            .andExpect(jsonPath("$[1].name", is(oneOf("label1", "label2"))))
+            .andRespond(withSuccess(addLabelResponse, MediaType.APPLICATION_JSON));
+
+    final CreateResponse response = unitUnderTest.create(CreateRequest.builder()
+            .content("content")
+            .title("title")
+            .space("space")
+            .labels(Sets.newHashSet(
+                    new Label("global", "label1"),
+                    new Label("global", "label2")
+            ))
+            .build());
+
+    mockServer.verify();
+
+    assertAll(
+            () -> assertNotNull(response),
+            () -> assertEquals("12345", response.getId())
+    );
   }
 }

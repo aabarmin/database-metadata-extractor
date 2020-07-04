@@ -29,13 +29,6 @@ public class CreatePageRequestFactory {
         .ancestors(createAncestors(request.getParentId()))
         .space(new ConfluenceSpace(request.getSpace()))
         .body(new ConfluenceBody(new ConfluenceStorage(htmlSanitizer.sanitize(request.getContent()), "storage")))
-        .metadata(createMetadata(request))
-        .build();
-  }
-
-  private ConfluenceMetadata createMetadata(@NonNull CreateRequest request) {
-    return ConfluenceMetadata.builder()
-        .labels(request.getLabels())
         .build();
   }
 
