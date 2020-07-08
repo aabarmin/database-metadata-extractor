@@ -3,6 +3,11 @@ package ru.mydesignstudio.database.metadata.extractor.output.confluence.service.
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.net.URI;
+import java.util.Map;
+import java.util.Set;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +24,9 @@ import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.i
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.CreatePageRequest;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.request.CreateRequest;
 import ru.mydesignstudio.database.metadata.extractor.output.confluence.service.impl.operations.create.response.CreateResponse;
+import ru.mydesignstudio.database.metadata.extractor.output.html.label.Label;
+
+import static com.google.common.base.Preconditions.*;
 
 @Slf4j
 @Component
@@ -46,13 +54,35 @@ public class ConfluenceCreateDelegate {
     return credentialsHelper.withCredentials(httpHeaders -> {
       httpHeaders.setContentType(MediaType.APPLICATION_JSON);
       final CreatePageRequest request = requestFactory.createRequest(createRequest);
-      final HttpEntity<CreatePageRequest> entity = new HttpEntity<>(request, httpHeaders);
+      final HttpEntity<CreatePageRequest> createEntity = new HttpEntity<>(request, httpHeaders);
 
       final ResponseEntity<CreateResponse> responseEntity = restTemplate
-          .exchange(createUrl(), HttpMethod.POST, entity, CreateResponse.class);
+              .exchange(createUrl(), HttpMethod.POST, createEntity, CreateResponse.class);
 
-      return responseEntity.getBody();
+      final CreateResponse createResponse = responseEntity.getBody();
+
+      if (hasLabels(createRequest)) {
+        final HttpEntity<Set<Label>> addLabelsEntity = new HttpEntity<>(createRequest.getLabels(), httpHeaders);
+        final ResponseEntity<Map> addLabelsResponse = restTemplate
+                .exchange(addLabelsUrl(createResponse), HttpMethod.POST, addLabelsEntity, Map.class);
+
+        checkArgument(addLabelsResponse.getStatusCode().is2xxSuccessful(), "Labels weren't added");
+      }
+
+      return createResponse;
     });
+  }
+
+  @SneakyThrows
+  private URI addLabelsUrl(@NonNull CreateResponse createResponse) {
+    return uriBuilder.build(Lists.newArrayList(
+            createResponse.getId(),
+            "label"
+    ));
+  }
+
+  private boolean hasLabels(@NonNull CreateRequest createRequest) {
+    return !createRequest.getLabels().isEmpty();
   }
 
   @SneakyThrows

@@ -71,10 +71,7 @@ class CreatePageRequestFactoryTest {
         .build());
 
     assertAll(
-        () -> assertNotNull(request),
-        () -> assertNotNull(request.getMetadata()),
-        () -> assertNotNull(request.getMetadata().getLabels()),
-        () -> assertEquals(3, request.getMetadata().getLabels().size())
+        () -> assertNotNull(request)
     );
   }
 }
