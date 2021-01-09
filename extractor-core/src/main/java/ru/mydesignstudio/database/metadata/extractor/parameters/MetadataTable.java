@@ -6,8 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class MetadataSchema {
+public class MetadataTable {
   private String name;
-  private List<MetadataTable> tables = Lists.newArrayList();
   private List<String> labels = Lists.newArrayList();
 }

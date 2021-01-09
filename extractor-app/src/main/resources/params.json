@@ -1,17 +1,92 @@
 {
-  "schemas": [
-    "HR"
-  ],
-  "tables": {
-    "HR": [
-      "DEPARTMENTS",
-      "EMPLOYEES",
-      "JOBS",
-      "JOB_HISTORY",
-      "LOCATIONS",
-      "REGIONS",
-      "COUNTRIES",
-      "EMP_DETAILS_VIEW"
-    ]
-  }
+  "sources": [
+    {
+      "source": "ORACLE",
+      "schemas": [
+        {
+          "name": "HR",
+          "tables": [
+            {
+              "name": "DEPARTMENTS",
+              "labels": [
+                "label 1",
+                "label 2",
+                "label 3"
+              ]
+            },
+            {
+              "name": "EMPLOYEES",
+              "labels": []
+            },
+            {
+              "name": "TYPES",
+              "labels": []
+            }
+          ],
+          "labels": [
+            "label 4",
+            "label 5",
+            "label 6"
+          ]
+        },
+        {
+          "name": "STUFF",
+          "tables": [
+            {
+              "name": "TYPES",
+              "labels": []
+            },
+            {
+              "name": "ITEMS",
+              "labels": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "NETSUITE",
+      "schemas": [
+        {
+          "name": "HR",
+          "tables": [
+            {
+              "name": "DEPARTMENTS",
+              "labels": [
+                "label 1",
+                "label 2",
+                "label 3"
+              ]
+            },
+            {
+              "name": "EMPLOYEES",
+              "labels": []
+            },
+            {
+              "name": "TYPES",
+              "labels": []
+            }
+          ],
+          "labels": [
+            "label 4",
+            "label 5",
+            "label 6"
+          ]
+        },
+        {
+          "name": "STUFF",
+          "tables": [
+            {
+              "name": "TYPES",
+              "labels": []
+            },
+            {
+              "name": "ITEMS",
+              "labels": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
