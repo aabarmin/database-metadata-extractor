@@ -56,6 +56,12 @@ dependencyManagement {
     }
 }
 
-tasks.test {
-    useJUnitPlatform()
+tasks {
+    test {
+        useJUnitPlatform()
+    }
+
+    clean {
+        delete("html_output")
+    }
 }
