@@ -21,9 +21,9 @@ $ chmod +x ./gradlew
 As a result you'll have a file `metadata-extractor.jar` in the `build/libs` folder:
 
 ```shell script
-$ tree build/libs
+$ tree extractor-app/build/libs
 
-build/libs
+extractor-app/build/libs
 └── metadata-extractor.jar
 
 0 directories, 1 file

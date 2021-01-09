@@ -64,4 +64,8 @@ tasks {
     clean {
         delete("html_output")
     }
+
+    bootJar {
+        archiveFileName.set("${rootProject.name}.${archiveExtension.get()}")
+    }
 }
