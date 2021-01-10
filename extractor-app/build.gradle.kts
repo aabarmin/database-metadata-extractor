@@ -1,5 +1,8 @@
 plugins {
     id("org.springframework.boot")
+
+    kotlin("jvm")
+    kotlin("plugin.spring")
 }
 
 dependencies {
@@ -12,7 +15,9 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter")
 
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.11.0")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.12.0")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.12.0")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.12.0")
     implementation("com.google.code.findbugs:jsr305:3.0.2")
 }
 

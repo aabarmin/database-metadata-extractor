@@ -4,7 +4,7 @@
       "source": "ORACLE",
       "connection": {
         "url": "jdbc:oracle:thin://abc.def/",
-        "login": "secret-login",
+        "username": "secret-login",
         "password": "secret-password"
       },
       "schemas": [
@@ -45,7 +45,8 @@
               "name": "ITEMS",
               "labels": []
             }
-          ]
+          ],
+          "labels": []
         }
       ]
     },
@@ -53,7 +54,7 @@
       "source": "NETSUITE",
       "connection": {
         "url": "jdbc:oracle:thin://abc.def/",
-        "login": "secret-login",
+        "username": "secret-login",
         "password": "secret-password"
       },
       "schemas": [
@@ -94,7 +95,8 @@
               "name": "ITEMS",
               "labels": []
             }
-          ]
+          ],
+          "labels": []
         }
       ]
     }
