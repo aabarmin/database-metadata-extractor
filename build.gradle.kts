@@ -1,8 +1,19 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
 plugins {
     id("base")
     id("java")
+    id("idea")
     id("org.springframework.boot").version("2.4.1").apply(false)
     id("io.spring.dependency-management").version("1.0.10.RELEASE")
+    kotlin("jvm").version("1.4.21").apply(false)
+    kotlin("plugin.spring").version("1.4.21").apply(false)
 }
 
 allprojects {
@@ -13,9 +24,22 @@ subprojects {
     apply(plugin = "java")
     apply(plugin = "io.spring.dependency-management")
 
+    /**
+     * Using Java 8.
+     */
     configure<JavaPluginConvention> {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    /**
+     * Configuring Kotlin for all the subprojects.
+     */
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xjsr305=strict")
+            jvmTarget = "1.8"
+        }
     }
 
     repositories {
@@ -50,6 +74,11 @@ subprojects {
         implementation("commons-io:commons-io:2.6")
         implementation("commons-lang:commons-lang:2.6")
         implementation("com.google.guava:guava:30.1-jre")
+        /**
+         * Adding Kotlin dependencies.
+         */
+        implementation(kotlin("reflect"))
+        implementation(kotlin("stdlib-jdk8"))
     }
 
     /**
