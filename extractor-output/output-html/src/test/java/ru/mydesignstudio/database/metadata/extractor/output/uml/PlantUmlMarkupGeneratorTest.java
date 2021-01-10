@@ -8,11 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.ColumnModel;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.ForeignKeyModel;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.PrimaryKeyModel;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.ReferenceModel;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.ColumnModel;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.ForeignKeyModel;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.TableMetadata;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.PrimaryKeyModel;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.ReferenceModel;
 
 @ExtendWith(MockitoExtension.class)
 class PlantUmlMarkupGeneratorTest {

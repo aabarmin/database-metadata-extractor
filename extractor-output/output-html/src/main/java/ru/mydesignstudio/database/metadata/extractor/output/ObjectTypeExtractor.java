@@ -7,8 +7,8 @@ import java.util.Optional;
 import com.google.common.base.Preconditions;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.TypeModel;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.TableMetadata;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.TypeModel;
 
 /**
  * Extracts metadata type - if this metadata belongs to view or table. If there is no

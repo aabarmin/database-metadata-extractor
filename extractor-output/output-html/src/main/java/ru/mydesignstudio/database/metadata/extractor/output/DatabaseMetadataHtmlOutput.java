@@ -13,7 +13,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.DatabaseMetadata;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.DatabaseMetadata;
 import ru.mydesignstudio.database.metadata.extractor.output.provider.CommonLabelProvider;
 import ru.mydesignstudio.database.metadata.extractor.output.provider.DatabaseLabelProvider;
 

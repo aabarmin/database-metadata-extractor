@@ -14,8 +14,8 @@ import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operati
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.find.FindResponse;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.find.FindResult;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.update.request.UpdateRequest;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.DatabaseMetadata;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.DatabaseMetadata;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.TableMetadata;
 
 import java.io.BufferedReader;
 import java.nio.charset.Charset;

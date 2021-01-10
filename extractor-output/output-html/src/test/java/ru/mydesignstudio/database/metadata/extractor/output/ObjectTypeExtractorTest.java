@@ -8,9 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.TypeModel;
-import ru.mydesignstudio.database.metadata.extractor.output.ObjectTypeExtractor;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.TableMetadata;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.TypeModel;
 
 @ExtendWith(MockitoExtension.class)
 class ObjectTypeExtractorTest {

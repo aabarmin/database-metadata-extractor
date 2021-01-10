@@ -7,11 +7,11 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.ColumnModel;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.ForeignKeyModel;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.PrimaryKeyModel;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.ReferenceModel;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.ColumnModel;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.ForeignKeyModel;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.TableMetadata;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.PrimaryKeyModel;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.ReferenceModel;
 
 @Slf4j
 @Component

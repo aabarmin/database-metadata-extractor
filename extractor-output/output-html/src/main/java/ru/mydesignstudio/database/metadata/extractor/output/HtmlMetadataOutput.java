@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.DatabaseMetadata;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.DatabaseMetadata;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.TableMetadata;
 
 import javax.annotation.PostConstruct;
 import java.nio.file.Files;

@@ -2,10 +2,10 @@ package ru.mydesignstudio.database.metadata.extractor
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import ru.mydesignstudio.database.metadata.extractor.extractors.DatabaseMetadataExtractor
-import ru.mydesignstudio.database.metadata.extractor.extractors.SourceMetadataExtractorRegistry
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.DatabaseMetadata
-import ru.mydesignstudio.database.metadata.extractor.parameters.source.MetadataSource
+import ru.mydesignstudio.database.metadata.extractor.database.DatabaseMetadataExtractor
+import ru.mydesignstudio.database.metadata.extractor.registry.DatabaseMetadataExtractorRegistry
+import ru.mydesignstudio.database.metadata.extractor.extract.result.DatabaseMetadata
+import ru.mydesignstudio.database.metadata.extractor.extract.parameters.source.MetadataSource
 
 @Component
 class NetsuiteMetadataExtractor : DatabaseMetadataExtractor {
@@ -19,7 +19,7 @@ class NetsuiteMetadataExtractor : DatabaseMetadataExtractor {
     }
 
     @Autowired
-    override fun register(registry: SourceMetadataExtractorRegistry) {
+    override fun register(registry: DatabaseMetadataExtractorRegistry) {
         registry.register(this)
     }
 }
