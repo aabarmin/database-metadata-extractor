@@ -17,9 +17,4 @@ class NetsuiteMetadataExtractor : SourceMetadataExtractor {
         // TODO, provide an implementation here
         return emptyList()
     }
-
-    @Autowired
-    override fun register(registry: SourceMetadataExtractorRegistry) {
-        registry.register(this)
-    }
 }

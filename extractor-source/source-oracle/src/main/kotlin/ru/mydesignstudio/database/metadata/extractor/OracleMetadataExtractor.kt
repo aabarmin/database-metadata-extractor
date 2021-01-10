@@ -40,9 +40,4 @@ class OracleMetadataExtractor @Autowired constructor(
     override fun getSourceType(): String {
         return "ORACLE"
     }
-
-    @Autowired
-    override fun register(registry: SourceMetadataExtractorRegistry) {
-        registry.register(this)
-    }
 }

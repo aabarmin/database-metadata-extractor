@@ -17,9 +17,4 @@ interface SourceMetadataExtractor {
      * Type of the source this metadata extractor supports, ex Oracle, Netsuite, MySQL, etc.
      */
     fun getSourceType(): String
-
-    /**
-     * Any implementation of this interface must be registered in the registry.
-     */
-    fun register(registry: SourceMetadataExtractorRegistry): Unit
 }
