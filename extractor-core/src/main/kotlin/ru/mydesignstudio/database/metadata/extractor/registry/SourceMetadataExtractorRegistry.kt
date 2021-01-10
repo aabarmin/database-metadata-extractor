@@ -1,15 +1,15 @@
 package ru.mydesignstudio.database.metadata.extractor.registry
 
-import ru.mydesignstudio.database.metadata.extractor.database.DatabaseMetadataExtractor
+import ru.mydesignstudio.database.metadata.extractor.source.SourceMetadataExtractor
 
 /**
  * Registry that stores information about all registered database metadata extractors.
  */
-interface DatabaseMetadataExtractorRegistry {
+interface SourceMetadataExtractorRegistry {
     /**
      * Register a single extractor.
      */
-    fun register(extractor: DatabaseMetadataExtractor): Unit
+    fun register(extractor: SourceMetadataExtractor): Unit
 
     /**
      * Check if is there any extractor that can extract metadata of a given type.
@@ -19,5 +19,5 @@ interface DatabaseMetadataExtractorRegistry {
     /**
      * Get an extractor for the given database type.
      */
-    fun getExtractor(type: String): DatabaseMetadataExtractor
+    fun getExtractor(type: String): SourceMetadataExtractor
 }

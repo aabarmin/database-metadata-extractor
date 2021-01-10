@@ -2,7 +2,7 @@ package ru.mydesignstudio.database.metadata.extractor.extract.parameters.validat
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import ru.mydesignstudio.database.metadata.extractor.registry.DatabaseMetadataExtractorRegistry
+import ru.mydesignstudio.database.metadata.extractor.registry.SourceMetadataExtractorRegistry
 import ru.mydesignstudio.database.metadata.extractor.extract.parameters.ExtractParameters
 
 /**
@@ -11,7 +11,7 @@ import ru.mydesignstudio.database.metadata.extractor.extract.parameters.ExtractP
  */
 @Component
 class BasicParametersValidator @Autowired constructor (
-        private val registry: DatabaseMetadataExtractorRegistry
+        private val registry: SourceMetadataExtractorRegistry
 ) : ParametersValidator {
 
     override fun validate(parameters: ExtractParameters): ValidationResult {

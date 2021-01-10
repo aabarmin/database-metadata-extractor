@@ -2,18 +2,18 @@ package ru.mydesignstudio.database.metadata.extractor
 
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import ru.mydesignstudio.database.metadata.extractor.database.DatabaseMetadataExtractor
-import ru.mydesignstudio.database.metadata.extractor.registry.DatabaseMetadataExtractorRegistry
-import java.lang.RuntimeException
+import ru.mydesignstudio.database.metadata.extractor.registry.SourceMetadataExtractorRegistry
+import ru.mydesignstudio.database.metadata.extractor.source.SourceMetadataExtractor
 
-internal class DatabaseMetadataExtractorRegistryImplTest {
-    private val registry: DatabaseMetadataExtractorRegistry = DatabaseMetadataExtractorRegistryImpl()
+internal class SourceMetadataExtractorRegistryImplTest {
+    private val registry: SourceMetadataExtractorRegistry = SourceMetadataExtractorRegistryImpl()
 
     @Test
     internal fun `Registered extractor should be available`() {
-        var dummyExtractor: DatabaseMetadataExtractor = mock()
+        var dummyExtractor: SourceMetadataExtractor = mock()
         whenever(dummyExtractor.getSourceType()).thenReturn("TEST")
 
         registry.register(dummyExtractor)

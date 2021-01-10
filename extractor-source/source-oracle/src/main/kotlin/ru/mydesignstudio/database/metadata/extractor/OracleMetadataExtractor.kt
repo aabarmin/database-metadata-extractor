@@ -3,11 +3,11 @@ package ru.mydesignstudio.database.metadata.extractor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.lang.NonNull
 import org.springframework.stereotype.Component
-import ru.mydesignstudio.database.metadata.extractor.database.DatabaseMetadataExtractor
-import ru.mydesignstudio.database.metadata.extractor.registry.DatabaseMetadataExtractorRegistry
-import ru.mydesignstudio.database.metadata.extractor.extract.result.DatabaseMetadata
 import ru.mydesignstudio.database.metadata.extractor.extract.parameters.source.MetadataSchema
 import ru.mydesignstudio.database.metadata.extractor.extract.parameters.source.MetadataSource
+import ru.mydesignstudio.database.metadata.extractor.extract.result.DatabaseMetadata
+import ru.mydesignstudio.database.metadata.extractor.registry.SourceMetadataExtractorRegistry
+import ru.mydesignstudio.database.metadata.extractor.source.SourceMetadataExtractor
 import java.util.stream.Collectors
 
 // TODO, refactor this class, it looks messy
@@ -15,7 +15,7 @@ import java.util.stream.Collectors
 @Component
 class OracleMetadataExtractor @Autowired constructor(
         private val appends: List<DatabaseMetadataAppender>
-) : DatabaseMetadataExtractor {
+) : SourceMetadataExtractor {
 
     override fun extract(@NonNull source: MetadataSource): List<DatabaseMetadata> {
         return source.schemas
@@ -42,7 +42,7 @@ class OracleMetadataExtractor @Autowired constructor(
     }
 
     @Autowired
-    override fun register(registry: DatabaseMetadataExtractorRegistry) {
+    override fun register(registry: SourceMetadataExtractorRegistry) {
         registry.register(this)
     }
 }

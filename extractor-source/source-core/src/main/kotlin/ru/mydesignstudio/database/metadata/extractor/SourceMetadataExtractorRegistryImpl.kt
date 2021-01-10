@@ -1,14 +1,14 @@
 package ru.mydesignstudio.database.metadata.extractor
 
 import org.springframework.stereotype.Component
-import ru.mydesignstudio.database.metadata.extractor.database.DatabaseMetadataExtractor
-import ru.mydesignstudio.database.metadata.extractor.registry.DatabaseMetadataExtractorRegistry
+import ru.mydesignstudio.database.metadata.extractor.registry.SourceMetadataExtractorRegistry
+import ru.mydesignstudio.database.metadata.extractor.source.SourceMetadataExtractor
 
 @Component
-class DatabaseMetadataExtractorRegistryImpl : DatabaseMetadataExtractorRegistry {
-    private val registry: MutableMap<String, DatabaseMetadataExtractor> = HashMap()
+class SourceMetadataExtractorRegistryImpl : SourceMetadataExtractorRegistry {
+    private val registry: MutableMap<String, SourceMetadataExtractor> = HashMap()
 
-    override fun register(extractor: DatabaseMetadataExtractor) {
+    override fun register(extractor: SourceMetadataExtractor) {
         if (hasExtractor(extractor.getSourceType())) {
             throw RuntimeException("An extractor for type ${extractor.getSourceType()} has already been registered")
         }
@@ -19,7 +19,7 @@ class DatabaseMetadataExtractorRegistryImpl : DatabaseMetadataExtractorRegistry 
         return registry.containsKey(type)
     }
 
-    override fun getExtractor(type: String): DatabaseMetadataExtractor {
+    override fun getExtractor(type: String): SourceMetadataExtractor {
         if (!hasExtractor(type)) {
             throw RuntimeException("There is no extractor for type $type")
         }

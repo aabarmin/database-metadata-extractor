@@ -7,11 +7,12 @@ import org.springframework.stereotype.Component
 import ru.mydesignstudio.database.metadata.extractor.source.SourceMetadataExtractor
 import ru.mydesignstudio.database.metadata.extractor.extract.parameters.reader.ParametersReader
 import ru.mydesignstudio.database.metadata.extractor.extract.parameters.validator.ParametersValidator
+import ru.mydesignstudio.database.metadata.extractor.registry.SourceMetadataExtractorRegistry
 import java.util.stream.Collectors
 
 @Component
 class ApplicationRunner @Autowired constructor (
-        val sourceExtractor: SourceMetadataExtractor,
+        val sourceRegistry: SourceMetadataExtractorRegistry,
         val parametersReader: ParametersReader,
         val parametersValidator: ParametersValidator
         ) : CommandLineRunner {
@@ -31,11 +32,11 @@ class ApplicationRunner @Autowired constructor (
         logger.info("Parameters are correct")
 
         logger.info("Extracting metadata from sources")
-        var outputs = parameters.sources.stream()
-                .map { sourceExtractor.extract(it) }
+        var metadata = parameters.sources.stream()
+                .map { Pair(it, sourceRegistry.getExtractor(it.source)) }
+                .map { p -> p.second.extract(p.first) }
                 .flatMap { it.stream() }
                 .collect(Collectors.toList())
-        logger.info("Done")
 
         /*
         logger.info("Reading database metadata")
