@@ -1,7 +1,5 @@
 package ru.mydesignstudio.database.metadata.extractor.runner;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -13,6 +11,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.mydesignstudio.database.metadata.extractor.output.ConfluenceOutput;
 import ru.mydesignstudio.database.metadata.extractor.output.HtmlMetadataOutput;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(properties = {

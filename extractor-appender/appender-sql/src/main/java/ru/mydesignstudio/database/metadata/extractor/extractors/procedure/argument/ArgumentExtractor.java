@@ -2,7 +2,7 @@ package ru.mydesignstudio.database.metadata.extractor.extractors.procedure.argum
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.mydesignstudio.database.metadata.extractor.extractors.DatabaseMetadataAppender;
+import ru.mydesignstudio.database.metadata.extractor.DatabaseMetadataAppender;
 import ru.mydesignstudio.database.metadata.extractor.extractors.ExtractHelper;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.ArgumentModel;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.DatabaseMetadata;

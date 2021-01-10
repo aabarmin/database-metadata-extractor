@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.core.io.DefaultResourceLoader
 import org.springframework.stereotype.Component
 import ru.mydesignstudio.database.metadata.extractor.parameters.Parameters
-import ru.mydesignstudio.database.metadata.extractor.parameters.ParametersReader
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardOpenOption

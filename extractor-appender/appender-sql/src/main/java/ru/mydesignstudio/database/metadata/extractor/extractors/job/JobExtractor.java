@@ -3,7 +3,7 @@ package ru.mydesignstudio.database.metadata.extractor.extractors.job;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.mydesignstudio.database.metadata.extractor.extractors.DatabaseMetadataAppender;
+import ru.mydesignstudio.database.metadata.extractor.DatabaseMetadataAppender;
 import ru.mydesignstudio.database.metadata.extractor.extractors.ExtractHelper;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.DatabaseMetadata;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.JobModel;

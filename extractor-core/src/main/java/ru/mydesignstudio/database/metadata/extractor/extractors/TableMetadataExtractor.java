@@ -2,7 +2,7 @@ package ru.mydesignstudio.database.metadata.extractor.extractors;
 
 import org.springframework.lang.NonNull;
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
-import ru.mydesignstudio.database.metadata.extractor.parameters.MetadataSource;
+import ru.mydesignstudio.database.metadata.extractor.parameters.source.MetadataSource;
 
 import java.util.List;
 

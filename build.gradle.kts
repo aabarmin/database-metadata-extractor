@@ -79,6 +79,7 @@ subprojects {
          */
         implementation(kotlin("reflect"))
         implementation(kotlin("stdlib-jdk8"))
+        testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
     }
 
     /**

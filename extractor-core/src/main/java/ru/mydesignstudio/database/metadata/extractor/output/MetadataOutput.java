@@ -6,5 +6,6 @@ import ru.mydesignstudio.database.metadata.extractor.extractors.model.DatabaseMe
 import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
 
 public interface MetadataOutput {
+  // TODO, Parameters should be taken into account here, like labels.
   List<Output> output(@NonNull List<DatabaseMetadata> databaseMetadata, @NonNull List<TableMetadata> tableMetadata);
 }

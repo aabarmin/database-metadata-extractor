@@ -10,13 +10,22 @@
       "schemas": [
         {
           "name": "HR",
-          "tables": [
+          "objects": [
             {
               "name": "DEPARTMENTS",
               "labels": [
-                "label 1",
-                "label 2",
-                "label 3"
+                {
+                  "prefix": "global",
+                  "value": "value 1"
+                },
+                {
+                  "prefix": "global",
+                  "value": "value 2"
+                },
+                {
+                  "prefix": "global",
+                  "value": "value 2"
+                }
               ]
             },
             {
@@ -28,25 +37,25 @@
               "labels": []
             }
           ],
-          "labels": [
-            "label 4",
-            "label 5",
-            "label 6"
-          ]
-        },
-        {
-          "name": "STUFF",
-          "tables": [
-            {
-              "name": "TYPES",
-              "labels": []
-            },
-            {
-              "name": "ITEMS",
-              "labels": []
-            }
-          ],
-          "labels": []
+          "labels": {
+            "table": [
+              {
+                "prefix": "global",
+                "value": "table label 1"
+              },
+              {
+                "prefix": "global",
+                "value": "table label 2"
+              },
+              {
+                "prefix": "global",
+                "value": "table label 1"
+              }
+            ],
+            "view": [],
+            "schema": [],
+            "diagram": []
+          }
         }
       ]
     },
@@ -60,13 +69,22 @@
       "schemas": [
         {
           "name": "HR",
-          "tables": [
+          "objects": [
             {
               "name": "DEPARTMENTS",
               "labels": [
-                "label 1",
-                "label 2",
-                "label 3"
+                {
+                  "prefix": "global",
+                  "value": "value 1"
+                },
+                {
+                  "prefix": "global",
+                  "value": "value 2"
+                },
+                {
+                  "prefix": "global",
+                  "value": "value 2"
+                }
               ]
             },
             {
@@ -78,27 +96,30 @@
               "labels": []
             }
           ],
-          "labels": [
-            "label 4",
-            "label 5",
-            "label 6"
-          ]
-        },
-        {
-          "name": "STUFF",
-          "tables": [
-            {
-              "name": "TYPES",
-              "labels": []
-            },
-            {
-              "name": "ITEMS",
-              "labels": []
-            }
-          ],
-          "labels": []
+          "labels": {
+            "table": [
+              {
+                "prefix": "global",
+                "value": "table label 1"
+              },
+              {
+                "prefix": "global",
+                "value": "table label 2"
+              },
+              {
+                "prefix": "global",
+                "value": "table label 1"
+              }
+            ],
+            "view": [],
+            "schema": [],
+            "diagram": []
+          }
         }
       ]
     }
+  ],
+  "destinations": [
+
   ]
 }
