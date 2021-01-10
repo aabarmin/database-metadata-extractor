@@ -2,6 +2,11 @@
   "sources": [
     {
       "source": "ORACLE",
+      "connection": {
+        "url": "jdbc:oracle:thin://abc.def/",
+        "login": "secret-login",
+        "password": "secret-password"
+      },
       "schemas": [
         {
           "name": "HR",
@@ -46,6 +51,11 @@
     },
     {
       "source": "NETSUITE",
+      "connection": {
+        "url": "jdbc:oracle:thin://abc.def/",
+        "login": "secret-login",
+        "password": "secret-password"
+      },
       "schemas": [
         {
           "name": "HR",
