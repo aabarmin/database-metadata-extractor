@@ -2,8 +2,6 @@ package ru.mydesignstudio.database.metadata.extractor.extract.result
 
 import org.apache.commons.lang.StringUtils
 
-// TODO, implement in code
-// @EqualsAndHashCode(of = ["columnId"])
 class ColumnModel(
         val schemaName: String = "",
         val tableName: String = "",
@@ -26,4 +24,21 @@ class ColumnModel(
     fun isNullable(): Boolean {
         return StringUtils.equalsIgnoreCase("Y", nullable)
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as ColumnModel
+
+        if (columnId != other.columnId) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return columnId
+    }
+
+
 }
