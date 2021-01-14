@@ -9,7 +9,6 @@ dependencies {
     implementation(project(":extractor-core"))
     implementation(project(":extractor-source:source-oracle"))
     implementation(project(":extractor-source:source-netsuite"))
-    implementation(project(":extractor-appender:appender-sql"))
     implementation(project(":extractor-output:output-html"))
     implementation(project(":extractor-output:output-confluence"))
 

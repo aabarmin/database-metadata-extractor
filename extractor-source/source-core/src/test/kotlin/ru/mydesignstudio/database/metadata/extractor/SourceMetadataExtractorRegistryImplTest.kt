@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import ru.mydesignstudio.database.metadata.extractor.registry.SourceMetadataExtractorRegistry
+import ru.mydesignstudio.database.metadata.extractor.registry.SourceMetadataExtractorRegistryImpl
 import ru.mydesignstudio.database.metadata.extractor.source.SourceMetadataExtractor
 
 internal class SourceMetadataExtractorRegistryImplTest {

@@ -5,7 +5,7 @@ package ru.mydesignstudio.database.metadata.extractor.extract.parameters.source
  */
 class MetadataSchema(
         val name: String,
-        val objects: List<MetadataObject>,
+        val objects: Collection<MetadataObject>,
         val labels: MetadataSchemaLabels
 ) {
 
