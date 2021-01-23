@@ -9,7 +9,7 @@ interface SourceMetadataExtractorRegistry {
     /**
      * Register a single extractor.
      */
-    fun register(extractor: SourceMetadataExtractor): Unit
+    fun register(extractor: SourceMetadataExtractor)
 
     /**
      * Check if is there any extractor that can extract metadata of a given type.

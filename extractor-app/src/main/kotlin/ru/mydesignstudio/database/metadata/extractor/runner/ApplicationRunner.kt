@@ -4,17 +4,18 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
+import ru.mydesignstudio.database.metadata.extractor.destination.MetadataOutput
 import ru.mydesignstudio.database.metadata.extractor.extract.parameters.reader.ParametersReader
 import ru.mydesignstudio.database.metadata.extractor.extract.parameters.validator.ParametersValidator
 import ru.mydesignstudio.database.metadata.extractor.registry.SourceMetadataExtractorRegistry
 import java.util.stream.Collectors
 
 @Component
-class ApplicationRunner @Autowired constructor (
-        val sourceRegistry: SourceMetadataExtractorRegistry,
-        val parametersReader: ParametersReader,
-        val parametersValidator: ParametersValidator
-        ) : CommandLineRunner {
+class ApplicationRunner constructor (
+        private val sourceRegistry: SourceMetadataExtractorRegistry,
+        private val parametersReader: ParametersReader,
+        private val parametersValidator: ParametersValidator,
+        private val metadataOutput: MetadataOutput) : CommandLineRunner {
 
     private val logger = LoggerFactory.getLogger(ApplicationRunner::class.java)
 
@@ -37,18 +38,8 @@ class ApplicationRunner @Autowired constructor (
                 .flatMap { it.stream() }
                 .collect(Collectors.toList())
 
-        /*
-        logger.info("Reading database metadata")
-        val databaseMetadata = databaseExtractor.extract(parameters.sources)
-        logger.info("Done")
-
-        logger.info("Reading tables metadata")
-        val tableMetadata = tableExtractor.extract(parameters.sources)
-        logger.info("Done")
-
         logger.info("Output")
-        metadataOutput.output(databaseMetadata, tableMetadata)
+        metadataOutput.output(metadata, parameters)
         logger.info("Done")
-         */
     }
 }

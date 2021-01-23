@@ -9,8 +9,9 @@ dependencies {
     implementation(project(":extractor-core"))
     implementation(project(":extractor-source:source-oracle"))
     implementation(project(":extractor-source:source-netsuite"))
+    implementation(project(":extractor-output:output-core"))
     implementation(project(":extractor-output:output-html"))
-    implementation(project(":extractor-output:output-confluence"))
+//    implementation(project(":extractor-output:output-confluence"))
 
     testImplementation("org.springframework.boot:spring-boot-starter-jdbc")
     testImplementation("org.springframework.boot:spring-boot-starter-thymeleaf")

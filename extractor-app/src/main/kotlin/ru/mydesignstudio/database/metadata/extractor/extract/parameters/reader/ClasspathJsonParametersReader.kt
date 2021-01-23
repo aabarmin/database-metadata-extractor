@@ -16,7 +16,7 @@ import java.nio.file.StandardOpenOption
 @ConditionalOnProperty(prefix = "parameters", name = ["name"], havingValue = "json", matchIfMissing = true)
 class ClasspathJsonParametersReader(
         @Value("\${parameters.file}") val parametersFilepath: String,
-        @Autowired val objectMapper: ObjectMapper
+        val objectMapper: ObjectMapper
 ) : ParametersReader {
 
     override fun read(): ExtractParameters {

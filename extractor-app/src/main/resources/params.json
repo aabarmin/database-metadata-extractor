@@ -120,6 +120,17 @@
     }
   ],
   "destinations": [
-
+    {
+      "destination": "HTML",
+      "params": {}
+    },
+    {
+      "destination": "CONFLUENCE_CLOUD",
+      "params": {}
+    },
+    {
+      "destination": "CONFLUENCE_SERVER",
+      "params": {}
+    }
   ]
 }
