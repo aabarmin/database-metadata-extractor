@@ -1,16 +1,15 @@
 package ru.mydesignstudio.database.metadata.extractor.output.service.impl.label;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.util.Collection;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import ru.mydesignstudio.database.metadata.extractor.output.Label;
 import ru.mydesignstudio.database.metadata.extractor.output.provider.CommonLabelProvider;
+
+import java.util.Collection;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringJUnitConfig(classes = {
     CommonLabelProvider.class

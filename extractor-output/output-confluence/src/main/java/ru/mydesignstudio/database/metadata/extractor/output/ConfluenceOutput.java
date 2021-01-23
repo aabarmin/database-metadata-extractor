@@ -1,64 +1,77 @@
 package ru.mydesignstudio.database.metadata.extractor.output;
 
+import com.google.common.collect.Sets;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Primary;
 import org.springframework.lang.NonNull;
-import org.springframework.stereotype.Component;
+import ru.mydesignstudio.database.metadata.extractor.destination.OutputDestination;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.DatabaseMetadata;
 import ru.mydesignstudio.database.metadata.extractor.output.service.Confluence;
+import ru.mydesignstudio.database.metadata.extractor.output.service.impl.model.ConfluenceParams;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.create.request.CreateRequest;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.find.FindResponse;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.find.FindResult;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.update.request.UpdateRequest;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.DatabaseMetadata;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
 
 import java.io.BufferedReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.util.List;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-@Primary
-@Component
-@ConditionalOnProperty(name = "output.target", havingValue = "confluence", matchIfMissing = false)
-public class ConfluenceOutput implements MetadataOutput {
+@Slf4j
+public abstract class ConfluenceOutput implements OutputDestination {
   @Autowired
   private HtmlMetadataOutput htmlOutput;
-
-  @Value("${confluence.space}")
-  private String confluenceSpace;
-
-  @Value("${confluence.parent.page.id}")
-  private Integer parentId;
 
   @Autowired
   private Confluence confluence;
 
+  abstract ConfluenceParams confluenceParams(Map<String, String> params);
+
   @Override
-  public List<Output> output(@NonNull List<DatabaseMetadata> databaseMetadata, @NonNull List<TableMetadata> tableMetadata) {
-    checkNotNull(databaseMetadata, "Database metadata should not be null");
-    checkNotNull(tableMetadata, "Table metadata should not be null");
+  public boolean isValidParams(@NotNull Map<String, String> params) {
+    final Set<String> paramNames = Sets.newHashSet(
+        "space",
+        "parentPageId",
+        "host",
+        "port",
+        "protocol",
+        "username",
+        "password"
+    );
+    for (String name : paramNames) {
+      if (!params.containsKey(name)) {
+        log.warn("There is no key {} in params", name);
+        return false;
+      }
+    }
+    return true;
+  }
 
-    final List<Output> htmlOutput = this.htmlOutput.output(databaseMetadata, tableMetadata);
+  @NotNull
+  @Override
+  public Collection<Output> output(@NotNull DatabaseMetadata metadata, @NotNull Map<String, String> params) {
+    final Collection<Output> htmlOutputs = htmlOutput.output(metadata, params);
 
-    for (Output output : htmlOutput) {
-      final FindResponse findResponse = confluence.find(output.getTitle(), confluenceSpace);
+    final ConfluenceParams confluenceParams = confluenceParams(params);
+    for (Output output : htmlOutputs) {
+      final FindResponse findResponse = confluence.find(output.getTitle(), confluenceParams);
       if (nothingFound(findResponse)) {
         // create a new page
         final CreateRequest request = CreateRequest.builder()
             .title(output.getTitle())
             .content(getContent(output))
-            .space(confluenceSpace)
-            .parentId(parentId)
+            .space(confluenceParams.getSpace())
+            .parentId(confluenceParams.getParentPageId())
             .labels(output.getLabels())
             .build();
-        confluence.create(request);
+        confluence.create(request, confluenceParams);
       } else {
         // update existing page
         for (final FindResult findResult : findResponse.getResults()) {
@@ -66,16 +79,17 @@ public class ConfluenceOutput implements MetadataOutput {
               .id(findResult.getId())
               .title(output.getTitle())
               .content(getContent(output))
-              .space(confluenceSpace)
-              .parentId(parentId)
+              .space(confluenceParams.getSpace())
+              .parentId(confluenceParams.getParentPageId())
               .version(findResult.getVersion().getNumber() + 1)
               .labels(output.getLabels())
               .build();
-          confluence.update(request);
+          confluence.update(request, confluenceParams);
         }
       }
     }
-    return htmlOutput;
+
+    return htmlOutputs;
   }
 
   private boolean nothingFound(final FindResponse findResponse) {

@@ -1,7 +1,8 @@
 package ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.find;
 
-import java.util.List;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class FindResponse {

@@ -1,18 +1,17 @@
 package ru.mydesignstudio.database.metadata.extractor.output.uml;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Arrays;
-import java.util.Collections;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.ColumnModel;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.ForeignKeyModel;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.PrimaryKeyModel;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.ReferenceModel;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.*;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 class PlantUmlMarkupGeneratorTest {
@@ -47,24 +46,136 @@ class PlantUmlMarkupGeneratorTest {
     assertThat(output).endsWith("@enduml");
   }
 
+  private PrimaryKeyModel primaryKey(String columns) {
+    return new PrimaryKeyModel(
+        "PK",
+        "schema_name",
+        "constraint_name",
+        "table_name",
+        columns
+    );
+  }
+
+  private ColumnModel column(String columnName, String dataType, int dataLength, String nullable) {
+    return new ColumnModel(
+        "schema_name",
+        "table_name",
+        columnName,
+        1,
+        dataType,
+        "data_type_ext",
+        dataLength,
+        0,
+        0,
+        nullable,
+        "default_definition",
+        "primary_key",
+        "foreign_key",
+        "unique_key",
+        "check_constraint",
+        "comments"
+    );
+  }
+
+  private ColumnModel columnNumberNotNullable(String columnName) {
+    return column(columnName, "number", 10, "N");
+  }
+
+  private ColumnModel columnNumberNullable(String columnName) {
+    return column(columnName, "number", 10, "Y");
+  }
+
+  private ColumnModel columnStringNullable(String columnName) {
+    return column(columnName, "string", 255, "Y");
+  }
+
+  private ColumnModel columnDateNullable(String columnName) {
+    return column(columnName, "DATE", 7, "Y");
+  }
+
+  private ColumnModel columnDateNotNullable(String columnName) {
+    return column(columnName, "DATE", 7, "N");
+  }
+
+  private TableMetadata table(String tableName,
+                              List<PrimaryKeyModel> primaryKeys,
+                              List<ForeignKeyModel> foreignKeys,
+                              List<ReferenceModel> references,
+                              List<ColumnModel> columns) {
+    return new TableMetadata(
+        tableName,
+        "schema_name",
+        columns,
+        primaryKeys,
+        foreignKeys,
+        Collections.emptyList(),
+        references,
+        Collections.emptyList(),
+        Collections.emptyList(),
+        Collections.emptyList(),
+        Collections.emptyList(),
+        Collections.emptyList(),
+        Collections.emptyList(),
+        Collections.emptyList(),
+        Collections.emptyList()
+    );
+  }
+
+  private TableMetadata table(String tableName, Object... objects) {
+    List<PrimaryKeyModel> primaryKeys = Lists.newArrayList();
+    List<ForeignKeyModel> foreignKeys = Lists.newArrayList();
+    List<ReferenceModel> referenceModels = Lists.newArrayList();
+    List<ColumnModel> columnModels = Lists.newArrayList();
+
+    for (Object object : objects) {
+      if (object instanceof PrimaryKeyModel) {
+        primaryKeys.add((PrimaryKeyModel) object);
+      } else if (object instanceof ForeignKeyModel) {
+        foreignKeys.add((ForeignKeyModel) object);
+      } else if (object instanceof ReferenceModel) {
+        referenceModels.add((ReferenceModel) object);
+      } else if (object instanceof ColumnModel) {
+        columnModels.add((ColumnModel) object);
+      } else {
+        throw new RuntimeException("Unsupported type " + object.getClass());
+      }
+    }
+
+    return table(tableName, primaryKeys, foreignKeys, referenceModels, columnModels);
+  }
+
+  private ReferenceModel referenceModel(String childTable,
+                                        String childColumn,
+                                        String constraintName,
+                                        String parentTable,
+                                        String parentColumn) {
+    return new ReferenceModel(
+        childTable,
+        childColumn,
+        constraintName,
+        parentTable,
+        parentColumn
+    );
+  }
+
+  private ForeignKeyModel foreignKey(String columns) {
+    return new ForeignKeyModel(
+        "FK",
+        "constraint_type",
+        "schema_name",
+        "constraint_name",
+        "table_name",
+        columns,
+        "rOwner",
+        "rConstraintName"
+    );
+  }
+
   @Test
   void generate_shouldDisplayEntity() {
-    final PrimaryKeyModel primaryKey = new PrimaryKeyModel();
-    primaryKey.setColumns("id_field");
-    primaryKey.setPrimaryKey("PK");
-
-    final ColumnModel primaryKeyColumn = new ColumnModel();
-    primaryKeyColumn.setColumnName("id_field");
-    primaryKeyColumn.setDataType("number");
-    primaryKeyColumn.setDataLength(10);
-    primaryKeyColumn.setNullable("N");
-
-    final TableMetadata metadata = new TableMetadata();
-    metadata.setTableName("TableName");
-    metadata.setPrimaryKeys(Collections.singletonList(primaryKey));
-    metadata.setForeignKeys(Collections.emptyList());
-    metadata.setReferences(Collections.emptyList());
-    metadata.setColumns(Arrays.asList(primaryKeyColumn));
+    final PrimaryKeyModel primaryKey = primaryKey("id_field");
+    final ColumnModel primaryKeyColumn = columnNumberNotNullable("id_field");
+    final TableMetadata metadata = table("TableName", primaryKey, primaryKeyColumn);
 
     final String output = unitUnderTest.generate(Collections.singletonList(metadata));
 
@@ -75,28 +186,10 @@ class PlantUmlMarkupGeneratorTest {
 
   @Test
   void generate_shouldDisplayManyPK() {
-    final PrimaryKeyModel primaryKey = new PrimaryKeyModel();
-    primaryKey.setColumns("id_field1, id_field2");
-    primaryKey.setPrimaryKey("PK");
-
-    final ColumnModel primaryKeyColumn1 = new ColumnModel();
-    primaryKeyColumn1.setColumnName("id_field1");
-    primaryKeyColumn1.setDataType("number");
-    primaryKeyColumn1.setDataLength(10);
-    primaryKeyColumn1.setNullable("N");
-
-    final ColumnModel primaryKeyColumn2 = new ColumnModel();
-    primaryKeyColumn2.setColumnName("id_field2");
-    primaryKeyColumn2.setDataType("string");
-    primaryKeyColumn2.setDataLength(255);
-    primaryKeyColumn2.setNullable("Y");
-
-    final TableMetadata metadata = new TableMetadata();
-    metadata.setTableName("TableName");
-    metadata.setPrimaryKeys(Collections.singletonList(primaryKey));
-    metadata.setForeignKeys(Collections.emptyList());
-    metadata.setReferences(Collections.emptyList());
-    metadata.setColumns(Arrays.asList(primaryKeyColumn1, primaryKeyColumn2));
+    final PrimaryKeyModel primaryKey = primaryKey("id_field1, id_field2");
+    final ColumnModel primaryKeyColumn1 = columnNumberNotNullable("id_field1");
+    final ColumnModel primaryKeyColumn2 = columnStringNullable("id_field2");
+    final TableMetadata metadata = table("TableName", primaryKey, primaryKeyColumn1, primaryKeyColumn2);
 
     final String output = unitUnderTest.generate(Collections.singletonList(metadata));
 
@@ -108,28 +201,10 @@ class PlantUmlMarkupGeneratorTest {
 
   @Test
   void generate_shouldDisplayForeignKeys() {
-    final ForeignKeyModel foreignKey = new ForeignKeyModel();
-    foreignKey.setColumns("referenced_id1, referenced_id2");
-    foreignKey.setForeignKey("FK");
-
-    final ColumnModel foreigKeyColumn1 = new ColumnModel();
-    foreigKeyColumn1.setColumnName("referenced_id1");
-    foreigKeyColumn1.setDataType("number");
-    foreigKeyColumn1.setDataLength(10);
-    foreigKeyColumn1.setNullable("N");
-
-    final ColumnModel foreigKeyColumn2 = new ColumnModel();
-    foreigKeyColumn2.setColumnName("referenced_id2");
-    foreigKeyColumn2.setDataType("string");
-    foreigKeyColumn2.setDataLength(255);
-    foreigKeyColumn2.setNullable("Y");
-
-    final TableMetadata metadata = new TableMetadata();
-    metadata.setTableName("TableName");
-    metadata.setPrimaryKeys(Collections.emptyList());
-    metadata.setForeignKeys(Collections.singletonList(foreignKey));
-    metadata.setReferences(Collections.emptyList());
-    metadata.setColumns(Arrays.asList(foreigKeyColumn1, foreigKeyColumn2));
+    final ForeignKeyModel foreignKey = foreignKey("referenced_id1, referenced_id2");
+    final ColumnModel foreignKeyColumn1 = columnNumberNotNullable("referenced_id1");
+    final ColumnModel foreignKeyColumn2 = columnStringNullable("referenced_id2");
+    final TableMetadata metadata = table("TableName", foreignKey, foreignKeyColumn1, foreignKeyColumn2);
 
     final String output = unitUnderTest.generate(Collections.singletonList(metadata));
 
@@ -142,86 +217,28 @@ class PlantUmlMarkupGeneratorTest {
 
   @Test
   void generate_shouldHaveZeroToMany() {
-    final PrimaryKeyModel primaryKey = new PrimaryKeyModel();
-    primaryKey.setColumns("id_field1");
-    primaryKey.setPrimaryKey("PK");
+    final PrimaryKeyModel primaryKey = primaryKey("id_field1");
+    final ColumnModel primaryKeyColumn1 = columnNumberNullable("id_field1");
+    final ForeignKeyModel foreignKey = foreignKey("referenced_id1");
+    final ColumnModel foreigKeyColumn1 = columnNumberNotNullable("referenced_id1");
+    final ForeignKeyModel foreignKey2 = foreignKey("referenced_id1");
+    final ColumnModel foreigKeyColumn2 = columnStringNullable("referenced_id2");
+    final ColumnModel column1 = columnNumberNullable("id_field1");
+    final ColumnModel column2 = columnNumberNullable("referenced_id1");
+    final ColumnModel column3 = columnDateNullable("non_key_field1");
+    final ColumnModel column4 = columnDateNullable("non_key_field2");
+    final ColumnModel column5 = columnStringNullable("referenced_id2");
 
-    final ColumnModel primaryKeyColumn1 = new ColumnModel();
-    primaryKeyColumn1.setColumnName("id_field1");
-    primaryKeyColumn1.setDataType("number");
-    primaryKeyColumn1.setDataLength(10);
-    primaryKeyColumn1.setNullable("Y");
+    final ReferenceModel reference = referenceModel(
+        "TableName1", "referenced_id1",
+        "EMP_JOB_FK",
+        "TableName2", "referenced_id2"
+    );
 
-    final ForeignKeyModel foreignKey = new ForeignKeyModel();
-    foreignKey.setColumns("referenced_id1");
-    foreignKey.setForeignKey("FK");
-
-    final ColumnModel foreigKeyColumn1 = new ColumnModel();
-    foreigKeyColumn1.setColumnName("referenced_id1");
-    foreigKeyColumn1.setDataType("number");
-    foreigKeyColumn1.setDataLength(10);
-    foreigKeyColumn1.setNullable("Y");
-
-    final ForeignKeyModel foreignKey2 = new ForeignKeyModel();
-    foreignKey2.setColumns("referenced_id1");
-    foreignKey2.setForeignKey("FK");
-
-    final ColumnModel foreigKeyColumn2 = new ColumnModel();
-    foreigKeyColumn2.setColumnName("referenced_id2");
-    foreigKeyColumn2.setDataType("string");
-    foreigKeyColumn2.setDataLength(255);
-    foreigKeyColumn2.setNullable("Y");
-
-    final ColumnModel column1 = new ColumnModel();
-    column1.setColumnName("id_field1");
-    column1.setDataType("number");
-    column1.setDataLength(10);
-    column1.setNullable("Y");
-
-    final ColumnModel column2 = new ColumnModel();
-    column2.setColumnName("referenced_id1");
-    column2.setDataType("number");
-    column2.setDataLength(10);
-    column2.setNullable("Y");
-
-    final ColumnModel column3 = new ColumnModel();
-    column3.setColumnName("non_key_field1");
-    column3.setDataType("DATE");
-    column3.setDataLength(7);
-    column3.setNullable("Y");
-
-    final ColumnModel column4 = new ColumnModel();
-    column4.setColumnName("non_key_field2");
-    column4.setDataType("DATE");
-    column4.setDataLength(7);
-    column4.setNullable("Y");
-
-    final ColumnModel column5 = new ColumnModel();
-    column5.setColumnName("referenced_id2");
-    column5.setDataType("string");
-    column5.setDataLength(255);
-    column5.setNullable("Y");
-
-    final ReferenceModel reference = new ReferenceModel();
-    reference.setChildTable("TableName1");
-    reference.setParentTable("TableName2");
-    reference.setConstraintName("EMP_JOB_FK");
-    reference.setChildColumn("referenced_id1");
-    reference.setParentColumn("referenced_id2");
-
-    final TableMetadata metadata1 = new TableMetadata();
-    metadata1.setTableName("TableName1");
-    metadata1.setPrimaryKeys(Collections.singletonList(primaryKey));
-    metadata1.setForeignKeys(Collections.singletonList(foreignKey));
-    metadata1.setReferences(Collections.singletonList(reference));
-    metadata1.setColumns(Arrays.asList(column1, column2, column3, column4));
-
-    final TableMetadata metadata2 = new TableMetadata();
-    metadata2.setTableName("TableName2");
-    metadata2.setPrimaryKeys(Collections.singletonList(primaryKey));
-    metadata2.setForeignKeys(Collections.singletonList(foreignKey2));
-    metadata2.setReferences(Collections.emptyList());
-    metadata2.setColumns(Arrays.asList(column1, column2, column3, column4,column5));
+    final TableMetadata metadata1 = table("TableName1", primaryKey, reference,
+        foreignKey, column1, column2, column3, column4);
+    final TableMetadata metadata2 = table("TableName2", primaryKey,
+        foreignKey2, column1, column2, column3, column4, column5);
 
     final String output = unitUnderTest.generate(Arrays.asList(metadata1, metadata2));
 
@@ -245,87 +262,29 @@ class PlantUmlMarkupGeneratorTest {
 
   @Test
   void generate_shouldNotDisplayDuplicateValues() {
-    final PrimaryKeyModel primaryKey = new PrimaryKeyModel();
-    primaryKey.setColumns("id_field1");
-    primaryKey.setPrimaryKey("PK");
+    final PrimaryKeyModel primaryKey = primaryKey("id_field1");
+    final ColumnModel primaryKeyColumn1 = columnNumberNotNullable("id_field1");
 
-    final ColumnModel primaryKeyColumn1 = new ColumnModel();
-    primaryKeyColumn1.setColumnName("id_field1");
-    primaryKeyColumn1.setDataType("number");
-    primaryKeyColumn1.setDataLength(10);
-    primaryKeyColumn1.setNullable("N");
+    final ForeignKeyModel foreignKey = foreignKey("referenced_id1");
+    final ColumnModel foreignKeyColumn1 = columnNumberNotNullable("referenced_id1");
+    final ForeignKeyModel foreignKey2 = foreignKey("referenced_id1");
+    final ColumnModel foreignKeyColumn2 = columnStringNullable("referenced_id2");
+    final ColumnModel column1 = columnNumberNotNullable("id_field1");
+    final ColumnModel column2 = columnNumberNotNullable("referenced_id1");
+    final ColumnModel column3 = columnDateNotNullable("non_key_field1");
+    final ColumnModel column4 = columnDateNotNullable("non_key_field2");
+    final ColumnModel column5 = columnStringNullable("referenced_id2");
 
-    final ForeignKeyModel foreignKey = new ForeignKeyModel();
-    foreignKey.setColumns("referenced_id1");
-    foreignKey.setForeignKey("FK");
+    final ReferenceModel reference = referenceModel(
+        "TableName1", "referenced_id1",
+        "EMP_JOB_FK",
+        "TableName2", "referenced_id2"
+    );
 
-    final ColumnModel foreigKeyColumn1 = new ColumnModel();
-    foreigKeyColumn1.setColumnName("referenced_id1");
-    foreigKeyColumn1.setDataType("number");
-    foreigKeyColumn1.setDataLength(10);
-    foreigKeyColumn1.setNullable("N");
-
-    final ForeignKeyModel foreignKey2 = new ForeignKeyModel();
-    foreignKey2.setColumns("referenced_id1");
-    foreignKey2.setForeignKey("FK");
-
-    final ColumnModel foreigKeyColumn2 = new ColumnModel();
-    foreigKeyColumn2.setColumnName("referenced_id2");
-    foreigKeyColumn2.setDataType("string");
-    foreigKeyColumn2.setDataLength(255);
-    foreigKeyColumn2.setNullable("Y");
-
-
-    final ColumnModel column1 = new ColumnModel();
-    column1.setColumnName("id_field1");
-    column1.setDataType("number");
-    column1.setDataLength(10);
-    column1.setNullable("N");
-
-    final ColumnModel column2 = new ColumnModel();
-    column2.setColumnName("referenced_id1");
-    column2.setDataType("number");
-    column2.setDataLength(10);
-    column2.setNullable("N");
-
-    final ColumnModel column3 = new ColumnModel();
-    column3.setColumnName("non_key_field1");
-    column3.setDataType("DATE");
-    column3.setDataLength(7);
-    column3.setNullable("N");
-
-    final ColumnModel column4 = new ColumnModel();
-    column4.setColumnName("non_key_field2");
-    column4.setDataType("DATE");
-    column4.setDataLength(7);
-    column4.setNullable("Y");
-
-    final ColumnModel column5 = new ColumnModel();
-    column5.setColumnName("referenced_id2");
-    column5.setDataType("string");
-    column5.setDataLength(255);
-    column5.setNullable("Y");
-
-    final ReferenceModel reference = new ReferenceModel();
-    reference.setChildTable("TableName1");
-    reference.setParentTable("TableName2");
-    reference.setConstraintName("EMP_JOB_FK");
-    reference.setChildColumn("referenced_id1");
-    reference.setParentColumn("referenced_id2");
-
-    final TableMetadata metadata1 = new TableMetadata();
-    metadata1.setTableName("TableName1");
-    metadata1.setPrimaryKeys(Collections.singletonList(primaryKey));
-    metadata1.setForeignKeys(Collections.singletonList(foreignKey));
-    metadata1.setReferences(Collections.singletonList(reference));
-    metadata1.setColumns(Arrays.asList(column1, column2, column3, column4));
-
-    final TableMetadata metadata2 = new TableMetadata();
-    metadata2.setTableName("TableName2");
-    metadata2.setPrimaryKeys(Collections.singletonList(primaryKey));
-    metadata2.setForeignKeys(Collections.singletonList(foreignKey2));
-    metadata2.setReferences(Collections.emptyList());
-    metadata2.setColumns(Arrays.asList(column1, column2, column3, column4,column5));
+    final TableMetadata metadata1 = table("TableName1", primaryKey, foreignKey, reference,
+        column1, column2, column3, column4);
+    final TableMetadata metadata2 = table("TableName2", primaryKey, foreignKey2,
+        column1, column2, column3, column4, column5);
 
     final String output = unitUnderTest.generate(Arrays.asList(metadata1, metadata2));
 

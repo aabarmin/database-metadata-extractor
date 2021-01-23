@@ -1,14 +1,14 @@
 package ru.mydesignstudio.database.metadata.extractor.output;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Optional;
-
 import com.google.common.base.Preconditions;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.TypeModel;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.TableMetadata;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.TypeModel;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Optional;
 
 /**
  * Extracts metadata type - if this metadata belongs to view or table. If there is no

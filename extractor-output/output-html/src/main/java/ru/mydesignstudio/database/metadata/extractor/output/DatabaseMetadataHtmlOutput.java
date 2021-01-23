@@ -1,11 +1,5 @@
 package ru.mydesignstudio.database.metadata.extractor.output;
 
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
-import java.util.HashSet;
-import java.util.Set;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +7,16 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.DatabaseMetadata;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.DatabaseMetadata;
 import ru.mydesignstudio.database.metadata.extractor.output.provider.CommonLabelProvider;
 import ru.mydesignstudio.database.metadata.extractor.output.provider.DatabaseLabelProvider;
+
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.HashSet;
+import java.util.Set;
 
 @Slf4j
 @Component

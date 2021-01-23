@@ -1,16 +1,5 @@
 package ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.create;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.iterableWithSize;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
-
 import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +12,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.client.MockRestServiceServer;
 import ru.mydesignstudio.database.metadata.extractor.output.Label;
-import ru.mydesignstudio.database.metadata.extractor.output.service.ConfluenceCredentials;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.ConfluenceUriBuilder;
+import ru.mydesignstudio.database.metadata.extractor.output.service.impl.model.ConfluenceParams;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.BasicAuthenticationHeaderFactory;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.ConfluenceCredentialsHelper;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.create.response.CreateResponse;
@@ -36,17 +24,17 @@ import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operati
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.update.UpdatePageRequestFactory;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.update.request.UpdateRequest;
 
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.iterableWithSize;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+
 @RestClientTest(components = {
     ConfluenceUpdateDelegate.class
 })
 @AutoConfigureWebClient(registerRestTemplate = true)
-@TestPropertySource(properties = {
-    "output.target=confluence",
-    "confluence.port=443",
-    "confluence.host=host",
-    "confluence.type=cloud",
-    "confluence.protocol=https"
-})
 class ConfluenceUpdateDelegateTest {
   @Configuration
   @Import({
@@ -65,14 +53,22 @@ class ConfluenceUpdateDelegateTest {
   @Autowired
   private ConfluenceUpdateDelegate unitUnderTest;
 
-  @MockBean
-  private ConfluenceCredentials confluenceCredentials;
-
   @Autowired
   private MockRestServiceServer mockServer;
 
   @Value("classpath:update_response.json")
   private Resource updateResponse;
+
+  private ConfluenceParams confluenceParams() {
+    return ConfluenceParams.builder()
+        .confluenceType("cloud")
+        .username("username")
+        .password("password")
+        .confluenceProtocol("https")
+        .confluencePort(443)
+        .confluenceHost("host")
+        .build();
+  }
 
   @Test
   void check_contextStarts() {
@@ -108,7 +104,7 @@ class ConfluenceUpdateDelegateTest {
         .labels(Sets.newHashSet(new Label("global", "value")))
         .build();
 
-    final CreateResponse response = unitUnderTest.update(request);
+    final CreateResponse response = unitUnderTest.update(request, confluenceParams());
 
     mockServer.verify();
 

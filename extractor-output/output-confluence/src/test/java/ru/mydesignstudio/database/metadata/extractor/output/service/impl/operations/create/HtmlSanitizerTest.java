@@ -1,9 +1,5 @@
 package ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.create;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.io.InputStream;
-import java.nio.charset.Charset;
 import lombok.Cleanup;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -12,7 +8,11 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
-import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.create.HtmlSanitizer;
+
+import java.io.InputStream;
+import java.nio.charset.Charset;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 class HtmlSanitizerTest {

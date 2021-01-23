@@ -1,7 +1,5 @@
 package ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.create;
 
-import java.util.Collections;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -12,6 +10,9 @@ import ru.mydesignstudio.database.metadata.extractor.output.service.impl.model.C
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.model.ConfluenceStorage;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.create.request.CreatePageRequest;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.create.request.CreateRequest;
+
+import java.util.Collections;
+import java.util.List;
 
 @Component
 public class CreatePageRequestFactory {

@@ -1,16 +1,14 @@
 package ru.mydesignstudio.database.metadata.extractor.output;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.TableMetadata;
-import ru.mydesignstudio.database.metadata.extractor.extractors.model.TypeModel;
-import ru.mydesignstudio.database.metadata.extractor.output.ObjectTypeExtractor;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.TableMetadata;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.TypeModel;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 class ObjectTypeExtractorTest {
@@ -24,16 +22,13 @@ class ObjectTypeExtractorTest {
 
   @Test
   void extract_shouldBeUnknownInCaseOfEmptyTypes() {
-    assertEquals("Unknown", unitUnderTest.extract(new TableMetadata()));
+    assertEquals("Unknown", unitUnderTest.extract(TableMetadata.create()));
   }
 
   @Test
   void extract_shouldExtractValue() {
-    final TableMetadata metadata = new TableMetadata();
-    final TypeModel typeModel = new TypeModel();
-    typeModel.setObjectType("Value");
-
-    metadata.setTypes(Arrays.asList(typeModel));
+    final TypeModel typeModel = TypeModel.create("Value");
+    final TableMetadata metadata = TableMetadata.create(typeModel);
 
     assertEquals("Value", unitUnderTest.extract(metadata));
   }

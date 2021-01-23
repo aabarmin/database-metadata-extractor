@@ -1,17 +1,5 @@
 package ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.find;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.iterableWithSize;
-import static org.hamcrest.Matchers.startsWith;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.queryParam;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,10 +13,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.client.MockRestServiceServer;
-import ru.mydesignstudio.database.metadata.extractor.config.ConfluenceConfiguration;
 import ru.mydesignstudio.database.metadata.extractor.config.ObjectMapperConfiguration;
-import ru.mydesignstudio.database.metadata.extractor.output.service.impl.ConfluenceRestFactory;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.ConfluenceUriBuilder;
+import ru.mydesignstudio.database.metadata.extractor.output.service.impl.model.ConfluenceParams;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.BasicAuthenticationHeaderFactory;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.ConfluenceCredentialsHelper;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.create.ConfluenceCreateDelegate;
@@ -38,6 +25,12 @@ import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operati
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.delete.ConfluenceDeleteDelegate;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.update.ConfluenceUpdateDelegate;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.update.UpdatePageRequestFactory;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 @ContextConfiguration
 @RestClientTest(components = {
@@ -67,8 +60,6 @@ class ConfluenceFindDelegateTest {
       CreatePageRequestFactory.class,
       ConfluenceCredentialsHelper.class,
       BasicAuthenticationHeaderFactory.class,
-      ConfluenceConfiguration.class,
-      ConfluenceRestFactory.class,
       ObjectMapperConfiguration.class
   })
   static class ConfigurationForTest {
@@ -83,6 +74,17 @@ class ConfluenceFindDelegateTest {
 
   @Autowired
   private MockRestServiceServer mockServer;
+
+  private ConfluenceParams confluenceParams() {
+    return ConfluenceParams.builder()
+        .confluenceType("cloud")
+        .username("username")
+        .password("password")
+        .confluenceProtocol("http")
+        .confluencePort(80)
+        .confluenceHost("host")
+        .build();
+  }
 
   @Test
   void check_contextStarts() {
@@ -101,7 +103,7 @@ class ConfluenceFindDelegateTest {
         .andExpect(queryParam("expand", is("version")))
         .andRespond(withSuccess(findResponse, MediaType.APPLICATION_JSON));
 
-    final FindResponse response = unitUnderTest.find("title", "space");
+    final FindResponse response = unitUnderTest.find("title", "space", confluenceParams());
 
     mockServer.verify();
 

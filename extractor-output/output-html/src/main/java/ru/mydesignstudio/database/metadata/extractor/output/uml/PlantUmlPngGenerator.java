@@ -1,12 +1,13 @@
 package ru.mydesignstudio.database.metadata.extractor.output.uml;
 
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import net.sourceforge.plantuml.SourceStringReader;
 import org.springframework.stereotype.Component;
+
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 @Component
 public class PlantUmlPngGenerator {

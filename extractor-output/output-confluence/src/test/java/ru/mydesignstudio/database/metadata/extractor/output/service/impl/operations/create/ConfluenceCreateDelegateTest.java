@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
@@ -14,10 +13,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.client.MockRestServiceServer;
-import ru.mydesignstudio.database.metadata.extractor.config.ConfluenceConfiguration;
 import ru.mydesignstudio.database.metadata.extractor.output.Label;
-import ru.mydesignstudio.database.metadata.extractor.output.service.impl.ConfluenceRestFactory;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.ConfluenceUriBuilder;
+import ru.mydesignstudio.database.metadata.extractor.output.service.impl.model.ConfluenceParams;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.BasicAuthenticationHeaderFactory;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.ConfluenceCredentialsHelper;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.create.request.CreateRequest;
@@ -27,23 +25,14 @@ import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operati
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.update.ConfluenceUpdateDelegate;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.update.UpdatePageRequestFactory;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 @ContextConfiguration
 @RestClientTest(components = {
     ConfluenceCreateDelegate.class
-})
-@TestPropertySource(properties = {
-    "output.target=confluence",
-    "confluence.type=cloud",
-    "confluence.port=50080",
-    "confluence.host=host",
-    "confluence.protocol=http",
-    "confluence.username=username",
-    "confluence.password=password"
 })
 @AutoConfigureWebClient(registerRestTemplate = true)
 class ConfluenceCreateDelegateTest {
@@ -59,9 +48,7 @@ class ConfluenceCreateDelegateTest {
       TitleSanitizer.class,
       CreatePageRequestFactory.class,
       ConfluenceCredentialsHelper.class,
-      BasicAuthenticationHeaderFactory.class,
-      ConfluenceConfiguration.class,
-      ConfluenceRestFactory.class
+      BasicAuthenticationHeaderFactory.class
   })
   static class ConfigurationForTest {
 
@@ -87,6 +74,17 @@ class ConfluenceCreateDelegateTest {
     );
   }
 
+  private ConfluenceParams confluenceParams() {
+    return ConfluenceParams.builder()
+        .confluenceType("cloud")
+        .username("username")
+        .password("password")
+        .confluenceProtocol("http")
+        .confluencePort(50080)
+        .confluenceHost("host")
+        .build();
+  }
+
   @Test
   void createWithoutLabels_shouldSendSingleRequest() throws Exception {
     mockServer.expect(requestTo("http://host:50080/wiki/rest/api/content/"))
@@ -99,7 +97,7 @@ class ConfluenceCreateDelegateTest {
             .content("content")
             .title("title")
             .space("space")
-            .build());
+            .build(), confluenceParams());
 
     mockServer.verify();
 
@@ -133,7 +131,7 @@ class ConfluenceCreateDelegateTest {
                     new Label("global", "label1"),
                     new Label("global", "label2")
             ))
-            .build());
+            .build(), confluenceParams());
 
     mockServer.verify();
 

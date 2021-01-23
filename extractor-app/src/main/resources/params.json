@@ -1,17 +1,130 @@
 {
-  "schemas": [
-    "HR"
+  "sources": [
+    {
+      "source": "ORACLE",
+      "connection": {
+        "url": "jdbc:oracle:thin:@localhost:51521:xe",
+        "username": "system",
+        "password": "oracle"
+      },
+      "schemas": [
+        {
+          "name": "HR",
+          "objects": [
+            {
+              "name": "DEPARTMENTS",
+              "labels": [
+                {
+                  "prefix": "global",
+                  "value": "value 1"
+                },
+                {
+                  "prefix": "global",
+                  "value": "value 2"
+                },
+                {
+                  "prefix": "global",
+                  "value": "value 2"
+                }
+              ]
+            },
+            {
+              "name": "EMPLOYEES",
+              "labels": []
+            },
+            {
+              "name": "TYPES",
+              "labels": []
+            }
+          ],
+          "labels": {
+            "table": [
+              {
+                "prefix": "global",
+                "value": "table label 1"
+              },
+              {
+                "prefix": "global",
+                "value": "table label 2"
+              },
+              {
+                "prefix": "global",
+                "value": "table label 1"
+              }
+            ],
+            "view": [],
+            "schema": [],
+            "diagram": []
+          }
+        }
+      ]
+    },
+    {
+      "source": "NETSUITE",
+      "connection": {
+        "url": "jdbc:oracle:thin://abc.def/",
+        "username": "secret-login",
+        "password": "secret-password"
+      },
+      "schemas": [
+        {
+          "name": "HR",
+          "objects": [
+            {
+              "name": "DEPARTMENTS",
+              "labels": [
+                {
+                  "prefix": "global",
+                  "value": "value 1"
+                },
+                {
+                  "prefix": "global",
+                  "value": "value 2"
+                },
+                {
+                  "prefix": "global",
+                  "value": "value 2"
+                }
+              ]
+            },
+            {
+              "name": "EMPLOYEES",
+              "labels": []
+            },
+            {
+              "name": "TYPES",
+              "labels": []
+            }
+          ],
+          "labels": {
+            "table": [
+              {
+                "prefix": "global",
+                "value": "table label 1"
+              },
+              {
+                "prefix": "global",
+                "value": "table label 2"
+              },
+              {
+                "prefix": "global",
+                "value": "table label 1"
+              }
+            ],
+            "view": [],
+            "schema": [],
+            "diagram": []
+          }
+        }
+      ]
+    }
   ],
-  "tables": {
-    "HR": [
-      "DEPARTMENTS",
-      "EMPLOYEES",
-      "JOBS",
-      "JOB_HISTORY",
-      "LOCATIONS",
-      "REGIONS",
-      "COUNTRIES",
-      "EMP_DETAILS_VIEW"
-    ]
-  }
+  "destinations": [
+    {
+      "destination": "HTML",
+      "params": {
+        "targetDirectory": "./html_output"
+      }
+    }
+  ]
 }

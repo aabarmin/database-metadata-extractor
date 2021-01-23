@@ -1,10 +1,11 @@
 package ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations;
 
-import java.nio.charset.Charset;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
+
+import java.nio.charset.Charset;
 
 @Component
 public class BasicAuthenticationHeaderFactory {
