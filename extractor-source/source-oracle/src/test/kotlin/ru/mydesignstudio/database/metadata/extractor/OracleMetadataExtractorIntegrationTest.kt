@@ -3,6 +3,7 @@ package ru.mydesignstudio.database.metadata.extractor
 import assertk.assertThat
 import assertk.assertions.isNotNull
 import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -12,6 +13,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 import ru.mydesignstudio.database.metadata.extractor.extract.parameters.source.*
 import ru.mydesignstudio.database.metadata.extractor.source.SourceMetadataExtractor
 
+@Disabled
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 internal class OracleMetadataExtractorIntegrationTest {
