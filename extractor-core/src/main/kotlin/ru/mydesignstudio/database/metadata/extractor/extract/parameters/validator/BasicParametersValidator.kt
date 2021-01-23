@@ -2,8 +2,8 @@ package ru.mydesignstudio.database.metadata.extractor.extract.parameters.validat
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import ru.mydesignstudio.database.metadata.extractor.registry.SourceMetadataExtractorRegistry
 import ru.mydesignstudio.database.metadata.extractor.extract.parameters.ExtractParameters
+import ru.mydesignstudio.database.metadata.extractor.registry.SourceMetadataExtractorRegistry
 
 /**
  * Basic implementation of database metadata validator. Actually, it relies on the registry

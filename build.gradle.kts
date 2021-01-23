@@ -80,6 +80,7 @@ subprojects {
         implementation(kotlin("reflect"))
         implementation(kotlin("stdlib-jdk8"))
         testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
+        testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.23")
     }
 
     /**

@@ -1,7 +1,5 @@
 package ru.mydesignstudio.database.metadata.extractor.output.service.impl;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +12,8 @@ import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operati
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.find.FindResponse;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.update.ConfluenceUpdateDelegate;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.update.request.UpdateRequest;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 @Data
 @RequiredArgsConstructor

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
@@ -27,10 +26,10 @@ import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operati
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.update.ConfluenceUpdateDelegate;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.update.UpdatePageRequestFactory;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 @ContextConfiguration
 @RestClientTest(components = {

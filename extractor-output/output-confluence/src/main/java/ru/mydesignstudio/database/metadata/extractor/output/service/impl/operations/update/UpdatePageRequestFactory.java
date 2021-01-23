@@ -1,7 +1,5 @@
 package ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.update;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,6 +11,8 @@ import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operati
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.create.TitleSanitizer;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.update.request.UpdatePageRequest;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.update.request.UpdateRequest;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 @Component
 public class UpdatePageRequestFactory {

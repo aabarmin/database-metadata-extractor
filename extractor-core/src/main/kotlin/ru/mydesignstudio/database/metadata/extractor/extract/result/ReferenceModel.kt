@@ -1,8 +1,8 @@
 package ru.mydesignstudio.database.metadata.extractor.extract.result
 
 class ReferenceModel(
-        var childTable: String,
-        var childColumn: String,
-        var constraintName: String,
-        var parentTable: String,
-        var parentColumn: String)
+        val childTable: String,
+        val childColumn: String,
+        val constraintName: String,
+        val parentTable: String,
+        val parentColumn: String)

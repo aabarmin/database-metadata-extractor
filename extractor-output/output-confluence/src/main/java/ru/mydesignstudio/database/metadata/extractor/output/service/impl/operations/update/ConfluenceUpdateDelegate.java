@@ -1,9 +1,6 @@
 package ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.update;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import com.google.common.collect.Lists;
-import java.net.URI;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -19,6 +16,10 @@ import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operati
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.create.response.CreateResponse;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.update.request.UpdatePageRequest;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.update.request.UpdateRequest;
+
+import java.net.URI;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 @Slf4j
 @Component

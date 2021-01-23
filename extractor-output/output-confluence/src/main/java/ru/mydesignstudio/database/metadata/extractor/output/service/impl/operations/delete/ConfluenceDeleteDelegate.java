@@ -1,7 +1,5 @@
 package ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.delete;
 
-import java.net.URI;
-import java.util.Collections;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -14,6 +12,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.ConfluenceUriBuilder;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.ConfluenceCredentialsHelper;
+
+import java.net.URI;
+import java.util.Collections;
 
 @Slf4j
 @Component

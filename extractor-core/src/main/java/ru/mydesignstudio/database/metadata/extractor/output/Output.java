@@ -1,11 +1,12 @@
 package ru.mydesignstudio.database.metadata.extractor.output;
 
-import java.nio.file.Path;
-import java.util.HashSet;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor

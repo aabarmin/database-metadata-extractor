@@ -1,17 +1,14 @@
 package ru.mydesignstudio.database.metadata.extractor.output.uml;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
-import ru.mydesignstudio.database.metadata.extractor.extract.result.ColumnModel;
-import ru.mydesignstudio.database.metadata.extractor.extract.result.ForeignKeyModel;
-import ru.mydesignstudio.database.metadata.extractor.extract.result.TableMetadata;
-import ru.mydesignstudio.database.metadata.extractor.extract.result.PrimaryKeyModel;
-import ru.mydesignstudio.database.metadata.extractor.extract.result.ReferenceModel;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.*;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 @Slf4j
 @Component

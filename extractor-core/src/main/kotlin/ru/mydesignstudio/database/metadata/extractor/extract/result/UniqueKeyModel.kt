@@ -1,3 +1,7 @@
 package ru.mydesignstudio.database.metadata.extractor.extract.result
 
-class UniqueKeyModel(var owner: String, var constraintName: String, var tableName: String, var columnName: String, var uniqueKey: String)
+data class UniqueKeyModel(val owner: String,
+                          val constraintName: String,
+                          val tableName: String,
+                          val columnName: String,
+                          val uniqueKey: String)

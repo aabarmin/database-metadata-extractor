@@ -16,8 +16,8 @@ import org.thymeleaf.TemplateEngine;
 import ru.mydesignstudio.database.metadata.extractor.config.ConfluenceConfiguration;
 import ru.mydesignstudio.database.metadata.extractor.config.RestConfiguration;
 import ru.mydesignstudio.database.metadata.extractor.output.ConfluenceOutput;
-import ru.mydesignstudio.database.metadata.extractor.output.Output;
 import ru.mydesignstudio.database.metadata.extractor.output.HtmlMetadataOutput;
+import ru.mydesignstudio.database.metadata.extractor.output.Output;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration

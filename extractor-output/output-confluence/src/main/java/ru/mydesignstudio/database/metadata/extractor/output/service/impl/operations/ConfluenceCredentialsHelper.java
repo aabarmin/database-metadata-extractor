@@ -1,11 +1,12 @@
 package ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations;
 
-import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import ru.mydesignstudio.database.metadata.extractor.output.service.ConfluenceCredentials;
+
+import java.util.function.Function;
 
 @Component
 @ConditionalOnProperty(name = "output.target", havingValue = "confluence", matchIfMissing = false)

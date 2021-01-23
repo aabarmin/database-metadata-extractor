@@ -9,13 +9,13 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Primary;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.DatabaseMetadata;
+import ru.mydesignstudio.database.metadata.extractor.extract.result.TableMetadata;
 import ru.mydesignstudio.database.metadata.extractor.output.service.Confluence;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.create.request.CreateRequest;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.find.FindResponse;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.find.FindResult;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.update.request.UpdateRequest;
-import ru.mydesignstudio.database.metadata.extractor.extract.result.DatabaseMetadata;
-import ru.mydesignstudio.database.metadata.extractor.extract.result.TableMetadata;
 
 import java.io.BufferedReader;
 import java.nio.charset.Charset;

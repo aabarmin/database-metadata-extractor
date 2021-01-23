@@ -2,13 +2,13 @@ package ru.mydesignstudio.database.metadata.extractor.schema
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import ru.mydesignstudio.database.metadata.extractor.table.ObjectMetadataExtractor
 import ru.mydesignstudio.database.metadata.extractor.extract.parameters.source.MetadataSchema
 import ru.mydesignstudio.database.metadata.extractor.extract.parameters.source.MetadataSourceConnection
 import ru.mydesignstudio.database.metadata.extractor.extract.result.DatabaseMetadata
 import ru.mydesignstudio.database.metadata.extractor.schema.extractor.ArgumentsExtractor
 import ru.mydesignstudio.database.metadata.extractor.schema.extractor.JobsExtractor
 import ru.mydesignstudio.database.metadata.extractor.schema.extractor.ProceduresExtractor
+import ru.mydesignstudio.database.metadata.extractor.table.ObjectMetadataExtractor
 
 @Component
 class SchemaMetadataExtractorImpl @Autowired constructor(

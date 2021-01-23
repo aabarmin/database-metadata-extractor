@@ -1,10 +1,8 @@
 package ru.mydesignstudio.database.metadata.extractor
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import ru.mydesignstudio.database.metadata.extractor.extract.parameters.source.MetadataSource
 import ru.mydesignstudio.database.metadata.extractor.extract.result.DatabaseMetadata
-import ru.mydesignstudio.database.metadata.extractor.registry.SourceMetadataExtractorRegistry
 import ru.mydesignstudio.database.metadata.extractor.source.SourceMetadataExtractor
 
 @Component

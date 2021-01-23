@@ -1,8 +1,7 @@
 package ru.mydesignstudio.database.metadata.extractor.source
 
-import ru.mydesignstudio.database.metadata.extractor.extract.result.DatabaseMetadata
 import ru.mydesignstudio.database.metadata.extractor.extract.parameters.source.MetadataSource
-import ru.mydesignstudio.database.metadata.extractor.registry.SourceMetadataExtractorRegistry
+import ru.mydesignstudio.database.metadata.extractor.extract.result.DatabaseMetadata
 
 /**
  * Component that extracts metadata from the provided metadata source.

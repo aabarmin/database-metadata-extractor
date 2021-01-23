@@ -4,7 +4,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
-import ru.mydesignstudio.database.metadata.extractor.source.SourceMetadataExtractor
 import ru.mydesignstudio.database.metadata.extractor.extract.parameters.reader.ParametersReader
 import ru.mydesignstudio.database.metadata.extractor.extract.parameters.validator.ParametersValidator
 import ru.mydesignstudio.database.metadata.extractor.registry.SourceMetadataExtractorRegistry

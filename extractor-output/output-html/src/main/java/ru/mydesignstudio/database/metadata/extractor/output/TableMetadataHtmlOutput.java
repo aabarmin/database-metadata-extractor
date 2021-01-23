@@ -1,11 +1,5 @@
 package ru.mydesignstudio.database.metadata.extractor.output;
 
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
-import java.util.HashSet;
-import java.util.Set;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -18,6 +12,13 @@ import ru.mydesignstudio.database.metadata.extractor.extract.result.TableMetadat
 import ru.mydesignstudio.database.metadata.extractor.output.provider.CommonLabelProvider;
 import ru.mydesignstudio.database.metadata.extractor.output.provider.TableLabelProvider;
 import ru.mydesignstudio.database.metadata.extractor.output.provider.ViewLabelProvider;
+
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.HashSet;
+import java.util.Set;
 
 @Slf4j
 @Component

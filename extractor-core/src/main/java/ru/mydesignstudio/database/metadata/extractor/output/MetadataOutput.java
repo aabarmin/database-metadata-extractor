@@ -1,9 +1,10 @@
 package ru.mydesignstudio.database.metadata.extractor.output;
 
-import java.util.List;
 import org.springframework.lang.NonNull;
 import ru.mydesignstudio.database.metadata.extractor.extract.result.DatabaseMetadata;
 import ru.mydesignstudio.database.metadata.extractor.extract.result.TableMetadata;
+
+import java.util.List;
 
 public interface MetadataOutput {
   // TODO, Parameters should be taken into account here, like labels.

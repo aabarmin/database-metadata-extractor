@@ -1,12 +1,12 @@
 package ru.mydesignstudio.database.metadata.extractor.extract.result
 
-class TriggerModel(
-        var triggerSchemaName: String,
-        var triggerName: String,
-        var triggerType: String,
-        var triggeringEvent: String,
-        var schemaName: String,
-        var objectName: String,
-        var objectType: String,
-        var status: String,
-        var script: String)
+data class TriggerModel(
+        val triggerSchemaName: String,
+        val triggerName: String,
+        val triggerType: String,
+        val triggeringEvent: String,
+        val schemaName: String,
+        val objectName: String,
+        val objectType: String,
+        val status: String,
+        val script: String)

@@ -1,3 +1,6 @@
 package ru.mydesignstudio.database.metadata.extractor.extract.result
 
-class ViewReferencedModel(var referencingObject: String, var referencingType: String, var referencedObject: String, var referencedType: String)
+data class ViewReferencedModel(val referencingObject: String,
+                               val referencingType: String,
+                               val referencedObject: String,
+                               val referencedType: String)
