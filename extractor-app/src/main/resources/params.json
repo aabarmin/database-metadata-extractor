@@ -3,9 +3,9 @@
     {
       "source": "ORACLE",
       "connection": {
-        "url": "jdbc:oracle:thin://abc.def/",
-        "username": "secret-login",
-        "password": "secret-password"
+        "url": "jdbc:oracle:thin:@localhost:51521:xe",
+        "username": "system",
+        "password": "oracle"
       },
       "schemas": [
         {
@@ -122,14 +122,6 @@
   "destinations": [
     {
       "destination": "HTML",
-      "params": {}
-    },
-    {
-      "destination": "CONFLUENCE_CLOUD",
-      "params": {}
-    },
-    {
-      "destination": "CONFLUENCE_SERVER",
       "params": {}
     }
   ]
