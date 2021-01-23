@@ -5,6 +5,9 @@ import assertk.assertions.isNotNull
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledIf
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.testcontainers.containers.OracleContainer
@@ -13,7 +16,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 import ru.mydesignstudio.database.metadata.extractor.extract.parameters.source.*
 import ru.mydesignstudio.database.metadata.extractor.source.SourceMetadataExtractor
 
-@Disabled
+@DisabledIfEnvironmentVariable(named = "CI", matches = "true", disabledReason = "Switched off on CI")
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 internal class OracleMetadataExtractorIntegrationTest {
