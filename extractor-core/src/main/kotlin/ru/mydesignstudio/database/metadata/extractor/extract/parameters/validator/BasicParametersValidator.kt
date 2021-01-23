@@ -25,6 +25,10 @@ class BasicParametersValidator constructor (
             if (!destinationRegistry.hasDestination(destination.destination)) {
                 return ValidationResult.failure("There is no destination for type {${destination.destination}}")
             }
+
+            if (!destinationRegistry.getDestination(destination.destination).isValidParams(destination.params)) {
+                return ValidationResult.failure("Params for destination ${destination.destination} aren't valid")
+            }
         }
         return ValidationResult.ok()
     }

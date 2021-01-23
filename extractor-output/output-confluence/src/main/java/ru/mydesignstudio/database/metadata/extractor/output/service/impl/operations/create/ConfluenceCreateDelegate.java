@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import ru.mydesignstudio.database.metadata.extractor.output.Label;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.ConfluenceUriBuilder;
+import ru.mydesignstudio.database.metadata.extractor.output.service.impl.model.ConfluenceParams;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.ConfluenceCredentialsHelper;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.create.request.CreatePageRequest;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.create.request.CreateRequest;
@@ -28,7 +28,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 @Slf4j
 @Component
-@ConditionalOnProperty(name = "output.target", havingValue = "confluence", matchIfMissing = false)
 public class ConfluenceCreateDelegate {
   @Autowired
   private ConfluenceCredentialsHelper credentialsHelper;
@@ -42,27 +41,27 @@ public class ConfluenceCreateDelegate {
   @Autowired
   private ConfluenceUriBuilder uriBuilder;
 
-  public CreateResponse create(@NonNull CreateRequest createRequest) {
+  public CreateResponse create(@NonNull CreateRequest createRequest, @NonNull ConfluenceParams params) {
     checkNotNull(createRequest, "Create request should not be null");
 
     log.info("Creating content with title {} in space {}", createRequest.getTitle(), createRequest.getSpace());
     log.debug("Content: {}", createRequest.getContent());
     log.debug("Parent id: {}", createRequest.getParentId());
 
-    return credentialsHelper.withCredentials(httpHeaders -> {
+    return credentialsHelper.withCredentials(params, httpHeaders -> {
       httpHeaders.setContentType(MediaType.APPLICATION_JSON);
       final CreatePageRequest request = requestFactory.createRequest(createRequest);
       final HttpEntity<CreatePageRequest> createEntity = new HttpEntity<>(request, httpHeaders);
 
       final ResponseEntity<CreateResponse> responseEntity = restTemplate
-              .exchange(createUrl(), HttpMethod.POST, createEntity, CreateResponse.class);
+              .exchange(createUrl(params), HttpMethod.POST, createEntity, CreateResponse.class);
 
       final CreateResponse createResponse = responseEntity.getBody();
 
       if (hasLabels(createRequest)) {
         final HttpEntity<Set<Label>> addLabelsEntity = new HttpEntity<>(createRequest.getLabels(), httpHeaders);
         final ResponseEntity<Map> addLabelsResponse = restTemplate
-                .exchange(addLabelsUrl(createResponse), HttpMethod.POST, addLabelsEntity, Map.class);
+                .exchange(addLabelsUrl(createResponse, params), HttpMethod.POST, addLabelsEntity, Map.class);
 
         checkArgument(addLabelsResponse.getStatusCode().is2xxSuccessful(), "Labels weren't added");
       }
@@ -72,11 +71,11 @@ public class ConfluenceCreateDelegate {
   }
 
   @SneakyThrows
-  private URI addLabelsUrl(@NonNull CreateResponse createResponse) {
+  private URI addLabelsUrl(@NonNull CreateResponse createResponse, @NonNull ConfluenceParams params) {
     return uriBuilder.build(Lists.newArrayList(
             createResponse.getId(),
             "label"
-    ));
+    ), params);
   }
 
   private boolean hasLabels(@NonNull CreateRequest createRequest) {
@@ -84,7 +83,7 @@ public class ConfluenceCreateDelegate {
   }
 
   @SneakyThrows
-  private URI createUrl() {
-    return uriBuilder.buildWithTailingSlash();
+  private URI createUrl(@NonNull ConfluenceParams params) {
+    return uriBuilder.buildWithTailingSlash(params);
   }
 }

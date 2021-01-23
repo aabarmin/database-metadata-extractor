@@ -6,7 +6,9 @@ import ru.mydesignstudio.database.metadata.extractor.extract.result.TableMetadat
 
 import java.util.List;
 
+@Deprecated
 public interface MetadataOutput {
   // TODO, Parameters should be taken into account here, like labels.
+  @Deprecated
   List<Output> output(@NonNull List<DatabaseMetadata> databaseMetadata, @NonNull List<TableMetadata> tableMetadata);
 }

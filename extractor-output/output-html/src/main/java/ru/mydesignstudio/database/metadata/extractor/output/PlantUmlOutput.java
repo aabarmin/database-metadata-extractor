@@ -1,6 +1,7 @@
 package ru.mydesignstudio.database.metadata.extractor.output;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Sets;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,30 +42,25 @@ public class PlantUmlOutput {
 
   @Autowired
   private DiagramLabelProvider diagramLabelProvider;
-  
+
   @SneakyThrows
-  public Output output(@NonNull List<DatabaseMetadata> databaseMetadata,
-      @NonNull List<TableMetadata> tableMetadata,
-      @NonNull Path outputFolder) {
-
-    Preconditions.checkNotNull(databaseMetadata, "Database metadata should not be null");
-    Preconditions.checkNotNull(tableMetadata, "Table metadata should not be null");
-    Preconditions.checkNotNull(outputFolder, "Output folder should not be null");
-
-    log.info("Generating PlantUML output for tables {}", tableMetadata);
+  public Output output(DatabaseMetadata metadata, Path outputFolder) {
+    log.info("Generating PlantUML output for schema {}", metadata.getSchemaName());
 
     final Path outputFile = outputFolder.resolve("plan_uml.html");
     Files.deleteIfExists(outputFile);
     Files.createFile(outputFile);
 
     final Context context = new Context();
-    context.setVariable("markup", markupGenerator.generate(tableMetadata));
+    context.setVariable("markup", markupGenerator.generate(metadata));
     final String content = templateEngine.process("plant-uml-template", context);
-    Files.write(outputFile, content.getBytes(Charset.forName("UTF-8")), StandardOpenOption.WRITE);
-    pngGenerator
-        .generatePng(markupGenerator.generate(tableMetadata), outputFolder);
 
-    return new Output("ERD " + LocalDateTime.now(), outputFile, getLabels());
+    Files.write(outputFile, content.getBytes(Charset.forName("UTF-8")), StandardOpenOption.WRITE);
+    final String plantUmlContent = markupGenerator.generate(metadata);
+    pngGenerator.generatePng(plantUmlContent, outputFolder);
+
+    log.info("Done");
+    return new Output("ERD " + LocalDateTime.now(), outputFile, Sets.newHashSet());
   }
 
   private Set<Label> getLabels() {

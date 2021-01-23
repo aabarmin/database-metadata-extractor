@@ -12,6 +12,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.ConfluenceUriBuilder;
+import ru.mydesignstudio.database.metadata.extractor.output.service.impl.model.ConfluenceParams;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.ConfluenceCredentialsHelper;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.create.response.CreateResponse;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.update.request.UpdatePageRequest;
@@ -23,7 +24,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 @Slf4j
 @Component
-@ConditionalOnProperty(name = "output.target", havingValue = "confluence", matchIfMissing = false)
 public class ConfluenceUpdateDelegate {
   @Autowired
   private RestTemplate restTemplate;
@@ -38,7 +38,7 @@ public class ConfluenceUpdateDelegate {
   private UpdatePageRequestFactory requestFactory;
 
 
-  public CreateResponse update(@NonNull UpdateRequest request) {
+  public CreateResponse update(@NonNull UpdateRequest request, @NonNull ConfluenceParams params) {
     checkNotNull(request, "Request should not be null");
 
     log.info("Updating content with id {}", request.getId());
@@ -46,14 +46,14 @@ public class ConfluenceUpdateDelegate {
     log.debug("Content {}", request.getContent());
     log.debug("Version {}", request.getVersion());
 
-    return credentialsHelper.withCredentials(httpHeaders -> {
+    return credentialsHelper.withCredentials(params, httpHeaders -> {
       httpHeaders.setContentType(MediaType.APPLICATION_JSON);
       httpHeaders.setAccept(Lists.newArrayList(MediaType.APPLICATION_JSON));
 
       final UpdatePageRequest updateRequest = requestFactory.create(request);
 
       final HttpEntity<UpdatePageRequest> entity = new HttpEntity<>(updateRequest, httpHeaders);
-      final URI uri = uriBuilder.build(Lists.newArrayList(request.getId()));
+      final URI uri = uriBuilder.build(Lists.newArrayList(request.getId()), params);
 
       final ResponseEntity<CreateResponse> responseEntity = restTemplate
           .exchange(uri, HttpMethod.PUT, entity, CreateResponse.class);

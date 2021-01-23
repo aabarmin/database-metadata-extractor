@@ -1,92 +1,75 @@
 package ru.mydesignstudio.database.metadata.extractor.output;
 
-import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
+import ru.mydesignstudio.database.metadata.extractor.destination.OutputDestination;
 import ru.mydesignstudio.database.metadata.extractor.extract.result.DatabaseMetadata;
-import ru.mydesignstudio.database.metadata.extractor.extract.result.TableMetadata;
 
-import javax.annotation.PostConstruct;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.Map;
 
+@Slf4j
 @Component
-public class HtmlMetadataOutput implements MetadataOutput {
-
-  @Autowired
-  private DatabaseMetadataHtmlOutput databaseOutput;
-
-  @Autowired
-  private TableMetadataHtmlOutput tableOutput;
-
+public class HtmlMetadataOutput implements OutputDestination {
   @Autowired
   private SinglePageHtmlOutput singleOutput;
 
   @Autowired
   private PlantUmlOutput plantUmlOutput;
 
-  @Value("${output.html.folder}")
-  private String outputFolderName;
-
-  @Value("${output.html.mode}")
-  private String outputMode;
-
-  private Path outputFolder;
-
-  @PostConstruct
-  public void init() throws Exception {
-    outputFolder = Paths.get(outputFolderName);
-    if (!Files.exists(outputFolder)) {
-      Files.createDirectories(outputFolder);
+  @Override
+  public boolean isValidParams(@NotNull Map<String, String> params) {
+    if (!params.containsKey("targetDirectory")) {
+      log.warn("targetDirectory property is not present in the HTML output params");
+      return false;
     }
+    return true;
   }
 
+  @NotNull
   @Override
-  public List<Output> output(@NonNull List<DatabaseMetadata> databaseMetadata, @NonNull List<TableMetadata> tableMetadata) {
-    Preconditions.checkNotNull(databaseMetadata, "Database metadata should not be null");
-    Preconditions.checkNotNull(tableMetadata, "Table metadata should not be null");
-    
-    final List<Output> outputs = new ArrayList<>();
-    outputs.add(plantUmlOutput.output(databaseMetadata, tableMetadata, outputFolder));
+  public Collection<Output> output(@NotNull DatabaseMetadata metadata, @NotNull Map<String, String> params) {
+    final Path outputDirectory = createOutputDirectories(params.get("targetDirectory"));
+    final Collection<Output> outputs = Lists.newArrayList();
 
-    if (outputMode.equals("single")) {
-      outputs.addAll(singleFileOutput(databaseMetadata, tableMetadata));
-    } else {
-      outputs.addAll(outputMultipleFiles(databaseMetadata, tableMetadata));
-    }
+    outputs.add(outputPlantUml(metadata, outputDirectory));
+    outputs.addAll(outputHtml(metadata, outputDirectory));
+
     return outputs;
   }
 
-  private List<Output> singleFileOutput(List<DatabaseMetadata> databaseMetadata, List<TableMetadata> tableMetadata) {
-    final List<Output> results = new ArrayList<>();
-
-    for (DatabaseMetadata databaseItem : databaseMetadata) {
-      for (TableMetadata tableItem : tableMetadata) {
-        if (databaseItem.getSchemaName().equals(tableItem.getSchemaName())) {
-          results.add(singleOutput.output(databaseItem, tableItem, outputFolder));
-        }
-      }
-    }
-
-    return results;
+  private Collection<Output> outputHtml(DatabaseMetadata metadata, Path outputDirectory) {
+    return singleOutput.output(metadata, outputDirectory);
   }
 
-  private List<Output> outputMultipleFiles(List<DatabaseMetadata> databaseMetadata, List<TableMetadata> tableMetadata) {
-    final List<Output> results = new ArrayList<>();
+  /**
+   * Generate output file for PlantUML.
+   * @param metadata
+   * @param outputDirectory
+   */
+  private Output outputPlantUml(DatabaseMetadata metadata, Path outputDirectory) {
+    return plantUmlOutput.output(metadata, outputDirectory);
+  }
 
-    for (DatabaseMetadata metadata : databaseMetadata) {
-      results.add(databaseOutput.output(metadata, outputFolder));
+  @SneakyThrows
+  private Path createOutputDirectories(String targetDirectory) {
+    final Path path = Paths.get(targetDirectory);
+    if (!Files.exists(path)) {
+      Files.createDirectories(path);
     }
+    return path;
+  }
 
-    for (TableMetadata metadata : tableMetadata) {
-      results.add(tableOutput.output(metadata, outputFolder));
-    }
-
-    return results;
+  @NotNull
+  @Override
+  public String getDestinationType() {
+    return "HTML";
   }
 }

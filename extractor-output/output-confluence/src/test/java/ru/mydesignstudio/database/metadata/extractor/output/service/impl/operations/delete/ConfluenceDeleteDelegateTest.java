@@ -8,12 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.util.ReflectionTestUtils;
-import ru.mydesignstudio.database.metadata.extractor.config.ConfluenceConfiguration;
 import ru.mydesignstudio.database.metadata.extractor.config.ObjectMapperConfiguration;
 import ru.mydesignstudio.database.metadata.extractor.config.RestConfiguration;
-import ru.mydesignstudio.database.metadata.extractor.output.service.ConfluenceCredentials;
-import ru.mydesignstudio.database.metadata.extractor.output.service.impl.ConfluenceRestFactory;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.ConfluenceUriBuilder;
+import ru.mydesignstudio.database.metadata.extractor.output.service.impl.model.ConfluenceParams;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.BasicAuthenticationHeaderFactory;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.ConfluenceCredentialsHelper;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.create.ConfluenceCreateDelegate;
@@ -40,27 +38,10 @@ import static org.assertj.core.api.Assertions.assertThat;
     CreatePageRequestFactory.class,
     ConfluenceCredentialsHelper.class,
     BasicAuthenticationHeaderFactory.class,
-    ConfluenceConfiguration.class,
-    ConfluenceRestFactory.class,
     RestConfiguration.class,
     ObjectMapperConfiguration.class
 })
-@TestPropertySource(properties = {
-    "output.target=confluence",
-    "confluence.type=cloud",
-    "confluence.port=50080",
-    "confluence.host=localhost",
-    "confluence.protocol=http",
-    "confluence.username=username",
-    "confluence.password=password"
-})
 class ConfluenceDeleteDelegateTest {
-  @Autowired
-  private ConfluenceCredentials credentials;
-
-  @Autowired
-  private ConfluenceUriBuilder uriBuilder;
-
   @Autowired
   private ConfluenceDeleteDelegate unitUnderTest;
 
@@ -72,8 +53,17 @@ class ConfluenceDeleteDelegateTest {
     mockServer.start();
 
     configureFor(mockServer.port());
+}
 
-    ReflectionTestUtils.setField(uriBuilder, "confluencePort", mockServer.port());
+  private ConfluenceParams confluenceParams() {
+    return ConfluenceParams.builder()
+        .confluenceType("cloud")
+        .username("username")
+        .password("password")
+        .confluenceProtocol("http")
+        .confluencePort(mockServer.port())
+        .confluenceHost("localhost")
+        .build();
   }
 
   @AfterEach
@@ -90,13 +80,13 @@ class ConfluenceDeleteDelegateTest {
   void delete_shouldSendRequest() {
     stubFor(
         delete(urlEqualTo("/wiki/rest/api/content/1234"))
-            .withBasicAuth(credentials.getUsername(), credentials.getPassword())
+            .withBasicAuth(confluenceParams().getUsername(), confluenceParams().getPassword())
             .willReturn(
                 aResponse().withStatus(204)
             )
     );
 
-    final boolean response = unitUnderTest.delete("1234");
+    final boolean response = unitUnderTest.delete("1234", confluenceParams());
 
     assertThat(response).isTrue();
     verify(exactly(1), deleteRequestedFor(urlEqualTo("/wiki/rest/api/content/1234")));

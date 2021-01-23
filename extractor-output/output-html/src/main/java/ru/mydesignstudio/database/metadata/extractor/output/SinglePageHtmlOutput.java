@@ -20,8 +20,10 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -45,8 +47,14 @@ public class SinglePageHtmlOutput {
   @Autowired
   private DatabaseLabelProvider databaseLabelProvider;
 
+  public Collection<Output> output(DatabaseMetadata metadata, Path outputDirectory) {
+    return metadata.getTables().stream()
+        .map(table -> output(metadata, table, outputDirectory))
+        .collect(Collectors.toList());
+  }
+
   @SneakyThrows
-  public Output output(@NonNull DatabaseMetadata databaseMetadata, @NonNull TableMetadata tableMetadata, @NonNull Path outputFolder) {
+  private Output output(@NonNull DatabaseMetadata databaseMetadata, @NonNull TableMetadata tableMetadata, @NonNull Path outputFolder) {
     Preconditions.checkNotNull(databaseMetadata, "Database metadata should not be null");
     Preconditions.checkNotNull(tableMetadata, "Table metadata should not be null");
     Preconditions.checkNotNull(outputFolder, "Output folder should not be null");
@@ -98,5 +106,4 @@ public class SinglePageHtmlOutput {
     return objectTypeExtractor.extract(tableMetadata) + " " + databaseMetadata.getSchemaName() + "." + tableMetadata
         .getTableName();
   }
-
 }

@@ -6,5 +6,5 @@ package ru.mydesignstudio.database.metadata.extractor.extract.parameters.destina
  */
 data class MetadataDestination(
         val destination: String,
-        val params: Map<String, Object>
+        val params: Map<String, String>
 )

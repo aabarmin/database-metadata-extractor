@@ -14,7 +14,11 @@ import java.util.List;
 @Component
 public class PlantUmlMarkupGenerator {
 
-    public String generate(@NonNull List<TableMetadata> tableMetadata) {
+    public String generate(@NonNull DatabaseMetadata databaseMetadata) {
+        return generate(databaseMetadata.getTables());
+    }
+
+    public String generate(@NonNull Collection<TableMetadata> tableMetadata) {
         final StringBuilder builder = new StringBuilder();
 
         generateHeading(builder);
@@ -27,7 +31,7 @@ public class PlantUmlMarkupGenerator {
         return builder.toString();
     }
 
-    private void generateReferences(@NonNull List<TableMetadata> tableMetadata, @NonNull StringBuilder builder) {
+    private void generateReferences(@NonNull Collection<TableMetadata> tableMetadata, @NonNull StringBuilder builder) {
         for (TableMetadata table : tableMetadata) {
             for (ReferenceModel refs : table.getReferences()) {
                 if (getColumnMetadataByName(table.getColumns(), refs.getChildColumn()).getNullable().equals("N")) {
@@ -39,7 +43,7 @@ public class PlantUmlMarkupGenerator {
         }
     }
 
-    private void generateEntities(@NonNull List<TableMetadata> tableMetadata, @NonNull StringBuilder builder) {
+    private void generateEntities(@NonNull Collection<TableMetadata> tableMetadata, @NonNull StringBuilder builder) {
         for (TableMetadata table : tableMetadata) {
             builder.append("entity ").append(table.getTableName()).append(" {");
             builder.append(System.lineSeparator());

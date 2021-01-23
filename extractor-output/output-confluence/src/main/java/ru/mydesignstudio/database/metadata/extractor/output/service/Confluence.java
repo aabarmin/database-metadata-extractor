@@ -1,6 +1,7 @@
 package ru.mydesignstudio.database.metadata.extractor.output.service;
 
 import org.springframework.lang.NonNull;
+import ru.mydesignstudio.database.metadata.extractor.output.service.impl.model.ConfluenceParams;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.create.request.CreateRequest;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.create.response.CreateResponse;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.find.FindResponse;
@@ -14,18 +15,17 @@ public interface Confluence {
    * @param request request to create a page
    * @return creation response
    */
-  CreateResponse create(@NonNull CreateRequest request);
+  CreateResponse create(@NonNull CreateRequest request, @NonNull ConfluenceParams confluenceParams);
 
-  CreateResponse update(@NonNull UpdateRequest request);
+  CreateResponse update(@NonNull UpdateRequest request, @NonNull ConfluenceParams confluenceParams);
 
   /**
    * Find pages by title and space name.
    *
    * @param title
-   * @param space
    * @return
    */
-  FindResponse find(@NonNull String title, @NonNull String space);
+  FindResponse find(@NonNull String title, @NonNull ConfluenceParams confluenceParams);
 
   /**
    * Delete a page from Confluence.
@@ -33,5 +33,5 @@ public interface Confluence {
    * @param contentId page id
    * @return
    */
-  boolean delete(@NonNull String contentId);
+  boolean delete(@NonNull String contentId, @NonNull ConfluenceParams confluenceParams);
 }

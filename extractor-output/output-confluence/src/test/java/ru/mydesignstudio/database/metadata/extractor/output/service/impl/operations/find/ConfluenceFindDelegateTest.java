@@ -13,10 +13,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.client.MockRestServiceServer;
-import ru.mydesignstudio.database.metadata.extractor.config.ConfluenceConfiguration;
 import ru.mydesignstudio.database.metadata.extractor.config.ObjectMapperConfiguration;
-import ru.mydesignstudio.database.metadata.extractor.output.service.impl.ConfluenceRestFactory;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.ConfluenceUriBuilder;
+import ru.mydesignstudio.database.metadata.extractor.output.service.impl.model.ConfluenceParams;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.BasicAuthenticationHeaderFactory;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.ConfluenceCredentialsHelper;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.create.ConfluenceCreateDelegate;
@@ -61,8 +60,6 @@ class ConfluenceFindDelegateTest {
       CreatePageRequestFactory.class,
       ConfluenceCredentialsHelper.class,
       BasicAuthenticationHeaderFactory.class,
-      ConfluenceConfiguration.class,
-      ConfluenceRestFactory.class,
       ObjectMapperConfiguration.class
   })
   static class ConfigurationForTest {
@@ -77,6 +74,17 @@ class ConfluenceFindDelegateTest {
 
   @Autowired
   private MockRestServiceServer mockServer;
+
+  private ConfluenceParams confluenceParams() {
+    return ConfluenceParams.builder()
+        .confluenceType("cloud")
+        .username("username")
+        .password("password")
+        .confluenceProtocol("http")
+        .confluencePort(80)
+        .confluenceHost("host")
+        .build();
+  }
 
   @Test
   void check_contextStarts() {
@@ -95,7 +103,7 @@ class ConfluenceFindDelegateTest {
         .andExpect(queryParam("expand", is("version")))
         .andRespond(withSuccess(findResponse, MediaType.APPLICATION_JSON));
 
-    final FindResponse response = unitUnderTest.find("title", "space");
+    final FindResponse response = unitUnderTest.find("title", "space", confluenceParams());
 
     mockServer.verify();
 

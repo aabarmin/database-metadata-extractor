@@ -122,7 +122,9 @@
   "destinations": [
     {
       "destination": "HTML",
-      "params": {}
+      "params": {
+        "targetDirectory": "./html_output"
+      }
     }
   ]
 }

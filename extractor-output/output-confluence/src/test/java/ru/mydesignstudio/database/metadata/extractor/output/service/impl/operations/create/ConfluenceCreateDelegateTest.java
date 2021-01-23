@@ -13,10 +13,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.client.MockRestServiceServer;
-import ru.mydesignstudio.database.metadata.extractor.config.ConfluenceConfiguration;
 import ru.mydesignstudio.database.metadata.extractor.output.Label;
-import ru.mydesignstudio.database.metadata.extractor.output.service.impl.ConfluenceRestFactory;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.ConfluenceUriBuilder;
+import ru.mydesignstudio.database.metadata.extractor.output.service.impl.model.ConfluenceParams;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.BasicAuthenticationHeaderFactory;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.ConfluenceCredentialsHelper;
 import ru.mydesignstudio.database.metadata.extractor.output.service.impl.operations.create.request.CreateRequest;
@@ -35,15 +34,6 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 @RestClientTest(components = {
     ConfluenceCreateDelegate.class
 })
-@TestPropertySource(properties = {
-    "output.target=confluence",
-    "confluence.type=cloud",
-    "confluence.port=50080",
-    "confluence.host=host",
-    "confluence.protocol=http",
-    "confluence.username=username",
-    "confluence.password=password"
-})
 @AutoConfigureWebClient(registerRestTemplate = true)
 class ConfluenceCreateDelegateTest {
   @Configuration
@@ -58,9 +48,7 @@ class ConfluenceCreateDelegateTest {
       TitleSanitizer.class,
       CreatePageRequestFactory.class,
       ConfluenceCredentialsHelper.class,
-      BasicAuthenticationHeaderFactory.class,
-      ConfluenceConfiguration.class,
-      ConfluenceRestFactory.class
+      BasicAuthenticationHeaderFactory.class
   })
   static class ConfigurationForTest {
 
@@ -86,6 +74,17 @@ class ConfluenceCreateDelegateTest {
     );
   }
 
+  private ConfluenceParams confluenceParams() {
+    return ConfluenceParams.builder()
+        .confluenceType("cloud")
+        .username("username")
+        .password("password")
+        .confluenceProtocol("http")
+        .confluencePort(50080)
+        .confluenceHost("host")
+        .build();
+  }
+
   @Test
   void createWithoutLabels_shouldSendSingleRequest() throws Exception {
     mockServer.expect(requestTo("http://host:50080/wiki/rest/api/content/"))
@@ -98,7 +97,7 @@ class ConfluenceCreateDelegateTest {
             .content("content")
             .title("title")
             .space("space")
-            .build());
+            .build(), confluenceParams());
 
     mockServer.verify();
 
@@ -132,7 +131,7 @@ class ConfluenceCreateDelegateTest {
                     new Label("global", "label1"),
                     new Label("global", "label2")
             ))
-            .build());
+            .build(), confluenceParams());
 
     mockServer.verify();
 

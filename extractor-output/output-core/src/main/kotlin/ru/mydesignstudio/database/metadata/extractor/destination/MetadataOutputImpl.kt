@@ -13,7 +13,7 @@ class MetadataOutputImpl(
         for (destination in params.destinations) {
             for (metadataItem in metadata) {
                 val output = registry.getDestination(destination.destination)
-                output.output(metadataItem)
+                output.output(metadataItem, destination.params)
             }
         }
     }
